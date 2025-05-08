@@ -1,0 +1,19 @@
+{
+  "subscribers": {},
+  "bath_events": {
+    "11.05.2025": {
+      "participants": [
+        {
+          "user_id": 5113919097,
+          "username": "german22",
+          "paid": true
+        },
+        {
+          "user_id": 44420835,
+          "username": "Shaman_Kerry",
+          "paid": true
+        }
+      ]
+    }
+  }
+}

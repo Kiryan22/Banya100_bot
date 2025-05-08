@@ -1,0 +1,1394 @@
+2025-05-08 12:05:26,658 - __main__ - CRITICAL - Критическая ошибка при запуске бота: 'Updater' object has no attribute '_Updater__polling_cleanup_cb' and no __dict__ for setting new attributes
+2025-05-08 12:06:54,580 - __main__ - CRITICAL - Критическая ошибка при запуске бота: 'Updater' object has no attribute '_Updater__polling_cleanup_cb' and no __dict__ for setting new attributes
+2025-05-08 12:08:27,767 - __main__ - CRITICAL - Критическая ошибка при запуске бота: 'Updater' object has no attribute '_Updater__polling_cleanup_cb' and no __dict__ for setting new attributes
+2025-05-08 12:09:21,757 - __main__ - CRITICAL - Критическая ошибка при запуске бота: 'Updater' object has no attribute '_Updater__polling_cleanup_cb' and no __dict__ for setting new attributes
+2025-05-08 12:12:37,719 - __main__ - CRITICAL - Критическая ошибка при запуске бота: 'Updater' object has no attribute '_Updater__polling_cleanup_cb' and no __dict__ for setting new attributes
+2025-05-08 12:39:40,029 - __main__ - ERROR - JobQueue не доступен. Установите python-telegram-bot[job-queue]
+2025-05-08 12:44:03,745 - __main__ - CRITICAL - Критическая ошибка при запуске бота: 'Updater' object has no attribute '_Updater__polling_cleanup_cb' and no __dict__ for setting new attributes
+2025-05-08 12:44:43,235 - __main__ - CRITICAL - Критическая ошибка при запуске бота: 'Updater' object has no attribute '_Updater__polling_cleanup_cb' and no __dict__ for setting new attributes
+2025-05-08 12:45:10,904 - __main__ - ERROR - JobQueue не доступен. Установите python-telegram-bot[job-queue]
+2025-05-08 13:02:41,768 - __main__ - ERROR - JobQueue не доступен. Установите python-telegram-bot[job-queue]
+2025-05-08 13:03:29,978 - __main__ - ERROR - Ошибка при выполнении команды mention_all: Can't parse entities: can't find end of the entity starting at byte offset 78
+2025-05-08 13:03:58,806 - __main__ - ERROR - Ошибка при выполнении команды mention_all: Can't parse entities: can't find end of the entity starting at byte offset 78
+2025-05-08 13:09:10,920 - __main__ - ERROR - JobQueue не доступен. Установите python-telegram-bot[job-queue]
+2025-05-08 13:09:46,287 - __main__ - ERROR - Ошибка при выполнении команды mention_all: Can't parse entities: can't find end of the entity starting at byte offset 26
+2025-05-08 13:12:02,675 - __main__ - ERROR - JobQueue не доступен. Установите python-telegram-bot[job-queue]
+2025-05-08 13:25:39,183 - __main__ - ERROR - JobQueue не доступен. Установите python-telegram-bot[job-queue]
+2025-05-08 13:25:39,782 - telegram.ext.Application - ERROR - No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/ext/_application.py", line 1234, in process_update
+    await coroutine
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/ext/_basehandler.py", line 157, in handle_update
+    return await self.callback(update, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/bot.py", line 265, in create_bath_event
+    old_pinned_id = db.get_last_pinned_message_id()
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/database.py", line 367, in get_last_pinned_message_id
+    cursor.execute('SELECT message_id FROM pinned_messages ORDER BY date_str DESC LIMIT 1')
+sqlite3.OperationalError: no such table: pinned_messages
+2025-05-08 13:26:20,706 - __main__ - ERROR - JobQueue не доступен. Установите python-telegram-bot[job-queue]
+2025-05-08 13:26:36,497 - telegram.ext.Application - ERROR - No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/ext/_application.py", line 1234, in process_update
+    await coroutine
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/ext/_basehandler.py", line 157, in handle_update
+    return await self.callback(update, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/bot.py", line 265, in create_bath_event
+    old_pinned_id = db.get_last_pinned_message_id()
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/database.py", line 367, in get_last_pinned_message_id
+    cursor.execute('SELECT message_id FROM pinned_messages ORDER BY date_str DESC LIMIT 1')
+sqlite3.OperationalError: no such table: pinned_messages
+2025-05-08 13:26:55,732 - telegram.ext.Application - ERROR - No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/ext/_application.py", line 1234, in process_update
+    await coroutine
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/ext/_basehandler.py", line 157, in handle_update
+    return await self.callback(update, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/bot.py", line 265, in create_bath_event
+    old_pinned_id = db.get_last_pinned_message_id()
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/database.py", line 367, in get_last_pinned_message_id
+    cursor.execute('SELECT message_id FROM pinned_messages ORDER BY date_str DESC LIMIT 1')
+sqlite3.OperationalError: no such table: pinned_messages
+2025-05-08 13:27:16,878 - telegram.ext.Application - ERROR - No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/ext/_application.py", line 1234, in process_update
+    await coroutine
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/ext/_basehandler.py", line 157, in handle_update
+    return await self.callback(update, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/bot.py", line 265, in create_bath_event
+    old_pinned_id = db.get_last_pinned_message_id()
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/database.py", line 367, in get_last_pinned_message_id
+    cursor.execute('SELECT message_id FROM pinned_messages ORDER BY date_str DESC LIMIT 1')
+sqlite3.OperationalError: no such table: pinned_messages
+2025-05-08 13:27:36,847 - telegram.ext.Application - ERROR - No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/ext/_application.py", line 1234, in process_update
+    await coroutine
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/ext/_basehandler.py", line 157, in handle_update
+    return await self.callback(update, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/bot.py", line 265, in create_bath_event
+    old_pinned_id = db.get_last_pinned_message_id()
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/database.py", line 367, in get_last_pinned_message_id
+    cursor.execute('SELECT message_id FROM pinned_messages ORDER BY date_str DESC LIMIT 1')
+sqlite3.OperationalError: no such table: pinned_messages
+2025-05-08 13:30:41,405 - __main__ - ERROR - JobQueue не доступен. Установите python-telegram-bot[job-queue]
+2025-05-08 13:33:22,870 - __main__ - ERROR - Ошибка при отправке уведомления администратору 165695939: Forbidden: bot can't initiate conversation with a user
+2025-05-08 13:49:36,614 - __main__ - ERROR - Ошибка при отправке уведомления администратору 165695939: Forbidden: bot can't initiate conversation with a user
+2025-05-08 13:57:53,906 - __main__ - ERROR - Ошибка при отправке уведомления администратору 165695939: Forbidden: bot can't initiate conversation with a user
+2025-05-08 14:00:42,215 - __main__ - ERROR - WEBHOOK_URL не настроен в конфигурации
+2025-05-08 14:00:42,215 - __main__ - ERROR - Ошибка при запуске бота: There is no current event loop in thread 'MainThread'.
+2025-05-08 14:01:01,679 - __main__ - ERROR - WEBHOOK_URL не настроен в конфигурации
+2025-05-08 14:01:01,680 - __main__ - ERROR - Ошибка при запуске бота: There is no current event loop in thread 'MainThread'.
+2025-05-08 14:44:52,722 - __main__ - ERROR - Ошибка при отправке уведомления администратору 165695939: Forbidden: bot can't initiate conversation with a user
+2025-05-08 14:44:54,854 - __main__ - ERROR - Ошибка при автозапуске диалога профиля для пользователя 44420835: 'NoneType' object is not callable
+2025-05-08 14:45:24,650 - __main__ - ERROR - Ошибка при отправке уведомления администратору 165695939: Forbidden: bot can't initiate conversation with a user
+2025-05-08 14:45:31,641 - __main__ - ERROR - Ошибка при автозапуске диалога профиля для пользователя 5113919097: 'NoneType' object is not callable
+2025-05-08 14:49:23,838 - __main__ - ERROR - Ошибка при отправке уведомления администратору 165695939: Forbidden: bot can't initiate conversation with a user
+2025-05-08 14:54:27,014 - __main__ - ERROR - Ошибка при отправке уведомления администратору 165695939: Forbidden: bot can't initiate conversation with a user
+2025-05-08 14:54:38,076 - __main__ - ERROR - Ошибка в функции button_callback: 'NoneType' object has no attribute 'reply_text'
+2025-05-08 14:54:40,893 - __main__ - ERROR - Ошибка в функции button_callback: 'NoneType' object has no attribute 'reply_text'
+2025-05-08 14:54:42,301 - __main__ - ERROR - Ошибка в функции button_callback: 'NoneType' object has no attribute 'reply_text'
+2025-05-08 14:54:42,987 - __main__ - ERROR - Ошибка в функции button_callback: 'NoneType' object has no attribute 'reply_text'
+2025-05-08 15:09:58,400 - __main__ - ERROR - Ошибка при отправке уведомления администратору 165695939: Forbidden: bot can't initiate conversation with a user
+2025-05-08 15:16:12,441 - __main__ - ERROR - Ошибка при отправке уведомления администратору 165695939: Forbidden: bot can't initiate conversation with a user
+2025-05-08 15:16:42,118 - telegram.ext.Application - ERROR - No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/ext/_application.py", line 1234, in process_update
+    await coroutine
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/ext/_basehandler.py", line 157, in handle_update
+    return await self.callback(update, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/bot.py", line 737, in handle_message_to_user
+    await query.answer()
+          ^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'answer'
+2025-05-08 15:19:33,521 - __main__ - ERROR - Ошибка при отправке уведомления администратору 165695939: Forbidden: bot can't initiate conversation with a user
+2025-05-08 15:22:20,107 - __main__ - ERROR - Ошибка при отправке уведомления администратору 165695939: Forbidden: bot can't initiate conversation with a user
+2025-05-08 15:25:11,330 - __main__ - ERROR - Ошибка при отправке уведомления администратору 165695939: Forbidden: bot can't initiate conversation with a user
+2025-05-08 15:27:38,090 - __main__ - ERROR - Ошибка при отправке уведомления администратору 165695939: Forbidden: bot can't initiate conversation with a user
+2025-05-08 15:28:34,277 - __main__ - ERROR - Ошибка при отправке уведомления администратору 165695939: Forbidden: bot can't initiate conversation with a user
+2025-05-08 16:11:34,951 - database - ERROR - Ошибка при очистке предыдущих событий: no such column: cash
+2025-05-08 16:11:34,951 - __main__ - ERROR - Ошибка в функции create_bath_event: no such column: cash
+2025-05-08 16:15:22,372 - __main__ - ERROR - Ошибка при отправке уведомления администратору 165695939: Forbidden: bot can't initiate conversation with a user
+2025-05-08 16:18:17,485 - __main__ - ERROR - [handle_cash_payment] Ошибка при отправке админу 165695939: Forbidden: bot can't initiate conversation with a user
+2025-05-08 16:25:04,706 - __main__ - ERROR - [handle_cash_payment] Ошибка при отправке админу 165695939: Forbidden: bot can't initiate conversation with a user
+2025-05-08 16:30:11,347 - __main__ - ERROR - [handle_cash_payment] Ошибка при отправке админу 165695939: Forbidden: bot can't initiate conversation with a user
+2025-05-08 16:47:42,722 - __main__ - ERROR - [handle_cash_payment] Ошибка при отправке админу 165695939: Forbidden: bot can't initiate conversation with a user
+2025-05-08 16:55:36,026 - __main__ - ERROR - [handle_cash_payment] Ошибка при отправке админу 165695939: Forbidden: bot can't initiate conversation with a user
+2025-05-08 16:55:44,166 - __main__ - ERROR - Ошибка в функции button_callback: Database.get_pending_payment() takes 3 positional arguments but 4 were given
+2025-05-08 16:55:46,503 - __main__ - ERROR - Ошибка в функции button_callback: Database.get_pending_payment() takes 3 positional arguments but 4 were given
+2025-05-08 16:55:47,934 - __main__ - ERROR - Ошибка в функции button_callback: Database.get_pending_payment() takes 3 positional arguments but 4 were given
+2025-05-08 16:55:54,152 - __main__ - ERROR - Ошибка в функции button_callback: Database.get_pending_payment() takes 3 positional arguments but 4 were given
+2025-05-08 16:55:54,729 - __main__ - ERROR - Ошибка в функции button_callback: Database.get_pending_payment() takes 3 positional arguments but 4 were given
+2025-05-08 16:56:05,522 - __main__ - ERROR - Ошибка в функции button_callback: Database.get_pending_payment() takes 3 positional arguments but 4 were given
+2025-05-08 16:58:52,916 - __main__ - ERROR - [handle_cash_payment] Ошибка при отправке админу 165695939: Forbidden: bot can't initiate conversation with a user
+2025-05-08 17:15:10,790 - __main__ - ERROR - [handle_cash_payment] Ошибка при отправке админу 165695939: Forbidden: bot can't initiate conversation with a user
+2025-05-08 17:23:00,793 - __main__ - ERROR - [handle_cash_payment] Ошибка при отправке админу 165695939: Forbidden: bot can't initiate conversation with a user
+2025-05-08 17:27:43,390 - __main__ - ERROR - [handle_cash_payment] Ошибка при отправке админу 165695939: Forbidden: bot can't initiate conversation with a user
+2025-05-08 17:28:08,420 - __main__ - ERROR - [handle_cash_payment] Ошибка при отправке админу 165695939: Forbidden: bot can't initiate conversation with a user
+2025-05-08 17:33:18,651 - __main__ - ERROR - [handle_cash_payment] Ошибка при отправке админу 165695939: Forbidden: bot can't initiate conversation with a user
+2025-05-08 17:36:01,790 - __main__ - ERROR - [handle_cash_payment] Ошибка при отправке админу 165695939: Forbidden: bot can't initiate conversation with a user
+2025-05-08 17:36:03,942 - __main__ - ERROR - Ошибка в функции button_callback: 'Database' object has no attribute 'delete_pending_payment'
+2025-05-08 17:38:10,020 - __main__ - ERROR - [handle_cash_payment] Ошибка при отправке админу 165695939: Forbidden: bot can't initiate conversation with a user
+2025-05-08 17:45:01,990 - __main__ - ERROR - [handle_cash_payment] Ошибка при отправке админу 165695939: Forbidden: bot can't initiate conversation with a user
+2025-05-08 17:47:48,616 - __main__ - ERROR - [handle_cash_payment] Ошибка при отправке админу 165695939: Forbidden: bot can't initiate conversation with a user
+2025-05-08 17:51:52,805 - __main__ - ERROR - [handle_cash_payment] Ошибка при отправке админу 165695939: Forbidden: bot can't initiate conversation with a user
+2025-05-08 17:55:08,694 - __main__ - ERROR - Ошибка при отправке уведомления администратору 165695939: Forbidden: bot can't initiate conversation with a user
+2025-05-08 17:55:54,222 - telegram.ext.Application - ERROR - No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/ext/_application.py", line 1234, in process_update
+    await coroutine
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/ext/_conversationhandler.py", line 857, in handle_update
+    new_state: object = await handler.handle_update(
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/ext/_basehandler.py", line 157, in handle_update
+    return await self.callback(update, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/bot.py", line 1480, in handle_skills
+    for date_str in [p['date_str'] for p in db.get_all_user_profiles() if p['user_id'] == user.id]:
+                     ~^^^^^^^^^^^^
+KeyError: 'date_str'
+2025-05-08 18:05:28,146 - __main__ - ERROR - [handle_cash_payment] Ошибка при отправке админу 165695939: Forbidden: bot can't initiate conversation with a user
+2025-05-08 18:12:42,723 - __main__ - ERROR - [handle_cash_payment] Ошибка при отправке админу 165695939: Forbidden: bot can't initiate conversation with a user
+2025-05-08 18:13:11,776 - __main__ - ERROR - Ошибка при отправке уведомления администратору 165695939: Forbidden: bot can't initiate conversation with a user
+2025-05-08 18:13:15,168 - __main__ - ERROR - [admin_confirm_payment] Ошибка при обновлении списка участников в группе: Message is not modified: specified new message content and reply markup are exactly the same as a current content and reply markup of the message
+2025-05-08 18:17:38,448 - __main__ - ERROR - Ошибка при отправке уведомления администратору 165695939: Forbidden: bot can't initiate conversation with a user
+2025-05-08 18:21:27,330 - __main__ - ERROR - Ошибка при отправке уведомления администратору 165695939: Forbidden: bot can't initiate conversation with a user
+2025-05-08 18:21:46,075 - __main__ - ERROR - [handle_cash_payment] Ошибка при отправке админу 165695939: Forbidden: bot can't initiate conversation with a user
+2025-05-08 21:12:31,309 - __main__ - ERROR - [handle_cash_payment] Ошибка при отправке админу 165695939: Forbidden: bot can't initiate conversation with a user
+2025-05-08 21:17:40,217 - __main__ - ERROR - [handle_cash_payment] Ошибка при отправке админу 165695939: Forbidden: bot can't initiate conversation with a user
+2025-05-08 21:25:20,158 - telegram.ext.Updater - ERROR - Error while getting Updates: httpx.ConnectError: [Errno 8] nodename nor servname provided, or not known
+2025-05-08 21:25:20,159 - telegram.ext.Application - ERROR - No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 66, in map_httpcore_exceptions
+    yield
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 366, in handle_async_request
+    resp = await self._pool.handle_async_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_async/connection_pool.py", line 256, in handle_async_request
+    raise exc from None
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_async/connection_pool.py", line 236, in handle_async_request
+    response = await connection.handle_async_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_async/connection.py", line 101, in handle_async_request
+    raise exc
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_async/connection.py", line 78, in handle_async_request
+    stream = await self._connect(request)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_async/connection.py", line 124, in _connect
+    stream = await self._network_backend.connect_tcp(**kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_backends/auto.py", line 31, in connect_tcp
+    return await self._backend.connect_tcp(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_backends/anyio.py", line 113, in connect_tcp
+    with map_exceptions(exc_map):
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.10/Frameworks/Python.framework/Versions/3.12/lib/python3.12/contextlib.py", line 158, in __exit__
+    self.gen.throw(value)
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ConnectError: [Errno 8] nodename nor servname provided, or not known
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/request/_httpxrequest.py", line 268, in do_request
+    res = await self._client.request(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_client.py", line 1530, in request
+    return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_client.py", line 1617, in send
+    response = await self._send_handling_auth(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_client.py", line 1645, in _send_handling_auth
+    response = await self._send_handling_redirects(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_client.py", line 1682, in _send_handling_redirects
+    response = await self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_client.py", line 1719, in _send_single_request
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 365, in handle_async_request
+    with map_httpcore_exceptions():
+         ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.10/Frameworks/Python.framework/Versions/3.12/lib/python3.12/contextlib.py", line 158, in __exit__
+    self.gen.throw(value)
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 83, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ConnectError: [Errno 8] nodename nor servname provided, or not known
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/ext/_updater.py", line 688, in _network_loop_retry
+    if not await action_cb():
+           ^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/ext/_updater.py", line 384, in polling_action_cb
+    raise exc
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/ext/_updater.py", line 373, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/ext/_extbot.py", line 558, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/_bot.py", line 525, in decorator
+    result = await func(self, *args, **kwargs)  # skipcq: PYL-E1102
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/_bot.py", line 3584, in get_updates
+    await self._post(
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/_bot.py", line 613, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/ext/_extbot.py", line 340, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/_bot.py", line 641, in _do_post
+    return await request.post(
+           ^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/request/_baserequest.py", line 200, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/request/_baserequest.py", line 340, in _request_wrapper
+    raise exc
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/request/_baserequest.py", line 330, in _request_wrapper
+    code, payload = await self.do_request(
+                    ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/request/_httpxrequest.py", line 292, in do_request
+    raise NetworkError(f"httpx.{err.__class__.__name__}: {err}") from err
+telegram.error.NetworkError: httpx.ConnectError: [Errno 8] nodename nor servname provided, or not known
+2025-05-08 21:25:21,178 - telegram.ext.Updater - ERROR - Error while getting Updates: httpx.ConnectError: [Errno 8] nodename nor servname provided, or not known
+2025-05-08 21:25:21,178 - telegram.ext.Application - ERROR - No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 66, in map_httpcore_exceptions
+    yield
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 366, in handle_async_request
+    resp = await self._pool.handle_async_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_async/connection_pool.py", line 256, in handle_async_request
+    raise exc from None
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_async/connection_pool.py", line 236, in handle_async_request
+    response = await connection.handle_async_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_async/connection.py", line 101, in handle_async_request
+    raise exc
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_async/connection.py", line 78, in handle_async_request
+    stream = await self._connect(request)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_async/connection.py", line 124, in _connect
+    stream = await self._network_backend.connect_tcp(**kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_backends/auto.py", line 31, in connect_tcp
+    return await self._backend.connect_tcp(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_backends/anyio.py", line 113, in connect_tcp
+    with map_exceptions(exc_map):
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.10/Frameworks/Python.framework/Versions/3.12/lib/python3.12/contextlib.py", line 158, in __exit__
+    self.gen.throw(value)
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ConnectError: [Errno 8] nodename nor servname provided, or not known
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/request/_httpxrequest.py", line 268, in do_request
+    res = await self._client.request(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_client.py", line 1530, in request
+    return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_client.py", line 1617, in send
+    response = await self._send_handling_auth(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_client.py", line 1645, in _send_handling_auth
+    response = await self._send_handling_redirects(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_client.py", line 1682, in _send_handling_redirects
+    response = await self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_client.py", line 1719, in _send_single_request
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 365, in handle_async_request
+    with map_httpcore_exceptions():
+         ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.10/Frameworks/Python.framework/Versions/3.12/lib/python3.12/contextlib.py", line 158, in __exit__
+    self.gen.throw(value)
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 83, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ConnectError: [Errno 8] nodename nor servname provided, or not known
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/ext/_updater.py", line 688, in _network_loop_retry
+    if not await action_cb():
+           ^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/ext/_updater.py", line 384, in polling_action_cb
+    raise exc
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/ext/_updater.py", line 373, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/ext/_extbot.py", line 558, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/_bot.py", line 525, in decorator
+    result = await func(self, *args, **kwargs)  # skipcq: PYL-E1102
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/_bot.py", line 3584, in get_updates
+    await self._post(
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/_bot.py", line 613, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/ext/_extbot.py", line 340, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/_bot.py", line 641, in _do_post
+    return await request.post(
+           ^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/request/_baserequest.py", line 200, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/request/_baserequest.py", line 340, in _request_wrapper
+    raise exc
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/request/_baserequest.py", line 330, in _request_wrapper
+    code, payload = await self.do_request(
+                    ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/request/_httpxrequest.py", line 292, in do_request
+    raise NetworkError(f"httpx.{err.__class__.__name__}: {err}") from err
+telegram.error.NetworkError: httpx.ConnectError: [Errno 8] nodename nor servname provided, or not known
+2025-05-08 21:25:22,687 - telegram.ext.Updater - ERROR - Error while getting Updates: httpx.ConnectError: [Errno 8] nodename nor servname provided, or not known
+2025-05-08 21:25:22,687 - telegram.ext.Application - ERROR - No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 66, in map_httpcore_exceptions
+    yield
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 366, in handle_async_request
+    resp = await self._pool.handle_async_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_async/connection_pool.py", line 256, in handle_async_request
+    raise exc from None
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_async/connection_pool.py", line 236, in handle_async_request
+    response = await connection.handle_async_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_async/connection.py", line 101, in handle_async_request
+    raise exc
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_async/connection.py", line 78, in handle_async_request
+    stream = await self._connect(request)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_async/connection.py", line 124, in _connect
+    stream = await self._network_backend.connect_tcp(**kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_backends/auto.py", line 31, in connect_tcp
+    return await self._backend.connect_tcp(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_backends/anyio.py", line 113, in connect_tcp
+    with map_exceptions(exc_map):
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.10/Frameworks/Python.framework/Versions/3.12/lib/python3.12/contextlib.py", line 158, in __exit__
+    self.gen.throw(value)
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ConnectError: [Errno 8] nodename nor servname provided, or not known
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/request/_httpxrequest.py", line 268, in do_request
+    res = await self._client.request(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_client.py", line 1530, in request
+    return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_client.py", line 1617, in send
+    response = await self._send_handling_auth(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_client.py", line 1645, in _send_handling_auth
+    response = await self._send_handling_redirects(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_client.py", line 1682, in _send_handling_redirects
+    response = await self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_client.py", line 1719, in _send_single_request
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 365, in handle_async_request
+    with map_httpcore_exceptions():
+         ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.10/Frameworks/Python.framework/Versions/3.12/lib/python3.12/contextlib.py", line 158, in __exit__
+    self.gen.throw(value)
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 83, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ConnectError: [Errno 8] nodename nor servname provided, or not known
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/ext/_updater.py", line 688, in _network_loop_retry
+    if not await action_cb():
+           ^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/ext/_updater.py", line 384, in polling_action_cb
+    raise exc
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/ext/_updater.py", line 373, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/ext/_extbot.py", line 558, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/_bot.py", line 525, in decorator
+    result = await func(self, *args, **kwargs)  # skipcq: PYL-E1102
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/_bot.py", line 3584, in get_updates
+    await self._post(
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/_bot.py", line 613, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/ext/_extbot.py", line 340, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/_bot.py", line 641, in _do_post
+    return await request.post(
+           ^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/request/_baserequest.py", line 200, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/request/_baserequest.py", line 340, in _request_wrapper
+    raise exc
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/request/_baserequest.py", line 330, in _request_wrapper
+    code, payload = await self.do_request(
+                    ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/request/_httpxrequest.py", line 292, in do_request
+    raise NetworkError(f"httpx.{err.__class__.__name__}: {err}") from err
+telegram.error.NetworkError: httpx.ConnectError: [Errno 8] nodename nor servname provided, or not known
+2025-05-08 21:25:24,942 - telegram.ext.Updater - ERROR - Error while getting Updates: httpx.ConnectError: [Errno 8] nodename nor servname provided, or not known
+2025-05-08 21:25:24,943 - telegram.ext.Application - ERROR - No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 66, in map_httpcore_exceptions
+    yield
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 366, in handle_async_request
+    resp = await self._pool.handle_async_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_async/connection_pool.py", line 256, in handle_async_request
+    raise exc from None
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_async/connection_pool.py", line 236, in handle_async_request
+    response = await connection.handle_async_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_async/connection.py", line 101, in handle_async_request
+    raise exc
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_async/connection.py", line 78, in handle_async_request
+    stream = await self._connect(request)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_async/connection.py", line 124, in _connect
+    stream = await self._network_backend.connect_tcp(**kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_backends/auto.py", line 31, in connect_tcp
+    return await self._backend.connect_tcp(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_backends/anyio.py", line 113, in connect_tcp
+    with map_exceptions(exc_map):
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.10/Frameworks/Python.framework/Versions/3.12/lib/python3.12/contextlib.py", line 158, in __exit__
+    self.gen.throw(value)
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ConnectError: [Errno 8] nodename nor servname provided, or not known
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/request/_httpxrequest.py", line 268, in do_request
+    res = await self._client.request(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_client.py", line 1530, in request
+    return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_client.py", line 1617, in send
+    response = await self._send_handling_auth(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_client.py", line 1645, in _send_handling_auth
+    response = await self._send_handling_redirects(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_client.py", line 1682, in _send_handling_redirects
+    response = await self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_client.py", line 1719, in _send_single_request
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 365, in handle_async_request
+    with map_httpcore_exceptions():
+         ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.10/Frameworks/Python.framework/Versions/3.12/lib/python3.12/contextlib.py", line 158, in __exit__
+    self.gen.throw(value)
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 83, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ConnectError: [Errno 8] nodename nor servname provided, or not known
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/ext/_updater.py", line 688, in _network_loop_retry
+    if not await action_cb():
+           ^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/ext/_updater.py", line 384, in polling_action_cb
+    raise exc
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/ext/_updater.py", line 373, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/ext/_extbot.py", line 558, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/_bot.py", line 525, in decorator
+    result = await func(self, *args, **kwargs)  # skipcq: PYL-E1102
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/_bot.py", line 3584, in get_updates
+    await self._post(
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/_bot.py", line 613, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/ext/_extbot.py", line 340, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/_bot.py", line 641, in _do_post
+    return await request.post(
+           ^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/request/_baserequest.py", line 200, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/request/_baserequest.py", line 340, in _request_wrapper
+    raise exc
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/request/_baserequest.py", line 330, in _request_wrapper
+    code, payload = await self.do_request(
+                    ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/request/_httpxrequest.py", line 292, in do_request
+    raise NetworkError(f"httpx.{err.__class__.__name__}: {err}") from err
+telegram.error.NetworkError: httpx.ConnectError: [Errno 8] nodename nor servname provided, or not known
+2025-05-08 21:25:28,345 - telegram.ext.Updater - ERROR - Error while getting Updates: httpx.ConnectError: [Errno 8] nodename nor servname provided, or not known
+2025-05-08 21:25:28,346 - telegram.ext.Application - ERROR - No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 66, in map_httpcore_exceptions
+    yield
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 366, in handle_async_request
+    resp = await self._pool.handle_async_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_async/connection_pool.py", line 256, in handle_async_request
+    raise exc from None
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_async/connection_pool.py", line 236, in handle_async_request
+    response = await connection.handle_async_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_async/connection.py", line 101, in handle_async_request
+    raise exc
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_async/connection.py", line 78, in handle_async_request
+    stream = await self._connect(request)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_async/connection.py", line 124, in _connect
+    stream = await self._network_backend.connect_tcp(**kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_backends/auto.py", line 31, in connect_tcp
+    return await self._backend.connect_tcp(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_backends/anyio.py", line 113, in connect_tcp
+    with map_exceptions(exc_map):
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.10/Frameworks/Python.framework/Versions/3.12/lib/python3.12/contextlib.py", line 158, in __exit__
+    self.gen.throw(value)
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ConnectError: [Errno 8] nodename nor servname provided, or not known
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/request/_httpxrequest.py", line 268, in do_request
+    res = await self._client.request(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_client.py", line 1530, in request
+    return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_client.py", line 1617, in send
+    response = await self._send_handling_auth(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_client.py", line 1645, in _send_handling_auth
+    response = await self._send_handling_redirects(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_client.py", line 1682, in _send_handling_redirects
+    response = await self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_client.py", line 1719, in _send_single_request
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 365, in handle_async_request
+    with map_httpcore_exceptions():
+         ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.10/Frameworks/Python.framework/Versions/3.12/lib/python3.12/contextlib.py", line 158, in __exit__
+    self.gen.throw(value)
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 83, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ConnectError: [Errno 8] nodename nor servname provided, or not known
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/ext/_updater.py", line 688, in _network_loop_retry
+    if not await action_cb():
+           ^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/ext/_updater.py", line 384, in polling_action_cb
+    raise exc
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/ext/_updater.py", line 373, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/ext/_extbot.py", line 558, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/_bot.py", line 525, in decorator
+    result = await func(self, *args, **kwargs)  # skipcq: PYL-E1102
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/_bot.py", line 3584, in get_updates
+    await self._post(
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/_bot.py", line 613, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/ext/_extbot.py", line 340, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/_bot.py", line 641, in _do_post
+    return await request.post(
+           ^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/request/_baserequest.py", line 200, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/request/_baserequest.py", line 340, in _request_wrapper
+    raise exc
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/request/_baserequest.py", line 330, in _request_wrapper
+    code, payload = await self.do_request(
+                    ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/request/_httpxrequest.py", line 292, in do_request
+    raise NetworkError(f"httpx.{err.__class__.__name__}: {err}") from err
+telegram.error.NetworkError: httpx.ConnectError: [Errno 8] nodename nor servname provided, or not known
+2025-05-08 21:25:33,412 - telegram.ext.Updater - ERROR - Error while getting Updates: httpx.ConnectError: [Errno 8] nodename nor servname provided, or not known
+2025-05-08 21:25:33,414 - telegram.ext.Application - ERROR - No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 66, in map_httpcore_exceptions
+    yield
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 366, in handle_async_request
+    resp = await self._pool.handle_async_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_async/connection_pool.py", line 256, in handle_async_request
+    raise exc from None
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_async/connection_pool.py", line 236, in handle_async_request
+    response = await connection.handle_async_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_async/connection.py", line 101, in handle_async_request
+    raise exc
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_async/connection.py", line 78, in handle_async_request
+    stream = await self._connect(request)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_async/connection.py", line 124, in _connect
+    stream = await self._network_backend.connect_tcp(**kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_backends/auto.py", line 31, in connect_tcp
+    return await self._backend.connect_tcp(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_backends/anyio.py", line 113, in connect_tcp
+    with map_exceptions(exc_map):
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.10/Frameworks/Python.framework/Versions/3.12/lib/python3.12/contextlib.py", line 158, in __exit__
+    self.gen.throw(value)
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ConnectError: [Errno 8] nodename nor servname provided, or not known
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/request/_httpxrequest.py", line 268, in do_request
+    res = await self._client.request(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_client.py", line 1530, in request
+    return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_client.py", line 1617, in send
+    response = await self._send_handling_auth(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_client.py", line 1645, in _send_handling_auth
+    response = await self._send_handling_redirects(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_client.py", line 1682, in _send_handling_redirects
+    response = await self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_client.py", line 1719, in _send_single_request
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 365, in handle_async_request
+    with map_httpcore_exceptions():
+         ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.10/Frameworks/Python.framework/Versions/3.12/lib/python3.12/contextlib.py", line 158, in __exit__
+    self.gen.throw(value)
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 83, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ConnectError: [Errno 8] nodename nor servname provided, or not known
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/ext/_updater.py", line 688, in _network_loop_retry
+    if not await action_cb():
+           ^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/ext/_updater.py", line 384, in polling_action_cb
+    raise exc
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/ext/_updater.py", line 373, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/ext/_extbot.py", line 558, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/_bot.py", line 525, in decorator
+    result = await func(self, *args, **kwargs)  # skipcq: PYL-E1102
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/_bot.py", line 3584, in get_updates
+    await self._post(
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/_bot.py", line 613, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/ext/_extbot.py", line 340, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/_bot.py", line 641, in _do_post
+    return await request.post(
+           ^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/request/_baserequest.py", line 200, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/request/_baserequest.py", line 340, in _request_wrapper
+    raise exc
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/request/_baserequest.py", line 330, in _request_wrapper
+    code, payload = await self.do_request(
+                    ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/request/_httpxrequest.py", line 292, in do_request
+    raise NetworkError(f"httpx.{err.__class__.__name__}: {err}") from err
+telegram.error.NetworkError: httpx.ConnectError: [Errno 8] nodename nor servname provided, or not known
+2025-05-08 21:25:41,013 - telegram.ext.Updater - ERROR - Error while getting Updates: httpx.ConnectError: [Errno 8] nodename nor servname provided, or not known
+2025-05-08 21:25:41,015 - telegram.ext.Application - ERROR - No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 66, in map_httpcore_exceptions
+    yield
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 366, in handle_async_request
+    resp = await self._pool.handle_async_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_async/connection_pool.py", line 256, in handle_async_request
+    raise exc from None
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_async/connection_pool.py", line 236, in handle_async_request
+    response = await connection.handle_async_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_async/connection.py", line 101, in handle_async_request
+    raise exc
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_async/connection.py", line 78, in handle_async_request
+    stream = await self._connect(request)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_async/connection.py", line 124, in _connect
+    stream = await self._network_backend.connect_tcp(**kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_backends/auto.py", line 31, in connect_tcp
+    return await self._backend.connect_tcp(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_backends/anyio.py", line 113, in connect_tcp
+    with map_exceptions(exc_map):
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.10/Frameworks/Python.framework/Versions/3.12/lib/python3.12/contextlib.py", line 158, in __exit__
+    self.gen.throw(value)
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ConnectError: [Errno 8] nodename nor servname provided, or not known
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/request/_httpxrequest.py", line 268, in do_request
+    res = await self._client.request(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_client.py", line 1530, in request
+    return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_client.py", line 1617, in send
+    response = await self._send_handling_auth(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_client.py", line 1645, in _send_handling_auth
+    response = await self._send_handling_redirects(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_client.py", line 1682, in _send_handling_redirects
+    response = await self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_client.py", line 1719, in _send_single_request
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 365, in handle_async_request
+    with map_httpcore_exceptions():
+         ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.10/Frameworks/Python.framework/Versions/3.12/lib/python3.12/contextlib.py", line 158, in __exit__
+    self.gen.throw(value)
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 83, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ConnectError: [Errno 8] nodename nor servname provided, or not known
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/ext/_updater.py", line 688, in _network_loop_retry
+    if not await action_cb():
+           ^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/ext/_updater.py", line 384, in polling_action_cb
+    raise exc
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/ext/_updater.py", line 373, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/ext/_extbot.py", line 558, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/_bot.py", line 525, in decorator
+    result = await func(self, *args, **kwargs)  # skipcq: PYL-E1102
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/_bot.py", line 3584, in get_updates
+    await self._post(
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/_bot.py", line 613, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/ext/_extbot.py", line 340, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/_bot.py", line 641, in _do_post
+    return await request.post(
+           ^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/request/_baserequest.py", line 200, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/request/_baserequest.py", line 340, in _request_wrapper
+    raise exc
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/request/_baserequest.py", line 330, in _request_wrapper
+    code, payload = await self.do_request(
+                    ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/request/_httpxrequest.py", line 292, in do_request
+    raise NetworkError(f"httpx.{err.__class__.__name__}: {err}") from err
+telegram.error.NetworkError: httpx.ConnectError: [Errno 8] nodename nor servname provided, or not known
+2025-05-08 21:25:52,412 - telegram.ext.Updater - ERROR - Error while getting Updates: httpx.ConnectError: [Errno 8] nodename nor servname provided, or not known
+2025-05-08 21:25:52,412 - telegram.ext.Application - ERROR - No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 66, in map_httpcore_exceptions
+    yield
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 366, in handle_async_request
+    resp = await self._pool.handle_async_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_async/connection_pool.py", line 256, in handle_async_request
+    raise exc from None
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_async/connection_pool.py", line 236, in handle_async_request
+    response = await connection.handle_async_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_async/connection.py", line 101, in handle_async_request
+    raise exc
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_async/connection.py", line 78, in handle_async_request
+    stream = await self._connect(request)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_async/connection.py", line 124, in _connect
+    stream = await self._network_backend.connect_tcp(**kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_backends/auto.py", line 31, in connect_tcp
+    return await self._backend.connect_tcp(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_backends/anyio.py", line 113, in connect_tcp
+    with map_exceptions(exc_map):
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.10/Frameworks/Python.framework/Versions/3.12/lib/python3.12/contextlib.py", line 158, in __exit__
+    self.gen.throw(value)
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ConnectError: [Errno 8] nodename nor servname provided, or not known
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/request/_httpxrequest.py", line 268, in do_request
+    res = await self._client.request(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_client.py", line 1530, in request
+    return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_client.py", line 1617, in send
+    response = await self._send_handling_auth(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_client.py", line 1645, in _send_handling_auth
+    response = await self._send_handling_redirects(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_client.py", line 1682, in _send_handling_redirects
+    response = await self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_client.py", line 1719, in _send_single_request
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 365, in handle_async_request
+    with map_httpcore_exceptions():
+         ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.10/Frameworks/Python.framework/Versions/3.12/lib/python3.12/contextlib.py", line 158, in __exit__
+    self.gen.throw(value)
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 83, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ConnectError: [Errno 8] nodename nor servname provided, or not known
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/ext/_updater.py", line 688, in _network_loop_retry
+    if not await action_cb():
+           ^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/ext/_updater.py", line 384, in polling_action_cb
+    raise exc
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/ext/_updater.py", line 373, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/ext/_extbot.py", line 558, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/_bot.py", line 525, in decorator
+    result = await func(self, *args, **kwargs)  # skipcq: PYL-E1102
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/_bot.py", line 3584, in get_updates
+    await self._post(
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/_bot.py", line 613, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/ext/_extbot.py", line 340, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/_bot.py", line 641, in _do_post
+    return await request.post(
+           ^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/request/_baserequest.py", line 200, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/request/_baserequest.py", line 340, in _request_wrapper
+    raise exc
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/request/_baserequest.py", line 330, in _request_wrapper
+    code, payload = await self.do_request(
+                    ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/request/_httpxrequest.py", line 292, in do_request
+    raise NetworkError(f"httpx.{err.__class__.__name__}: {err}") from err
+telegram.error.NetworkError: httpx.ConnectError: [Errno 8] nodename nor servname provided, or not known
+2025-05-08 21:26:09,527 - telegram.ext.Updater - ERROR - Error while getting Updates: httpx.ConnectError: [Errno 8] nodename nor servname provided, or not known
+2025-05-08 21:26:09,528 - telegram.ext.Application - ERROR - No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 66, in map_httpcore_exceptions
+    yield
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 366, in handle_async_request
+    resp = await self._pool.handle_async_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_async/connection_pool.py", line 256, in handle_async_request
+    raise exc from None
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_async/connection_pool.py", line 236, in handle_async_request
+    response = await connection.handle_async_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_async/connection.py", line 101, in handle_async_request
+    raise exc
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_async/connection.py", line 78, in handle_async_request
+    stream = await self._connect(request)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_async/connection.py", line 124, in _connect
+    stream = await self._network_backend.connect_tcp(**kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_backends/auto.py", line 31, in connect_tcp
+    return await self._backend.connect_tcp(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_backends/anyio.py", line 113, in connect_tcp
+    with map_exceptions(exc_map):
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.10/Frameworks/Python.framework/Versions/3.12/lib/python3.12/contextlib.py", line 158, in __exit__
+    self.gen.throw(value)
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ConnectError: [Errno 8] nodename nor servname provided, or not known
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/request/_httpxrequest.py", line 268, in do_request
+    res = await self._client.request(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_client.py", line 1530, in request
+    return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_client.py", line 1617, in send
+    response = await self._send_handling_auth(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_client.py", line 1645, in _send_handling_auth
+    response = await self._send_handling_redirects(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_client.py", line 1682, in _send_handling_redirects
+    response = await self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_client.py", line 1719, in _send_single_request
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 365, in handle_async_request
+    with map_httpcore_exceptions():
+         ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.10/Frameworks/Python.framework/Versions/3.12/lib/python3.12/contextlib.py", line 158, in __exit__
+    self.gen.throw(value)
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 83, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ConnectError: [Errno 8] nodename nor servname provided, or not known
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/ext/_updater.py", line 688, in _network_loop_retry
+    if not await action_cb():
+           ^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/ext/_updater.py", line 384, in polling_action_cb
+    raise exc
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/ext/_updater.py", line 373, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/ext/_extbot.py", line 558, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/_bot.py", line 525, in decorator
+    result = await func(self, *args, **kwargs)  # skipcq: PYL-E1102
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/_bot.py", line 3584, in get_updates
+    await self._post(
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/_bot.py", line 613, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/ext/_extbot.py", line 340, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/_bot.py", line 641, in _do_post
+    return await request.post(
+           ^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/request/_baserequest.py", line 200, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/request/_baserequest.py", line 340, in _request_wrapper
+    raise exc
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/request/_baserequest.py", line 330, in _request_wrapper
+    code, payload = await self.do_request(
+                    ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/request/_httpxrequest.py", line 292, in do_request
+    raise NetworkError(f"httpx.{err.__class__.__name__}: {err}") from err
+telegram.error.NetworkError: httpx.ConnectError: [Errno 8] nodename nor servname provided, or not known
+2025-05-08 21:26:35,171 - telegram.ext.Updater - ERROR - Error while getting Updates: httpx.ConnectError: [Errno 8] nodename nor servname provided, or not known
+2025-05-08 21:26:35,175 - telegram.ext.Application - ERROR - No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 66, in map_httpcore_exceptions
+    yield
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 366, in handle_async_request
+    resp = await self._pool.handle_async_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_async/connection_pool.py", line 256, in handle_async_request
+    raise exc from None
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_async/connection_pool.py", line 236, in handle_async_request
+    response = await connection.handle_async_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_async/connection.py", line 101, in handle_async_request
+    raise exc
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_async/connection.py", line 78, in handle_async_request
+    stream = await self._connect(request)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_async/connection.py", line 124, in _connect
+    stream = await self._network_backend.connect_tcp(**kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_backends/auto.py", line 31, in connect_tcp
+    return await self._backend.connect_tcp(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_backends/anyio.py", line 113, in connect_tcp
+    with map_exceptions(exc_map):
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.10/Frameworks/Python.framework/Versions/3.12/lib/python3.12/contextlib.py", line 158, in __exit__
+    self.gen.throw(value)
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ConnectError: [Errno 8] nodename nor servname provided, or not known
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/request/_httpxrequest.py", line 268, in do_request
+    res = await self._client.request(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_client.py", line 1530, in request
+    return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_client.py", line 1617, in send
+    response = await self._send_handling_auth(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_client.py", line 1645, in _send_handling_auth
+    response = await self._send_handling_redirects(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_client.py", line 1682, in _send_handling_redirects
+    response = await self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_client.py", line 1719, in _send_single_request
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 365, in handle_async_request
+    with map_httpcore_exceptions():
+         ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.10/Frameworks/Python.framework/Versions/3.12/lib/python3.12/contextlib.py", line 158, in __exit__
+    self.gen.throw(value)
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 83, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ConnectError: [Errno 8] nodename nor servname provided, or not known
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/ext/_updater.py", line 688, in _network_loop_retry
+    if not await action_cb():
+           ^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/ext/_updater.py", line 384, in polling_action_cb
+    raise exc
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/ext/_updater.py", line 373, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/ext/_extbot.py", line 558, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/_bot.py", line 525, in decorator
+    result = await func(self, *args, **kwargs)  # skipcq: PYL-E1102
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/_bot.py", line 3584, in get_updates
+    await self._post(
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/_bot.py", line 613, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/ext/_extbot.py", line 340, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/_bot.py", line 641, in _do_post
+    return await request.post(
+           ^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/request/_baserequest.py", line 200, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/request/_baserequest.py", line 340, in _request_wrapper
+    raise exc
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/request/_baserequest.py", line 330, in _request_wrapper
+    code, payload = await self.do_request(
+                    ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/request/_httpxrequest.py", line 292, in do_request
+    raise NetworkError(f"httpx.{err.__class__.__name__}: {err}") from err
+telegram.error.NetworkError: httpx.ConnectError: [Errno 8] nodename nor servname provided, or not known
+2025-05-08 21:27:05,199 - telegram.ext.Updater - ERROR - Error while getting Updates: httpx.ConnectError: [Errno 8] nodename nor servname provided, or not known
+2025-05-08 21:27:05,200 - telegram.ext.Application - ERROR - No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 66, in map_httpcore_exceptions
+    yield
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 366, in handle_async_request
+    resp = await self._pool.handle_async_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_async/connection_pool.py", line 256, in handle_async_request
+    raise exc from None
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_async/connection_pool.py", line 236, in handle_async_request
+    response = await connection.handle_async_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_async/connection.py", line 101, in handle_async_request
+    raise exc
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_async/connection.py", line 78, in handle_async_request
+    stream = await self._connect(request)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_async/connection.py", line 124, in _connect
+    stream = await self._network_backend.connect_tcp(**kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_backends/auto.py", line 31, in connect_tcp
+    return await self._backend.connect_tcp(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_backends/anyio.py", line 113, in connect_tcp
+    with map_exceptions(exc_map):
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.10/Frameworks/Python.framework/Versions/3.12/lib/python3.12/contextlib.py", line 158, in __exit__
+    self.gen.throw(value)
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ConnectError: [Errno 8] nodename nor servname provided, or not known
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/request/_httpxrequest.py", line 268, in do_request
+    res = await self._client.request(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_client.py", line 1530, in request
+    return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_client.py", line 1617, in send
+    response = await self._send_handling_auth(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_client.py", line 1645, in _send_handling_auth
+    response = await self._send_handling_redirects(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_client.py", line 1682, in _send_handling_redirects
+    response = await self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_client.py", line 1719, in _send_single_request
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 365, in handle_async_request
+    with map_httpcore_exceptions():
+         ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.10/Frameworks/Python.framework/Versions/3.12/lib/python3.12/contextlib.py", line 158, in __exit__
+    self.gen.throw(value)
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 83, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ConnectError: [Errno 8] nodename nor servname provided, or not known
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/ext/_updater.py", line 688, in _network_loop_retry
+    if not await action_cb():
+           ^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/ext/_updater.py", line 384, in polling_action_cb
+    raise exc
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/ext/_updater.py", line 373, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/ext/_extbot.py", line 558, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/_bot.py", line 525, in decorator
+    result = await func(self, *args, **kwargs)  # skipcq: PYL-E1102
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/_bot.py", line 3584, in get_updates
+    await self._post(
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/_bot.py", line 613, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/ext/_extbot.py", line 340, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/_bot.py", line 641, in _do_post
+    return await request.post(
+           ^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/request/_baserequest.py", line 200, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/request/_baserequest.py", line 340, in _request_wrapper
+    raise exc
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/request/_baserequest.py", line 330, in _request_wrapper
+    code, payload = await self.do_request(
+                    ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/request/_httpxrequest.py", line 292, in do_request
+    raise NetworkError(f"httpx.{err.__class__.__name__}: {err}") from err
+telegram.error.NetworkError: httpx.ConnectError: [Errno 8] nodename nor servname provided, or not known
+2025-05-08 21:27:35,214 - telegram.ext.Updater - ERROR - Error while getting Updates: httpx.ConnectError: [Errno 8] nodename nor servname provided, or not known
+2025-05-08 21:27:35,216 - telegram.ext.Application - ERROR - No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 66, in map_httpcore_exceptions
+    yield
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 366, in handle_async_request
+    resp = await self._pool.handle_async_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_async/connection_pool.py", line 256, in handle_async_request
+    raise exc from None
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_async/connection_pool.py", line 236, in handle_async_request
+    response = await connection.handle_async_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_async/connection.py", line 101, in handle_async_request
+    raise exc
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_async/connection.py", line 78, in handle_async_request
+    stream = await self._connect(request)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_async/connection.py", line 124, in _connect
+    stream = await self._network_backend.connect_tcp(**kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_backends/auto.py", line 31, in connect_tcp
+    return await self._backend.connect_tcp(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_backends/anyio.py", line 113, in connect_tcp
+    with map_exceptions(exc_map):
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.10/Frameworks/Python.framework/Versions/3.12/lib/python3.12/contextlib.py", line 158, in __exit__
+    self.gen.throw(value)
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpcore/_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ConnectError: [Errno 8] nodename nor servname provided, or not known
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/request/_httpxrequest.py", line 268, in do_request
+    res = await self._client.request(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_client.py", line 1530, in request
+    return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_client.py", line 1617, in send
+    response = await self._send_handling_auth(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_client.py", line 1645, in _send_handling_auth
+    response = await self._send_handling_redirects(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_client.py", line 1682, in _send_handling_redirects
+    response = await self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_client.py", line 1719, in _send_single_request
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 365, in handle_async_request
+    with map_httpcore_exceptions():
+         ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.10/Frameworks/Python.framework/Versions/3.12/lib/python3.12/contextlib.py", line 158, in __exit__
+    self.gen.throw(value)
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 83, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ConnectError: [Errno 8] nodename nor servname provided, or not known
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/ext/_updater.py", line 688, in _network_loop_retry
+    if not await action_cb():
+           ^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/ext/_updater.py", line 384, in polling_action_cb
+    raise exc
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/ext/_updater.py", line 373, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/ext/_extbot.py", line 558, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/_bot.py", line 525, in decorator
+    result = await func(self, *args, **kwargs)  # skipcq: PYL-E1102
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/_bot.py", line 3584, in get_updates
+    await self._post(
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/_bot.py", line 613, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/ext/_extbot.py", line 340, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/_bot.py", line 641, in _do_post
+    return await request.post(
+           ^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/request/_baserequest.py", line 200, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/request/_baserequest.py", line 340, in _request_wrapper
+    raise exc
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/request/_baserequest.py", line 330, in _request_wrapper
+    code, payload = await self.do_request(
+                    ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kshamanskiy/PycharmProjects/telegram_bath_bot/venv/lib/python3.12/site-packages/telegram/request/_httpxrequest.py", line 292, in do_request
+    raise NetworkError(f"httpx.{err.__class__.__name__}: {err}") from err
+telegram.error.NetworkError: httpx.ConnectError: [Errno 8] nodename nor servname provided, or not known
+2025-05-08 21:30:23,092 - __main__ - ERROR - Ошибка при отправке уведомления администратору 165695939: Forbidden: bot can't initiate conversation with a user
+2025-05-08 21:39:27,504 - __main__ - ERROR - [handle_cash_payment] Ошибка при отправке админу 165695939: Forbidden: bot can't initiate conversation with a user
