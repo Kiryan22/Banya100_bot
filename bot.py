@@ -2006,7 +2006,7 @@ def main():
                 INSTAGRAM: [MessageHandler(filters.TEXT & ~filters.COMMAND, handle_instagram)],
                 SKILLS: [MessageHandler(filters.TEXT & ~filters.COMMAND, handle_skills)]
             },
-            fallbacks=[]
+            fallbacks=[],
             per_message=True
         )
         application.add_handler(profile_handler)
