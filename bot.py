@@ -1993,13 +1993,12 @@ def main():
         application = Application.builder().token(BOT_TOKEN).build()
 
         # Добавляем обработчик для профиля (должен быть первым!)
+        
         profile_handler = ConversationHandler(
             entry_points=[
                 CommandHandler("profile", profile),
-                CallbackQueryHandler(start_profile_callback, pattern="^start_profile$")
             ],
             states={
-                PROFILE: [CallbackQueryHandler(handle_profile_update, pattern="^update_profile_")],
                 FULL_NAME: [MessageHandler(filters.TEXT & ~filters.COMMAND, handle_full_name)],
                 BIRTH_DATE: [MessageHandler(filters.TEXT & ~filters.COMMAND, handle_birth_date)],
                 OCCUPATION: [MessageHandler(filters.TEXT & ~filters.COMMAND, handle_occupation)],
@@ -2011,6 +2010,8 @@ def main():
         application.add_handler(profile_handler)
 
         # Регистрируем обработчики команд
+        application.add_handler(CallbackQueryHandler(start_profile_callback, pattern="^start_profile$"))
+        application.add_handler(CallbackQueryHandler(handle_profile_update, pattern="^update_profile_"))
         application.add_handler(CommandHandler("start", start))
         application.add_handler(CommandHandler("register", register_bath))
         application.add_handler(CommandHandler("create_bath", create_bath_event))
