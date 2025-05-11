@@ -22,10 +22,6 @@ RDS_CONFIG = {
     'ssl_ca': os.getenv('RDS_SSL_CA', '/etc/ssl/certs/global-bundle.pem'),
 }
 
-# Ensure warnings are raised as errors
-import warnings
-warnings.filterwarnings('error')
-
 # Время бани
 BATH_TIME = "8:00 - 11:30"
 
