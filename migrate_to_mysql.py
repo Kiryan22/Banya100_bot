@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 def get_sqlite_connection():
     """Получение соединения с SQLite базой данных."""
     try:
-        return sqlite3.connect('bath_bot.db')
+        return sqlite3.connect('bath_history.db')
     except sqlite3.Error as e:
         logger.error(f"Ошибка подключения к SQLite: {e}")
         raise
@@ -78,17 +78,17 @@ def main():
         sqlite_conn = get_sqlite_connection()
         mysql_conn = get_mysql_connection()
 
-        # Список таблиц для миграции
+        # Список таблиц для миграции (актуальный)
         tables = [
+            'active_users',
             'bath_participants',
             'bath_history',
-            'pinned_messages',
-            'active_users',
-            'tracked_messages',
-            'subscribers',
             'bath_invites',
+            'pending_payments',
+            'pinned_messages',
+            'subscribers',
+            'tracked_messages',
             'user_profiles',
-            'pending_payments'
         ]
 
         # Миграция каждой таблицы

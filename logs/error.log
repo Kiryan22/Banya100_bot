@@ -1392,3 +1392,4 @@ Traceback (most recent call last):
 telegram.error.NetworkError: httpx.ConnectError: [Errno 8] nodename nor servname provided, or not known
 2025-05-08 21:30:23,092 - __main__ - ERROR - Ошибка при отправке уведомления администратору 165695939: Forbidden: bot can't initiate conversation with a user
 2025-05-08 21:39:27,504 - __main__ - ERROR - [handle_cash_payment] Ошибка при отправке админу 165695939: Forbidden: bot can't initiate conversation with a user
+2025-05-11 22:38:13,033 - __main__ - ERROR - Ошибка при запуске бота: 'Updater' object has no attribute '_Updater__polling_cleanup_cb' and no __dict__ for setting new attributes

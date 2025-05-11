@@ -19,7 +19,7 @@ RDS_CONFIG = {
     'user': os.getenv('RDS_USER'),
     'password': os.getenv('RDS_PASSWORD'),
     'database': os.getenv('RDS_DATABASE'),
-    'ssl_disabled': True,  # Явно отключаем SSL
+    'ssl_ca': os.getenv('RDS_SSL_CA'),
 }
 
 # Ensure warnings are raised as errors

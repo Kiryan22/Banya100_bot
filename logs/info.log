@@ -7836,3 +7836,5 @@ https://revolut.me/vitali169l
 2025-05-08 22:41:54,233 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7869036880:AAHqgkHyFSyCUUXImiLyzlRHfTaXpk1GB7Q/getUpdates "HTTP/1.1 200 OK"
 2025-05-08 22:42:04,305 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7869036880:AAHqgkHyFSyCUUXImiLyzlRHfTaXpk1GB7Q/getUpdates "HTTP/1.1 200 OK"
 2025-05-08 22:42:14,460 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7869036880:AAHqgkHyFSyCUUXImiLyzlRHfTaXpk1GB7Q/getUpdates "HTTP/1.1 200 OK"
+2025-05-11 22:38:12,986 - root - INFO - Database initialized successfully
+2025-05-11 22:38:13,033 - __main__ - ERROR - Ошибка при запуске бота: 'Updater' object has no attribute '_Updater__polling_cleanup_cb' and no __dict__ for setting new attributes
