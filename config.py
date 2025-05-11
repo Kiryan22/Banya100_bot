@@ -19,7 +19,7 @@ RDS_CONFIG = {
     'user': os.getenv('RDS_USER'),
     'password': os.getenv('RDS_PASSWORD'),
     'database': os.getenv('RDS_DATABASE'),
-    'ssl_ca': os.getenv('RDS_SSL_CA'),
+    'ssl_ca': os.getenv('RDS_SSL_CA', '/etc/ssl/certs/global-bundle.pem'),
 }
 
 # Ensure warnings are raised as errors
