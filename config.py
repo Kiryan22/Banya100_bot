@@ -1,23 +1,30 @@
 import os
 from dotenv import load_dotenv
 
-# Загрузка переменных из .env файла
+# Load environment variables
 load_dotenv()
 
-# Токен бота
-BOT_TOKEN = os.getenv("BOT_TOKEN")
+# Bot configuration
+BOT_TOKEN = os.getenv('BOT_TOKEN')
+BATH_CHAT_ID = os.getenv('BATH_CHAT_ID')
+ADMIN_IDS = list(map(int, os.getenv('ADMIN_IDS', '').split(','))) if os.getenv('ADMIN_IDS') else []
+MAX_BATH_PARTICIPANTS = int(os.getenv('MAX_BATH_PARTICIPANTS', '6'))
+BATH_COST = int(os.getenv('BATH_COST', '1000'))
+WEBHOOK_URL = os.getenv('WEBHOOK_URL')
 
-# ID чата бани
-BATH_CHAT_ID = os.getenv("BATH_CHAT_ID")
+# AWS RDS Configuration
+RDS_CONFIG = {
+    'host': os.getenv('RDS_HOST'),
+    'port': int(os.getenv('RDS_PORT', '3306')),
+    'user': os.getenv('RDS_USER'),
+    'password': os.getenv('RDS_PASSWORD'),
+    'database': os.getenv('RDS_DATABASE'),
+    'ssl_disabled': True,  # Явно отключаем SSL
+}
 
-# ID администраторов
-ADMIN_IDS = list(map(int, os.getenv("ADMIN_IDS", "").split(",")))
-
-# Максимальное количество участников бани
-MAX_BATH_PARTICIPANTS = 2
-
-# Стоимость бани
-BATH_COST = "150 zl"
+# Ensure warnings are raised as errors
+import warnings
+warnings.filterwarnings('error')
 
 # Время бани
 BATH_TIME = "8:00 - 11:30"
@@ -29,5 +36,12 @@ REVOLUT_PAYMENT_LINK = "https://revolut.me/vitali169l"
 # Локация бани
 BATH_LOCATION = "https://maps.app.goo.gl/nPevCHWLFA8dVjeV8?g_st=ic"
 
-# Webhook URL (должен быть HTTPS)
-WEBHOOK_URL = os.getenv("WEBHOOK_URL", "")
+# MySQL конфигурация
+MYSQL_CONFIG = {
+    'host': os.getenv('MYSQL_HOST', 'localhost'),
+    'port': int(os.getenv('MYSQL_PORT', '3306')),
+    'user': os.getenv('MYSQL_USER', 'root'),
+    'password': os.getenv('MYSQL_PASSWORD', ''),
+    'database': os.getenv('MYSQL_DATABASE', 'bath_bot'),
+    'raise_on_warnings': True
+}
