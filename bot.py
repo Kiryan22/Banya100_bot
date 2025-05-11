@@ -2007,6 +2007,7 @@ def main():
                 SKILLS: [MessageHandler(filters.TEXT & ~filters.COMMAND, handle_skills)]
             },
             fallbacks=[]
+            per_message=True
         )
         application.add_handler(profile_handler)
 
