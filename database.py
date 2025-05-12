@@ -582,21 +582,40 @@ class Database:
         conn = self.get_connection()
         try:
             cursor = conn.cursor()
-            cursor.execute('SELECT * FROM user_profiles WHERE user_id = %s', (user_id,))
+            cursor.execute('''
+                SELECT 
+                    id,
+                    user_id,
+                    username,
+                    full_name,
+                    birth_date,
+                    occupation,
+                    instagram,
+                    skills,
+                    total_visits,
+                    first_visit_date,
+                    last_visit_date,
+                    created_at,
+                    updated_at
+                FROM user_profiles 
+                WHERE user_id = %s
+            ''', (user_id,))
             row = cursor.fetchone()
             if row:
                 return {
-                    'user_id': row[0],
-                    'username': row[1],
-                    'full_name': row[2],
-                    'birth_date': row[3],
-                    'occupation': row[4],
-                    'instagram': row[5],
-                    'skills': row[6],
-                    'total_visits': row[7],
-                    'first_visit_date': row[8],
-                    'last_visit_date': row[9],
-                    'updated_at': row[10]
+                    'id': row[0],
+                    'user_id': row[1],
+                    'username': row[2],
+                    'full_name': row[3],
+                    'birth_date': row[4],
+                    'occupation': row[5],
+                    'instagram': row[6],
+                    'skills': row[7],
+                    'total_visits': row[8],
+                    'first_visit_date': row[9],
+                    'last_visit_date': row[10],
+                    'created_at': row[11],
+                    'updated_at': row[12]
                 }
             return None
         finally:
@@ -608,7 +627,14 @@ class Database:
         try:
             cursor = conn.cursor()
             cursor.execute('''
-                SELECT p.*, up.* 
+                SELECT 
+                    p.user_id,
+                    p.username,
+                    up.full_name,
+                    up.birth_date,
+                    up.occupation,
+                    up.instagram,
+                    up.skills
                 FROM bath_participants p
                 LEFT JOIN user_profiles up ON p.user_id = up.user_id
                 WHERE p.date_str = %s
@@ -617,11 +643,11 @@ class Database:
             return [{
                 'user_id': row[0],
                 'username': row[1],
-                'full_name': row[7],
-                'birth_date': row[8],
-                'occupation': row[9],
-                'instagram': row[10],
-                'skills': row[11]
+                'full_name': row[2],
+                'birth_date': row[3],
+                'occupation': row[4],
+                'instagram': row[5],
+                'skills': row[6]
             } for row in rows]
         finally:
             conn.close()
@@ -632,9 +658,20 @@ class Database:
         try:
             cursor = conn.cursor()
             cursor.execute('''
-                SELECT user_id, username, full_name, birth_date, occupation, instagram, skills, 
-                       total_visits, first_visit_date, last_visit_date
-                FROM user_profiles
+                SELECT 
+                    up.user_id,
+                    up.username,
+                    up.full_name,
+                    up.birth_date,
+                    up.occupation,
+                    up.instagram,
+                    up.skills,
+                    up.total_visits,
+                    up.first_visit_date,
+                    up.last_visit_date,
+                    bp.date_str
+                FROM user_profiles up
+                LEFT JOIN bath_participants bp ON up.user_id = bp.user_id
             ''')
             rows = cursor.fetchall()
             profiles = []
@@ -649,18 +686,23 @@ class Database:
                     'skills': row[6],
                     'total_visits': row[7],
                     'first_visit_date': row[8],
-                    'last_visit_date': row[9]
+                    'last_visit_date': row[9],
+                    'date_str': row[10] if row[10] else None
                 })
             return profiles
         finally:
             conn.close()
 
     def add_pending_payment(self, user_id, username, date_str, payment_type='online'):
+        """Добавляет запись об ожидающей оплате."""
         conn = self.get_connection()
         try:
             cursor = conn.cursor()
+            # Получаем стоимость бани из конфига
+            from config import BATH_COST
             cursor.execute('''
-                INSERT INTO pending_payments (user_id, username, date_str, payment_type, amount, created_at, last_notified)
+                INSERT INTO pending_payments 
+                (user_id, username, date_str, payment_type, amount, created_at, last_notified)
                 VALUES (%s, %s, %s, %s, %s, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
                 ON DUPLICATE KEY UPDATE
                     username=VALUES(username),
@@ -668,7 +710,7 @@ class Database:
                     amount=VALUES(amount),
                     created_at=CURRENT_TIMESTAMP,
                     last_notified=CURRENT_TIMESTAMP
-            ''', (user_id, username, date_str, payment_type, 1000))  # Используем значение из конфига
+            ''', (user_id, username, date_str, payment_type, BATH_COST))
             conn.commit()
         finally:
             conn.close()
