@@ -5,6 +5,7 @@ import sqlite3
 import logging
 import mysql.connector
 from config import RDS_CONFIG
+from typing import List, Dict
 
 logger = logging.getLogger(__name__)
 
@@ -797,5 +798,23 @@ class Database:
                 (user_id, date_str)
             )
             conn.commit()
+        finally:
+            conn.close()
+
+    def get_pending_payments(self, user_id: int) -> List[Dict]:
+        """Получает список ожидающих подтверждения оплат для пользователя."""
+        try:
+            conn = self.get_connection()
+            cursor = conn.cursor()
+            cursor.execute('''
+                SELECT date_str, payment_type
+                FROM pending_payments
+                WHERE user_id = ?
+            ''', (user_id,))
+            payments = cursor.fetchall()
+            return [{'date_str': p[0], 'payment_type': p[1]} for p in payments]
+        except Exception as e:
+            logger.error(f"Ошибка при получении ожидающих оплат: {e}")
+            return []
         finally:
             conn.close()

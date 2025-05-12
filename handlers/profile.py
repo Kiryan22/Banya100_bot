@@ -128,6 +128,8 @@ async def handle_skills(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.effective_user
     context.user_data['skills'] = update.message.text
     message = update.message or (update.callback_query and update.callback_query.message)
+    
+    # Сохраняем профиль
     success = db.save_user_profile(
         user_id=user.id,
         username=user.username or user.first_name,
@@ -137,45 +139,44 @@ async def handle_skills(update: Update, context: ContextTypes.DEFAULT_TYPE):
         instagram=context.user_data['instagram'],
         skills=context.user_data['skills']
     )
+    
     if success:
         if message:
             await message.reply_text(
                 "Спасибо! Ваш профиль успешно сохранен.\n"
                 "Вы можете обновить информацию в любой момент, используя команду /profile"
             )
-        user_pending = None
-        for date_str in [p['date_str'] for p in db.get_all_user_profiles() if p['user_id'] == user.id]:
-            pending = db.get_pending_payment(user.id, date_str)
-            if pending:
-                user_pending = pending
-                break
-        if user_pending:
-            for admin_id in ADMIN_IDS:
-                try:
-                    keyboard = [
-                        [
-                            InlineKeyboardButton("Оплатил онлайн", callback_data=f"admin_confirm_{user.id}_{user_pending['date_str']}_online"),
-                            InlineKeyboardButton("Отклонить", callback_data=f"admin_decline_{user.id}_{user_pending['date_str']}_online")
+            
+        # Проверяем, есть ли ожидающие подтверждения оплаты для этого пользователя
+        pending_payments = db.get_pending_payments(user.id)
+        if pending_payments:
+            for payment in pending_payments:
+                for admin_id in ADMIN_IDS:
+                    try:
+                        keyboard = [
+                            [
+                                InlineKeyboardButton("Оплатил онлайн", callback_data=f"admin_confirm_{user.id}_{payment['date_str']}_online"),
+                                InlineKeyboardButton("Отклонить", callback_data=f"admin_decline_{user.id}_{payment['date_str']}_online")
+                            ]
                         ]
-                    ]
-                    reply_markup = InlineKeyboardMarkup(keyboard)
-                    profile_info = (
-                        f"Пользователь @{user.username or user.first_name} заполнил профиль:\n\n"
-                        f"👤 Имя: {context.user_data['full_name']}\n"
-                        f"🎂 Дата рождения: {context.user_data['birth_date']}\n"
-                        f"💼 Род деятельности: {context.user_data['occupation']}\n"
-                        f"📸 Instagram: {context.user_data['instagram']}\n"
-                        f"🎯 Сфера бизнеса, область работы, тип услуг которые предоставляет: {context.user_data['skills']}\n\n"
-                        f"Теперь можно подтвердить оплату бани на {user_pending['date_str']}."
-                    )
-                    await context.bot.send_message(
-                        chat_id=admin_id,
-                        text=profile_info,
-                        reply_markup=reply_markup
-                    )
-                    logger.info(f"Отправлено уведомление администратору {admin_id} о заполненном профиле пользователя {user.id}")
-                except Exception as e:
-                    logger.error(f"Ошибка при отправке уведомления администратору {admin_id}: {e}")
+                        reply_markup = InlineKeyboardMarkup(keyboard)
+                        profile_info = (
+                            f"Пользователь @{user.username or user.first_name} заполнил профиль:\n\n"
+                            f"👤 Имя: {context.user_data['full_name']}\n"
+                            f"🎂 Дата рождения: {context.user_data['birth_date']}\n"
+                            f"💼 Род деятельности: {context.user_data['occupation']}\n"
+                            f"📸 Instagram: {context.user_data['instagram']}\n"
+                            f"🎯 Сфера бизнеса, область работы, тип услуг которые предоставляет: {context.user_data['skills']}\n\n"
+                            f"Теперь можно подтвердить оплату бани на {payment['date_str']}."
+                        )
+                        await context.bot.send_message(
+                            chat_id=admin_id,
+                            text=profile_info,
+                            reply_markup=reply_markup
+                        )
+                        logger.info(f"Отправлено уведомление администратору {admin_id} о заполненном профиле пользователя {user.id}")
+                    except Exception as e:
+                        logger.error(f"Ошибка при отправке уведомления администратору {admin_id}: {e}")
     else:
         if message:
             await message.reply_text(
