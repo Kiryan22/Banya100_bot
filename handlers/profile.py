@@ -245,3 +245,10 @@ async def export_profiles(update: Update, context: ContextTypes.DEFAULT_TYPE):
     except Exception as e:
         logger.error(f"Ошибка в функции export_profiles: {e}")
         await update.message.reply_text("Произошла ошибка при экспорте профилей.")
+
+async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+    """Отменяет и завершает разговор."""
+    message = update.message or (update.callback_query and update.callback_query.message)
+    if message:
+        await message.reply_text('Операция отменена.')
+    return ConversationHandler.END
