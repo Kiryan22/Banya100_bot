@@ -314,4 +314,33 @@ async def update_commands(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.set_my_commands(commands)
     await update.message.reply_text("Меню команд обновлено.")
 
+async def mention_all(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    try:
+        admin_id = update.effective_user.id
+        if admin_id not in ADMIN_IDS:
+            await update.message.reply_text("У вас нет прав для выполнения этой команды.")
+            return
+
+        # Получаем всех активных пользователей
+        users = db.get_all_active_users()
+        if not users:
+            await update.message.reply_text("Нет активных пользователей для упоминания.")
+            return
+
+        mentions = []
+        for user in users:
+            username = user.get('username')
+            if username:
+                mentions.append(f"@{username}")
+            else:
+                mentions.append(user.get('full_name', ''))
+        text = " ".join(mentions)
+        if not text.strip():
+            await update.message.reply_text("Нет пользователей для упоминания.")
+            return
+        await update.message.reply_text(text)
+    except Exception as e:
+        logger.error(f"[mention_all] Unexpected error: {e}", exc_info=True)
+        await update.message.reply_text("Произошла ошибка при упоминании пользователей.")
+
 # ... (оставить остальные функции, которые были в bot.py, связанные с админскими действиями) ...
