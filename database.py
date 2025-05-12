@@ -292,6 +292,8 @@ class Database:
                         user_id BIGINT NOT NULL,
                         username VARCHAR(255),
                         date_str VARCHAR(10) NOT NULL,
+                        paid BOOLEAN DEFAULT FALSE,
+                        cash BOOLEAN DEFAULT FALSE,
                         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                         UNIQUE KEY unique_participant (user_id, date_str)
                     )
@@ -304,6 +306,8 @@ class Database:
                         user_id BIGINT NOT NULL,
                         username VARCHAR(255),
                         date_str VARCHAR(10) NOT NULL,
+                        paid BOOLEAN DEFAULT FALSE,
+                        visited BOOLEAN DEFAULT FALSE,
                         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                     )
                 """)
@@ -391,11 +395,15 @@ class Database:
                     CREATE TABLE IF NOT EXISTS pending_payments (
                         id BIGINT AUTO_INCREMENT PRIMARY KEY,
                         user_id BIGINT NOT NULL,
+                        username VARCHAR(255),
+                        date_str VARCHAR(10) NOT NULL,
+                        payment_type VARCHAR(20) DEFAULT 'online',
                         amount DECIMAL(10,2) NOT NULL,
                         status VARCHAR(20) DEFAULT 'pending',
+                        last_notified TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-                        UNIQUE KEY unique_pending_payment (user_id, created_at)
+                        UNIQUE KEY unique_pending_payment (user_id, date_str)
                     )
                 """)
                 
