@@ -1205,7 +1205,7 @@ async def handle_cash_payment(update: Update, context: ContextTypes.DEFAULT_TYPE
 if __name__ == "__main__":
     from telegram.ext import Application, CommandHandler, CallbackQueryHandler, MessageHandler, filters, ConversationHandler
     
-    application = Application.builder().token(TOKEN).build()
+    application = Application.builder().token(BOT_TOKEN).build()
 
     # Пример добавления хендлеров (добавьте свои)
     application.add_handler(CommandHandler("start", start))
