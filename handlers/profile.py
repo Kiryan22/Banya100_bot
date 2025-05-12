@@ -355,3 +355,21 @@ async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     if message:
         await message.reply_text('Операция отменена.')
     return ConversationHandler.END
+
+async def history(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    user = update.effective_user
+    try:
+        history = db.get_user_bath_history(user.id)
+        if not history:
+            await update.message.reply_text("У вас пока нет истории посещения бани.")
+            return
+        text = "Ваша история посещения бани:\n\n"
+        for entry in history:
+            date = entry['date']
+            paid = "✅ Оплачено" if entry['paid'] else "❌ Не оплачено"
+            visited = "🛁 Был" if entry.get('visited') else "—"
+            text += f"{date}: {paid} {visited}\n"
+        await update.message.reply_text(text)
+    except Exception as e:
+        logger.error(f"[history] Ошибка при получении истории: {e}", exc_info=True)
+        await update.message.reply_text("Произошла ошибка при получении истории. Попробуйте позже.")
