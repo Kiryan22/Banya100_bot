@@ -532,9 +532,9 @@ async def cash_list(update: Update = None, context: ContextTypes.DEFAULT_TYPE = 
                 await context.bot.send_message(chat_id=admin_id, text=text)
             except Exception as e:
                 logger.error(f"[cash_list] Error sending to admin {admin_id}: {e}")
-        # Если вызвано вручную, отвечаем в чат
+        # Если вызвано вручную, выводим список только в чат, где вызвали команду
         if update and not silent:
-            await update.message.reply_text("Список отправлен администраторам.")
+            await update.message.reply_text(text)
     except Exception as e:
         logger.error(f"[cash_list] Unexpected error: {e}", exc_info=True)
         if update and not silent:
