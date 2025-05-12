@@ -25,12 +25,14 @@ def setup_logging():
     if not os.path.exists(log_dir):
         os.makedirs(log_dir)
 
-    # Настраиваем форматтер для логов
-    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    # Настраиваем форматтер для логов с более подробной информацией
+    formatter = logging.Formatter(
+        '%(asctime)s - %(name)s - %(levelname)s - [%(filename)s:%(lineno)d] - %(message)s'
+    )
 
     # Настраиваем корневой логгер
     root_logger = logging.getLogger()
-    root_logger.setLevel(logging.INFO)  # Устанавливаем уровень INFO вместо DEBUG
+    root_logger.setLevel(logging.DEBUG)  # Устанавливаем уровень DEBUG для более подробного логирования
 
     # Создаем обработчики для разных уровней логирования
     def create_file_handler(filename, level):
@@ -38,11 +40,18 @@ def setup_logging():
         handler.setLevel(level)
         handler.setFormatter(formatter)
         return handler
-
+    
     # Добавляем обработчики для разных уровней логирования
     root_logger.addHandler(create_file_handler('info.log', logging.INFO))
     root_logger.addHandler(create_file_handler('error.log', logging.ERROR))
     root_logger.addHandler(create_file_handler('debug.log', logging.DEBUG))
+    root_logger.addHandler(create_file_handler('warning.log', logging.WARNING))
+
+    # Добавляем обработчик для вывода в консоль
+    console_handler = logging.StreamHandler()
+    console_handler.setLevel(logging.INFO)
+    console_handler.setFormatter(formatter)
+    root_logger.addHandler(console_handler)
 
     # Настраиваем логирование для сторонних библиотек
     logging.getLogger('httpx').setLevel(logging.WARNING)
@@ -51,6 +60,8 @@ def setup_logging():
 
     # Запускаем очистку старых логов
     cleanup_old_logs(log_dir)
+
+    logger.info("Логирование успешно настроено")
 
 def cleanup_old_logs(log_dir):
     """Очищает логи старше 6 месяцев.
@@ -162,31 +173,37 @@ async def handle_deep_link(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 # Команда для старта бота
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    logger.info("[start] Вход в команду /start")
+    logger.info(f"[start] Вход в команду /start. User: {update.effective_user.id}, Chat: {update.effective_chat.id}, Type: {update.effective_chat.type}")
     try:
         if update.effective_chat.type != "private":
             message = update.message or (update.callback_query and update.callback_query.message)
             if message:
                 await message.reply_text("Эта команда доступна только в личном чате с ботом.")
-            logger.warning("[start] Попытка запуска не в личном чате")
+            logger.warning(f"[start] Попытка запуска не в личном чате. User: {update.effective_user.id}, Chat: {update.effective_chat.id}")
             return
+
         user = update.effective_user
+        logger.debug(f"[start] Данные пользователя: id={user.id}, username={user.username}, first_name={user.first_name}, last_name={user.last_name}")
+        
         db.add_active_user(user.id, user.username or user.first_name)
-        logger.info(f"Пользователь {user.id} (@{user.username}) запустил бота")
+        logger.info(f"[start] Пользователь {user.id} (@{user.username}) запустил бота")
+
         welcome_message = f"Привет, {user.first_name}! Я бот для управления подписками и записью в баню."
         if context.args:
             arg = context.args[0]
-            logger.debug(f"Получены аргументы запуска: {arg}")
+            logger.debug(f"[start] Получены аргументы запуска: {arg}")
             if arg.startswith("bath_"):
-                logger.info(f"Пользователь {user.id} пришел по ссылке записи в баню")
+                logger.info(f"[start] Пользователь {user.id} пришел по ссылке записи в баню")
                 await handle_deep_link(update, context)
                 return
+
         message = update.message or (update.callback_query and update.callback_query.message)
         if message:
             await message.reply_text(welcome_message)
-        logger.debug(f"Отправлено приветственное сообщение пользователю {user.id}")
+            logger.debug(f"[start] Отправлено приветственное сообщение пользователю {user.id}")
+
     except Exception as e:
-        logger.error(f"Ошибка в функции start: {e}")
+        logger.error(f"[start] Ошибка в функции start: {e}", exc_info=True)
         message = update.message or (update.callback_query and update.callback_query.message)
         if message:
             await message.reply_text("Произошла ошибка при запуске бота. Пожалуйста, попробуйте позже.")
@@ -325,34 +342,37 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
         query = update.callback_query
         user = query.from_user
-        logger.info(f"[button_callback] CallbackQuery received: data={query.data}, chat_type={update.effective_chat.type}, user_id={user.id}")
+        logger.info(f"[button_callback] Получен callback: data={query.data}, chat_type={update.effective_chat.type}, user_id={user.id}")
         
         # Добавляем пользователя в активные
         db.add_active_user(user.id, user.username or user.first_name)
+        logger.debug(f"[button_callback] Пользователь {user.id} добавлен в активные")
         
         # Обработка различных типов callback_data
         if query.data.startswith("join_bath_"):
             try:
                 date_str = query.data.replace("join_bath_", "")
-                logger.info(f"[button_callback] User {user.id} wants to join bath on {date_str}")
+                logger.info(f"[button_callback] Пользователь {user.id} хочет записаться на баню {date_str}")
                 
                 # Проверяем, не достигнут ли лимит участников
                 participants = db.get_bath_participants(date_str)
+                logger.debug(f"[button_callback] Текущее количество участников: {len(participants)}")
+                
                 if len(participants) >= MAX_BATH_PARTICIPANTS:
-                    logger.warning(f"[button_callback] Bath is full for date {date_str}")
+                    logger.warning(f"[button_callback] Баня на {date_str} уже заполнена")
                     await query.edit_message_text(
                         text="К сожалению, баня уже занята. Вы можете записаться в следующий раз!"
                     )
                     return
-                
+
                 # Проверяем, не записан ли уже пользователь
                 if any(p['user_id'] == user.id for p in participants):
-                    logger.warning(f"[button_callback] User {user.id} is already registered for {date_str}")
+                    logger.warning(f"[button_callback] Пользователь {user.id} уже записан на {date_str}")
                     await query.edit_message_text(
                         text="Вы уже записаны на эту баню!"
                     )
                     return
-                
+
                 # Отправляем сообщение с подтверждением
                 keyboard = [
                     [InlineKeyboardButton("Подтвердить запись", callback_data=f"confirm_bath_{date_str}")]
@@ -362,14 +382,14 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 await query.edit_message_text(
                     text=f"Вы хотите записаться на баню {date_str}?\n\n"
                          f"Стоимость: {BATH_COST}\n"
-                         f"Время: 12:00\n\n"
+                         f"Время: {BATH_TIME}\n\n"
                          f"Нажмите 'Подтвердить запись' для продолжения.",
                     reply_markup=reply_markup
                 )
-                logger.info(f"[button_callback] Sent confirmation message to user {user.id}")
+                logger.info(f"[button_callback] Отправлено сообщение с подтверждением пользователю {user.id}")
                 
             except Exception as e:
-                logger.error(f"[button_callback] Error processing join_bath: {e}", exc_info=True)
+                logger.error(f"[button_callback] Ошибка при обработке join_bath: {e}", exc_info=True)
                 await query.edit_message_text(
                     text="Произошла ошибка при обработке запроса. Пожалуйста, попробуйте позже."
                 )
@@ -382,47 +402,45 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 # Проверяем, не достигнут ли лимит участников
                 participants = db.get_bath_participants(date_str)
                 if len(participants) >= MAX_BATH_PARTICIPANTS:
-                    logger.warning(f"[button_callback] Bath is full for date {date_str}")
+                    logger.warning(f"[button_callback] Bath {date_str} is full")
                     await query.edit_message_text(
-                        text="К сожалению, баня уже занята. Вы можете записаться в следующий раз!"
+                        text="К сожалению, все места уже заняты."
                     )
                     return
                 
-                # Сохраняем информацию о намерении записаться
+                # Сохраняем информацию о регистрации
+                username = user.username or f"{user.first_name} {user.last_name or ''}"
                 if 'bath_registrations' not in context.user_data:
                     context.user_data['bath_registrations'] = {}
-                
-                username = user.username or f"{user.first_name} {user.last_name or ''}"
                 context.user_data['bath_registrations'][date_str] = {
                     'user_id': user.id,
                     'username': username,
-                    'status': 'pending_payment'
+                    'status': 'confirmed'
                 }
                 logger.info(f"[button_callback] Saved registration info for user {user.id}")
                 
-                # Отправляем инструкции по оплате
-                payment_info = (
-                    f"Отлично! Для завершения записи на баню ({date_str}), пожалуйста, выполните оплату:\n\n"
-                    f"Стоимость: {BATH_COST}\n\n"
-                    f"Способы оплаты:\n"
-                    f"1. КАРТА: {CARD_PAYMENT_LINK}\n"
-                    f"2. Revolut: {REVOLUT_PAYMENT_LINK}\n\n"
-                    f"После совершения оплаты, выберите способ ниже."
-                )
-                
-                keyboard = [
-                    [
-                        InlineKeyboardButton("Я оплатил(а) онлайн", callback_data=f"paid_bath_{date_str}"),
-                        InlineKeyboardButton("Буду платить наличными", callback_data=f"cash_bath_{date_str}")
+                try:
+                    # Отправляем инструкции по оплате
+                    keyboard = [
+                        [
+                            InlineKeyboardButton("💳 Оплатить онлайн", callback_data=f"pay_bath_{date_str}"),
+                            InlineKeyboardButton("💵 Буду платить наличными", callback_data=f"cash_bath_{date_str}")
+                        ]
                     ]
-                ]
-                reply_markup = InlineKeyboardMarkup(keyboard)
-                
-                await query.edit_message_text(
-                    text=payment_info,
-                    reply_markup=reply_markup
-                )
-                logger.info(f"[button_callback] Sent payment instructions to user {user.id}")
+                    reply_markup = InlineKeyboardMarkup(keyboard)
+                    
+                    await query.edit_message_text(
+                        text=f"Отлично! Вы записаны на баню {date_str}.\n\n"
+                             f"Выберите способ оплаты:",
+                        reply_markup=reply_markup
+                    )
+                    logger.info(f"[button_callback] Sent payment instructions to user {user.id}")
+                    
+                except Exception as e:
+                    logger.error(f"[button_callback] Error sending payment instructions: {e}", exc_info=True)
+                    await query.edit_message_text(
+                        text="Произошла ошибка при отправке инструкций по оплате. Пожалуйста, попробуйте позже."
+                    )
                 
             except Exception as e:
                 logger.error(f"[button_callback] Error processing confirm_bath: {e}", exc_info=True)
@@ -466,26 +484,25 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 # Уведомляем администраторов
                 for admin_id in ADMIN_IDS:
                     try:
+                        callback_data_confirm = f"admin_confirm_{user.id}_{date_str}_online"
+                        callback_data_decline = f"admin_decline_{user.id}_{date_str}_online"
+                        logger.info(f"Формирую callback_data: confirm={callback_data_confirm}, decline={callback_data_decline}")
                         keyboard = [
                             [
-                                InlineKeyboardButton("✅ Подтвердить", callback_data=f"admin_confirm_{user.id}_{date_str}_online"),
-                                InlineKeyboardButton("❌ Отклонить", callback_data=f"admin_decline_{user.id}_{date_str}_online")
+                                InlineKeyboardButton("Оплатил онлайн", callback_data=callback_data_confirm),
+                                InlineKeyboardButton("Отклонить", callback_data=callback_data_decline)
                             ]
                         ]
                         reply_markup = InlineKeyboardMarkup(keyboard)
-                        
                         await context.bot.send_message(
                             chat_id=admin_id,
-                            text=f"Новая заявка на оплату:\n"
-                                 f"Пользователь: @{username}\n"
-                                 f"Дата: {date_str}\n"
-                                 f"Способ оплаты: онлайн",
+                            text=f"Пользователь @{username} (ID: {user.id}) утверждает, что оплатил баню на {date_str}.\nПожалуйста, подтвердите или отклоните оплату.",
                             reply_markup=reply_markup
                         )
-                        logger.info(f"[button_callback] Sent notification to admin {admin_id}")
+                        logger.info(f"Отправлено уведомление администратору {admin_id} о новой заявке на оплату (online)")
                     except Exception as e:
-                        logger.error(f"[button_callback] Error sending notification to admin {admin_id}: {e}", exc_info=True)
-                
+                        logger.error(f"Ошибка при отправке уведомления администратору {admin_id}: {e}")
+                        continue
             except Exception as e:
                 logger.error(f"[button_callback] Error processing paid_bath: {e}", exc_info=True)
                 await query.edit_message_text(
@@ -685,13 +702,13 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await query.answer("Неизвестная команда")
             
     except Exception as e:
-        logger.error(f"[button_callback] Unexpected error: {e}", exc_info=True)
+        logger.error(f"[button_callback] Непредвиденная ошибка: {e}", exc_info=True)
         try:
             await query.edit_message_text(
                 text="Произошла непредвиденная ошибка. Пожалуйста, попробуйте позже."
             )
         except Exception as inner_e:
-            logger.error(f"[button_callback] Error sending error message: {inner_e}", exc_info=True)
+            logger.error(f"[button_callback] Ошибка при отправке сообщения об ошибке: {inner_e}", exc_info=True)
 
 # Обработка кнопки "Подтвердить запись" в личном чате
 async def confirm_bath_registration(update: Update, context: ContextTypes.DEFAULT_TYPE):
