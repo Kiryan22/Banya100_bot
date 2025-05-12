@@ -343,4 +343,67 @@ async def mention_all(update: Update, context: ContextTypes.DEFAULT_TYPE):
         logger.error(f"[mention_all] Unexpected error: {e}", exc_info=True)
         await update.message.reply_text("Произошла ошибка при упоминании пользователей.")
 
+async def mark_visit(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    try:
+        if update.effective_chat.type != "private":
+            message = update.message or (update.callback_query and update.callback_query.message)
+            if message:
+                await message.reply_text("Эта команда доступна только в личном чате с ботом.")
+            logger.warning("[mark_visit] Command used in non-private chat")
+            return
+
+        admin_id = update.effective_user.id
+        if admin_id not in ADMIN_IDS:
+            message = update.message or (update.callback_query and update.callback_query.message)
+            if message:
+                await message.reply_text("У вас нет прав для выполнения этой команды.")
+            logger.warning(f"[mark_visit] Non-admin user {admin_id} attempted to mark visit")
+            return
+
+        if len(context.args) != 2:
+            message = update.message or (update.callback_query and update.callback_query.message)
+            if message:
+                await message.reply_text("Использование: /mark_visit <username> <DD.MM.YYYY>")
+            logger.warning("[mark_visit] Invalid number of arguments")
+            return
+
+        username = context.args[0].lstrip('@')
+        date_str = context.args[1]
+
+        # Найти user_id по username
+        user_id = db.get_user_id_by_username(username)
+        if not user_id:
+            message = update.message or (update.callback_query and update.callback_query.message)
+            if message:
+                await message.reply_text(f"Пользователь @{username} не найден.")
+            logger.warning(f"[mark_visit] User @{username} not found")
+            return
+
+        # Отметить посещение в базе
+        result = db.mark_user_visit(date_str, user_id)
+        message = update.message or (update.callback_query and update.callback_query.message)
+        if result:
+            if message:
+                await message.reply_text(f"Посещение пользователя @{username} за {date_str} отмечено.")
+            try:
+                await context.bot.send_message(
+                    chat_id=user_id,
+                    text=f"Ваше посещение бани {date_str} отмечено администратором!"
+                )
+            except Exception as e:
+                logger.error(f"[mark_visit] Error sending notification to user: {e}", exc_info=True)
+            logger.info(f"[mark_visit] Visit marked for @{username} ({user_id}) on {date_str}")
+        else:
+            if message:
+                await message.reply_text(f"Не удалось отметить посещение пользователя @{username} за {date_str}. Проверьте данные.")
+            logger.warning(f"[mark_visit] Failed to mark visit for @{username} on {date_str}")
+    except Exception as e:
+        logger.error(f"[mark_visit] Unexpected error: {e}", exc_info=True)
+        try:
+            message = update.message or (update.callback_query and update.callback_query.message)
+            if message:
+                await message.reply_text("Произошла непредвиденная ошибка при отметке посещения.")
+        except Exception as inner_e:
+            logger.error(f"[mark_visit] Error sending error message: {inner_e}", exc_info=True)
+
 # ... (оставить остальные функции, которые были в bot.py, связанные с админскими действиями) ...
