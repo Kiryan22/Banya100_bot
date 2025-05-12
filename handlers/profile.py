@@ -58,43 +58,30 @@ async def handle_profile_update(update: Update, context: ContextTypes.DEFAULT_TY
         query = update.callback_query
         user = query.from_user
         logger.info(f"[handle_profile_update] CallbackQuery received: data={query.data}, chat_type={update.effective_chat.type}, user_id={user.id}")
-        
         await query.answer()
-        
         if update.effective_chat.type != "private":
             message = update.message or (update.callback_query and update.callback_query.message)
             if message:
                 await message.reply_text("Эта команда доступна только в личном чате с ботом.")
             logger.warning(f"[handle_profile_update] Command used in non-private chat by user {user.id}")
-            return
-            
-        message = update.message or (update.callback_query and update.callback_query.message)
-        
+            return ConversationHandler.END
         if query.data == "update_profile_yes":
-            if message:
-                await message.reply_text(
-                    "Пожалуйста, введите ваше полное имя:"
-                )
-                logger.info(f"[handle_profile_update] Started profile update for user {user.id}")
-                context.user_data['updating_profile'] = True
-                context.user_data['profile_step'] = 'full_name'
+            await query.message.reply_text("Пожалуйста, введите ваше полное имя:")
+            logger.info(f"[handle_profile_update] Started profile update for user {user.id}")
+            context.user_data['updating_profile'] = True
+            context.user_data['profile_step'] = 'full_name'
+            return FULL_NAME
         elif query.data == "update_profile_no":
-            if message:
-                await message.reply_text(
-                    "Хорошо, если захотите обновить профиль позже, используйте команду /profile"
-                )
-                logger.info(f"[handle_profile_update] User {user.id} declined profile update")
-                
+            await query.message.reply_text("Спасибо! Ваши данные сохранены. Если захотите обновить профиль позже, используйте команду /profile")
+            logger.info(f"[handle_profile_update] User {user.id} declined profile update")
+            return ConversationHandler.END
+        else:
+            await query.message.reply_text("Пожалуйста, выберите действие с помощью кнопок.")
+            return PROFILE
     except Exception as e:
         logger.error(f"[handle_profile_update] Unexpected error: {e}", exc_info=True)
-        try:
-            message = update.message or (update.callback_query and update.callback_query.message)
-            if message:
-                await message.reply_text(
-                    "Произошла непредвиденная ошибка при обновлении профиля. Пожалуйста, попробуйте позже."
-                )
-        except Exception as inner_e:
-            logger.error(f"[handle_profile_update] Error sending error message: {inner_e}", exc_info=True)
+        await update.callback_query.message.reply_text("Произошла ошибка. Попробуйте позже.")
+        return ConversationHandler.END
 
 async def handle_full_name(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:

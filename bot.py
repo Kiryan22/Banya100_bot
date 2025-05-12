@@ -43,7 +43,10 @@ if __name__ == "__main__":
     profile_conv_handler = ConversationHandler(
         entry_points=[CommandHandler("profile", profile)],
         states={
-            PROFILE: [MessageHandler(filters.TEXT & ~filters.COMMAND, handle_profile_update_text)],
+            PROFILE: [
+                MessageHandler(filters.TEXT & ~filters.COMMAND, handle_profile_update_text),
+                CallbackQueryHandler(handle_profile_update, pattern="^update_profile_")
+            ],
             FULL_NAME: [MessageHandler(filters.TEXT & ~filters.COMMAND, handle_full_name)],
             BIRTH_DATE: [MessageHandler(filters.TEXT & ~filters.COMMAND, handle_birth_date)],
             OCCUPATION: [MessageHandler(filters.TEXT & ~filters.COMMAND, handle_occupation)],
