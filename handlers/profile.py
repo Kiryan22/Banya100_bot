@@ -35,15 +35,21 @@ async def profile(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
             text += f"📅 Первое посещение: {profile['first_visit_date']}\n"
         if profile['last_visit_date']:
             text += f"📅 Последнее посещение: {profile['last_visit_date']}\n"
-        text += "\nХотите обновить информацию? (да/нет)"
+        text += "\nХотите обновить информацию?"
+        keyboard = [
+            [
+                InlineKeyboardButton("Обновить", callback_data="update_profile_yes"),
+                InlineKeyboardButton("Оставить как есть", callback_data="update_profile_no")
+            ]
+        ]
+        reply_markup = InlineKeyboardMarkup(keyboard)
         if message:
-            await message.reply_text(text)
+            await message.reply_text(text, reply_markup=reply_markup)
         return PROFILE
     else:
         if message:
             await message.reply_text(
-                "Давайте заполним информацию о вас.\n"
-                "Как вас зовут? (Имя и Фамилия)"
+                "Давайте заполним информацию о вас.\nКак вас зовут? (Имя и Фамилия)"
             )
         return FULL_NAME
 

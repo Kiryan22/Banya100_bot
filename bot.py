@@ -37,6 +37,7 @@ if __name__ == "__main__":
     application.add_handler(CallbackQueryHandler(handle_payment_confirmation, pattern="^paid_bath_"))
     application.add_handler(CallbackQueryHandler(admin_confirm_payment, pattern="^admin_confirm_"))
     application.add_handler(CallbackQueryHandler(admin_decline_payment, pattern="^admin_decline_"))
+    application.add_handler(CallbackQueryHandler(handle_profile_update, pattern="^update_profile_"))
 
     # ConversationHandler для профиля
     profile_conv_handler = ConversationHandler(
