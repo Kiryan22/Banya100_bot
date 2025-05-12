@@ -12,6 +12,11 @@ import tempfile
 
 from config import *
 from database import Database
+from handlers.profile import (
+    profile, handle_profile_update, handle_full_name, handle_birth_date,
+    handle_occupation, handle_instagram, handle_skills, start_profile_callback,
+    export_profiles, cancel
+)
 
 # Настройка логирования
 def setup_logging():
