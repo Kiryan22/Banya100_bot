@@ -19,7 +19,6 @@ if __name__ == "__main__":
     application.add_handler(CommandHandler("start", start))
     application.add_handler(CommandHandler("register", register_bath))
     application.add_handler(CommandHandler("create_bath", create_bath_event))
-    application.add_handler(CommandHandler("profile", profile))
     application.add_handler(CommandHandler("cash_list", admin_confirm_payment))
     application.add_handler(CommandHandler("mark_paid", mark_paid))
     application.add_handler(CommandHandler("add_subscriber", add_subscriber))
