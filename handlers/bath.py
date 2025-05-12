@@ -93,6 +93,12 @@ async def register_bath(update: Update, context: ContextTypes.DEFAULT_TYPE):
         if message:
             await message.reply_text("Произошла ошибка при регистрации. Пожалуйста, попробуйте позже.")
 
+def create_bath_keyboard(date_str):
+    keyboard = [
+        [InlineKeyboardButton("Записаться", callback_data=f"join_bath_{date_str}")]
+    ]
+    return InlineKeyboardMarkup(keyboard)
+
 async def create_bath_event(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
         logger.info("[create_bath_event] Command received")
