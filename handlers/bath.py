@@ -274,8 +274,63 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 start_link = f"https://t.me/{bot_username}?start=bath_{date_str}"
                 logger.info(f"Вместо личного сообщения отправляю ссылку: {start_link}")
                 # ... (оставить обработку ссылки, если нужно) ...
+        elif callback_data.startswith("confirm_bath_"):
+            logger.info("[button_callback] Ветка confirm_bath_")
+            date_str = callback_data.replace("confirm_bath_", "")
+            logger.info(f"[button_callback] confirm_bath_ для даты {date_str}")
+            
+            # Проверяем количество участников
+            participants = db.get_bath_participants(date_str)
+            if len(participants) >= MAX_BATH_PARTICIPANTS:
+                logger.warning(f"Пользователь {user.id} не смог подтвердить запись - достигнут лимит участников")
+                await query.edit_message_text(
+                    text="К сожалению, баня уже занята. Вы можете записаться в следующий раз!"
+                )
+                return
+
+            # Инициализируем словарь регистраций, если его нет
+            if 'bath_registrations' not in context.user_data:
+                context.user_data['bath_registrations'] = {}
+
+            # Сохраняем информацию о регистрации
+            username = user.username or f"{user.first_name} {user.last_name or ''}"
+            context.user_data['bath_registrations'][date_str] = {
+                'user_id': user.id,
+                'username': username,
+                'status': 'pending_payment'
+            }
+            logger.info(f"Сохранена информация о регистрации пользователя {user.id} на {date_str}")
+
+            # Формируем сообщение с информацией об оплате
+            payment_info = f"Отлично! Для завершения записи на баню ({date_str}), пожалуйста, выполните оплату:\n\n"
+            payment_info += f"Cтоимость: {BATH_COST}\n\n"
+            payment_info += f"Способы оплаты:\n"
+            payment_info += f"1. КАРТА: {CARD_PAYMENT_LINK}\n"
+            payment_info += f"2. Revolut: {REVOLUT_PAYMENT_LINK}\n\n"
+            payment_info += f"После совершения оплаты, выберите способ ниже."
+
+            # Создаем клавиатуру с кнопками оплаты
+            keyboard = [
+                [
+                    InlineKeyboardButton("Я оплатил(а) онлайн", callback_data=f"paid_bath_{date_str}"),
+                    InlineKeyboardButton("Буду платить наличными", callback_data=f"cash_bath_{date_str}")
+                ]
+            ]
+            reply_markup = InlineKeyboardMarkup(keyboard)
+
+            # Отправляем сообщение с информацией об оплате
+            await query.edit_message_text(
+                text=payment_info,
+                reply_markup=reply_markup
+            )
+            logger.info(f"Отправлены инструкции по оплате пользователю {user.id}")
+
     except Exception as e:
         logger.error(f"Ошибка в функции button_callback: {e}", exc_info=True)
+        try:
+            await query.answer("Произошла ошибка. Пожалуйста, попробуйте позже.", show_alert=True)
+        except:
+            pass
 
 async def confirm_bath_registration(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
