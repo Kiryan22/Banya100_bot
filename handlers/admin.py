@@ -309,7 +309,8 @@ async def update_commands(update: Update, context: ContextTypes.DEFAULT_TYPE):
         BotCommand("export_profiles", "Экспорт всех профилей пользователей"),
         BotCommand("mention_all", "Упомянуть всех активных пользователей"),
         BotCommand("mark_visit", "Отметить посещение бани"),
-        BotCommand("clear_db", "Полная очистка базы данных (только для админа)")
+        BotCommand("clear_db", "Полная очистка базы данных (только для админа)"),
+        BotCommand("remove_registration", "Удалить регистрацию пользователя на баню (/remove_registration username DD.MM.YYYY")
     ]
     await context.bot.set_my_commands(commands)
     await update.message.reply_text("Меню команд обновлено.")
@@ -436,5 +437,68 @@ async def clear_db(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 await message.reply_text("Произошла ошибка при очистке базы данных.")
         except Exception as inner_e:
             logger.error(f"[clear_db] Error sending error message: {inner_e}", exc_info=True)
+
+async def remove_registration(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    try:
+        if update.effective_chat.type != "private":
+            message = update.message or (update.callback_query and update.callback_query.message)
+            if message:
+                await message.reply_text("Эта команда доступна только в личном чате с ботом.")
+            logger.warning("[remove_registration] Command used in non-private chat")
+            return
+
+        admin_id = update.effective_user.id
+        if admin_id not in ADMIN_IDS:
+            message = update.message or (update.callback_query and update.callback_query.message)
+            if message:
+                await message.reply_text("У вас нет прав для выполнения этой команды.")
+            logger.warning(f"[remove_registration] Non-admin user {admin_id} attempted to remove registration")
+            return
+
+        if len(context.args) != 2:
+            message = update.message or (update.callback_query and update.callback_query.message)
+            if message:
+                await message.reply_text("Использование: /remove_registration <username> <DD.MM.YYYY>")
+            logger.warning("[remove_registration] Invalid number of arguments")
+            return
+
+        username = context.args[0].lstrip('@')
+        date_str = context.args[1]
+
+        # Найти user_id по username
+        user_id = db.get_user_id_by_username(username)
+        if not user_id:
+            message = update.message or (update.callback_query and update.callback_query.message)
+            if message:
+                await message.reply_text(f"Пользователь @{username} не найден.")
+            logger.warning(f"[remove_registration] User @{username} not found")
+            return
+
+        # Удалить пользователя из участников на дату
+        result = db.remove_bath_participant(date_str, user_id)
+        message = update.message or (update.callback_query and update.callback_query.message)
+        if result:
+            if message:
+                await message.reply_text(f"Регистрация пользователя @{username} на {date_str} удалена.")
+            try:
+                await context.bot.send_message(
+                    chat_id=user_id,
+                    text=f"Ваша регистрация на баню {date_str} была удалена администратором."
+                )
+            except Exception as e:
+                logger.error(f"[remove_registration] Error sending notification to user: {e}", exc_info=True)
+            logger.info(f"[remove_registration] Registration removed for @{username} ({user_id}) on {date_str}")
+        else:
+            if message:
+                await message.reply_text(f"Не удалось удалить регистрацию пользователя @{username} на {date_str}. Проверьте данные.")
+            logger.warning(f"[remove_registration] Failed to remove registration for @{username} on {date_str}")
+    except Exception as e:
+        logger.error(f"[remove_registration] Unexpected error: {e}", exc_info=True)
+        try:
+            message = update.message or (update.callback_query and update.callback_query.message)
+            if message:
+                await message.reply_text("Произошла непредвиденная ошибка при удалении регистрации.")
+        except Exception as inner_e:
+            logger.error(f"[remove_registration] Error sending error message: {inner_e}", exc_info=True)
 
 # ... (оставить остальные функции, которые были в bot.py, связанные с админскими действиями) ...

@@ -818,3 +818,19 @@ class Database:
             return []
         finally:
             conn.close()
+
+    def remove_bath_participant(self, date_str, user_id):
+        """Удаляет участника из bath_participants по дате и user_id."""
+        conn = self.get_connection()
+        try:
+            cursor = conn.cursor()
+            cursor.execute('''
+                DELETE FROM bath_participants WHERE date_str = %s AND user_id = %s
+            ''', (date_str, user_id))
+            conn.commit()
+            return cursor.rowcount > 0
+        except Exception as e:
+            logger.error(f"Ошибка при удалении участника: {e}")
+            return False
+        finally:
+            conn.close()
