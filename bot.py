@@ -25,52 +25,32 @@ def setup_logging():
     if not os.path.exists(log_dir):
         os.makedirs(log_dir)
 
-    # Настраиваем формат логов
-    log_format = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-    
-    # Настраиваем ротацию логов по времени (каждый месяц)
-    def create_file_handler(filename, level):
-        log_file = os.path.join(log_dir, filename)
-        handler = TimedRotatingFileHandler(
-            log_file,
-            when='midnight',
-            interval=30,  # ротация каждые 30 дней
-            backupCount=6,  # хранить 6 месяцев логов
-            encoding='utf-8'
-        )
-        handler.setFormatter(log_format)
-        handler.setLevel(level)
-        return handler
-    
-    # Создаем обработчики для разных уровней логирования
-    error_handler = create_file_handler('error.log', logging.ERROR)
-    warning_handler = create_file_handler('warning.log', logging.WARNING)
-    info_handler = create_file_handler('info.log', logging.INFO)
-    debug_handler = create_file_handler('debug.log', logging.DEBUG)
-    
-    # Настраиваем вывод в консоль
-    console_handler = logging.StreamHandler()
-    console_handler.setFormatter(log_format)
-    console_handler.setLevel(logging.INFO)
-    
+    # Настраиваем форматтер для логов
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+
     # Настраиваем корневой логгер
     root_logger = logging.getLogger()
-    root_logger.setLevel(logging.DEBUG)  # Устанавливаем самый низкий уровень для корневого логгера
-    
-    # Добавляем обработчики
-    root_logger.addHandler(error_handler)
-    root_logger.addHandler(warning_handler)
-    root_logger.addHandler(info_handler)
-    root_logger.addHandler(debug_handler)
-    root_logger.addHandler(console_handler)
-    
-    # Создаем логгер для бота
-    logger = logging.getLogger(__name__)
-    
-    # Очищаем старые логи при запуске
+    root_logger.setLevel(logging.INFO)  # Устанавливаем уровень INFO вместо DEBUG
+
+    # Создаем обработчики для разных уровней логирования
+    def create_file_handler(filename, level):
+        handler = logging.FileHandler(os.path.join(log_dir, filename), encoding='utf-8')
+        handler.setLevel(level)
+        handler.setFormatter(formatter)
+        return handler
+
+    # Добавляем обработчики для разных уровней логирования
+    root_logger.addHandler(create_file_handler('info.log', logging.INFO))
+    root_logger.addHandler(create_file_handler('error.log', logging.ERROR))
+    root_logger.addHandler(create_file_handler('debug.log', logging.DEBUG))
+
+    # Настраиваем логирование для сторонних библиотек
+    logging.getLogger('httpx').setLevel(logging.WARNING)
+    logging.getLogger('httpcore').setLevel(logging.WARNING)
+    logging.getLogger('telegram').setLevel(logging.INFO)
+
+    # Запускаем очистку старых логов
     cleanup_old_logs(log_dir)
-    
-    return logger
 
 def cleanup_old_logs(log_dir):
     """Очищает логи старше 6 месяцев.
