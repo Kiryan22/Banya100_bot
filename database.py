@@ -278,6 +278,13 @@ class Database:
             with self.get_connection() as conn:
                 cursor = conn.cursor()
                 
+                # Проверяем существование таблицы user_profiles
+                cursor.execute("SHOW TABLES LIKE 'user_profiles'")
+                if cursor.fetchone():
+                    # Если таблица существует, удаляем её
+                    cursor.execute("DROP TABLE user_profiles")
+                    logger.info("Dropped existing user_profiles table for migration")
+                
                 # Создаем таблицу участников бани
                 cursor.execute("""
                     CREATE TABLE IF NOT EXISTS bath_participants (
@@ -365,10 +372,14 @@ class Database:
                         id BIGINT AUTO_INCREMENT PRIMARY KEY,
                         user_id BIGINT NOT NULL,
                         username VARCHAR(255),
-                        first_name VARCHAR(255),
-                        last_name VARCHAR(255),
-                        language_code VARCHAR(10),
-                        is_premium BOOLEAN DEFAULT FALSE,
+                        full_name VARCHAR(255),
+                        birth_date VARCHAR(10),
+                        occupation VARCHAR(255),
+                        instagram VARCHAR(255),
+                        skills TEXT,
+                        total_visits INT DEFAULT 0,
+                        first_visit_date DATE,
+                        last_visit_date DATE,
                         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                         UNIQUE KEY unique_user_profile (user_id)
