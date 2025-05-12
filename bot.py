@@ -3,11 +3,13 @@ from logger import get_logger
 from config import BOT_TOKEN
 from database import Database
 from telegram.ext import Application, CommandHandler, CallbackQueryHandler, MessageHandler, filters, ConversationHandler
+from datetime import datetime
+import pytz
 
 # Импорт обработчиков
 from handlers.bath import start, register_bath, create_bath_event, button_callback, confirm_bath_registration, handle_payment_confirmation, admin_confirm_payment, admin_decline_payment, handle_deep_link
 from handlers.profile import profile, handle_profile_update, handle_full_name, handle_birth_date, handle_occupation, handle_instagram, handle_skills, start_profile_callback, export_profiles, cancel, history, handle_profile_update_text, PROFILE, FULL_NAME, BIRTH_DATE, OCCUPATION, INSTAGRAM, SKILLS
-from handlers.admin import mark_paid, add_subscriber, remove_subscriber, update_commands, mention_all, mark_visit, clear_db, remove_registration
+from handlers.admin import mark_paid, add_subscriber, remove_subscriber, update_commands, mention_all, mark_visit, clear_db, remove_registration, cash_list
 
 logger = get_logger(__name__)
 db = Database()
@@ -19,7 +21,7 @@ if __name__ == "__main__":
     application.add_handler(CommandHandler("start", start))
     application.add_handler(CommandHandler("register", register_bath))
     application.add_handler(CommandHandler("create_bath", create_bath_event))
-    application.add_handler(CommandHandler("cash_list", admin_confirm_payment))
+    application.add_handler(CommandHandler("cash_list", cash_list))
     application.add_handler(CommandHandler("mark_paid", mark_paid))
     application.add_handler(CommandHandler("add_subscriber", add_subscriber))
     application.add_handler(CommandHandler("remove_subscriber", remove_subscriber))
@@ -82,6 +84,14 @@ if __name__ == "__main__":
         logger.warning(f"Неизвестная команда: {update.message.text}")
         return update.message.reply_text("Неизвестная команда. Пожалуйста, используйте меню.")
     application.add_handler(MessageHandler(filters.COMMAND, unknown_command))
+
+    # Автоматическая отправка cash_list по воскресеньям в 10:00
+    warsaw_tz = pytz.timezone('Europe/Warsaw')
+    application.job_queue.run_daily(
+        lambda context: cash_list(None, context, silent=True),
+        time=datetime.time(hour=10, minute=0, tzinfo=warsaw_tz),
+        name="cash_list_auto"
+    )
 
     logger.info("Запуск бота")
     application.run_polling()

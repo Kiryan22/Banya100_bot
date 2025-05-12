@@ -501,4 +501,43 @@ async def remove_registration(update: Update, context: ContextTypes.DEFAULT_TYPE
         except Exception as inner_e:
             logger.error(f"[remove_registration] Error sending error message: {inner_e}", exc_info=True)
 
+async def cash_list(update: Update = None, context: ContextTypes.DEFAULT_TYPE = None, silent: bool = False):
+    """
+    Отправляет администраторам список участников с оплатой наличными на ближайшую баню.
+    Если silent=True, не отвечает в чат, а только отправляет админам (для JobQueue).
+    """
+    try:
+        # Проверка на администратора, если вызвано вручную
+        if update:
+            user_id = update.effective_user.id
+            if user_id not in ADMIN_IDS:
+                await update.message.reply_text("У вас нет прав для выполнения этой команды.")
+                logger.warning(f"[cash_list] Non-admin user {user_id} attempted to get cash list")
+                return
+        # Получаем ближайшую дату бани
+        from handlers.bath import get_next_sunday
+        date_str = get_next_sunday()
+        participants = db.get_bath_participants(date_str)
+        cash_participants = [p for p in participants if p.get('cash')]
+        if not cash_participants:
+            text = f"На баню {date_str} нет участников с оплатой наличными."
+        else:
+            text = f"Список участников с оплатой наличными на баню {date_str} (всего: {len(cash_participants)}):\n\n"
+            for i, p in enumerate(cash_participants, 1):
+                username = p['username'] or f"ID: {p['user_id']}"
+                text += f"{i}. {username}\n"
+        # Отправляем всем администраторам
+        for admin_id in ADMIN_IDS:
+            try:
+                await context.bot.send_message(chat_id=admin_id, text=text)
+            except Exception as e:
+                logger.error(f"[cash_list] Error sending to admin {admin_id}: {e}")
+        # Если вызвано вручную, отвечаем в чат
+        if update and not silent:
+            await update.message.reply_text("Список отправлен администраторам.")
+    except Exception as e:
+        logger.error(f"[cash_list] Unexpected error: {e}", exc_info=True)
+        if update and not silent:
+            await update.message.reply_text("Произошла ошибка при получении списка наличных.")
+
 # ... (оставить остальные функции, которые были в bot.py, связанные с админскими действиями) ...
