@@ -30,13 +30,6 @@ if __name__ == "__main__":
     application.add_handler(CommandHandler("remove_registration", remove_registration))
     application.add_handler(CommandHandler("history", history))
 
-    # Callback-и
-    application.add_handler(CallbackQueryHandler(button_callback))
-    application.add_handler(CallbackQueryHandler(confirm_bath_registration, pattern="^confirm_bath_"))
-    application.add_handler(CallbackQueryHandler(handle_payment_confirmation, pattern="^paid_bath_"))
-    application.add_handler(CallbackQueryHandler(admin_confirm_payment, pattern="^admin_confirm_"))
-    application.add_handler(CallbackQueryHandler(admin_decline_payment, pattern="^admin_decline_"))
-
     # ConversationHandler для профиля
     profile_conv_handler = ConversationHandler(
         entry_points=[CommandHandler("profile", profile)],
@@ -54,6 +47,13 @@ if __name__ == "__main__":
         fallbacks=[CommandHandler("cancel", cancel)],
     )
     application.add_handler(profile_conv_handler)
+
+    # Callback-и
+    application.add_handler(CallbackQueryHandler(button_callback))
+    application.add_handler(CallbackQueryHandler(confirm_bath_registration, pattern="^confirm_bath_"))
+    application.add_handler(CallbackQueryHandler(handle_payment_confirmation, pattern="^paid_bath_"))
+    application.add_handler(CallbackQueryHandler(admin_confirm_payment, pattern="^admin_confirm_"))
+    application.add_handler(CallbackQueryHandler(admin_decline_payment, pattern="^admin_decline_"))
 
     # Неизвестная команда
     def unknown_command(update, context):
