@@ -55,15 +55,21 @@ async def register_bath(update: Update, context: ContextTypes.DEFAULT_TYPE):
         user = update.effective_user
         logger.debug(f"[register_bath] Пользователь {user.id} инициировал регистрацию")
         if not context.args:
+            # Автоматическая запись на ближайшее воскресенье
             next_sunday = get_next_sunday()
-            message = update.message or (update.callback_query and update.callback_query.message)
-            if message:
-                await message.reply_text(
-                    f"Чтобы записаться на баню, используйте команду с датой в формате /register DD.MM.YYYY\n\n"
-                    f"Например: /register {next_sunday}"
-                )
-            logger.info("[register_bath] Не передана дата, отправлена инструкция")
+            participants = db.get_bath_participants(next_sunday)
+            if any(p['user_id'] == user.id for p in participants):
+                await update.message.reply_text(f"Вы уже записаны на баню {next_sunday}!")
+                return
+            if len(participants) >= MAX_BATH_PARTICIPANTS:
+                await update.message.reply_text(f"К сожалению, на ближайшую баню {next_sunday} уже нет свободных мест.")
+                return
+            username = user.username or f"{user.first_name} {user.last_name or ''}"
+            db.add_bath_participant(next_sunday, user.id, username)
+            await update.message.reply_text(f"Вы успешно записаны на баню {next_sunday}!\n\nВремя: {BATH_TIME}\nСтоимость: {BATH_COST}\n\nДо встречи в бане!")
+            logger.info(f"[register_bath] Пользователь {user.id} записан на {next_sunday}")
             return
+        # Старое поведение — регистрация по дате
         date_str = context.args[0]
         logger.debug(f"[register_bath] Дата для регистрации: {date_str}")
         bath_info = f"Вы хотите записаться на баню в воскресенье {date_str}.\n\n"
