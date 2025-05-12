@@ -1229,8 +1229,21 @@ if __name__ == "__main__":
     # Базовые команды
     application.add_handler(CommandHandler("start", start))
     application.add_handler(CommandHandler("register", register_bath))
+    application.add_handler(CommandHandler("history", history))
+    application.add_handler(CommandHandler("visits", visits))
+    application.add_handler(CommandHandler("profile", profile))
+    application.add_handler(CommandHandler("cash_list", cash_list))
     application.add_handler(CommandHandler("create_bath", create_bath_event))
-    
+    application.add_handler(CommandHandler("mark_paid", mark_paid))
+    application.add_handler(CommandHandler("add_subscriber", add_subscriber))
+    application.add_handler(CommandHandler("remove_subscriber", remove_subscriber))
+    application.add_handler(CommandHandler("update_commands", update_commands))
+    application.add_handler(CommandHandler("export_profiles", export_profiles))
+    application.add_handler(CommandHandler("mention_all", mention_all))
+    application.add_handler(CommandHandler("stats", stats))
+    application.add_handler(CommandHandler("mark_visit", mark_visit))
+    application.add_handler(CommandHandler("clear_db", clear_db))
+
     # Обработчики кнопок
     application.add_handler(CallbackQueryHandler(button_callback))
     application.add_handler(CallbackQueryHandler(confirm_bath_registration, pattern="^confirm_bath_"))
@@ -1238,9 +1251,13 @@ if __name__ == "__main__":
     application.add_handler(CallbackQueryHandler(handle_cash_payment, pattern="^cash_bath_"))
     application.add_handler(CallbackQueryHandler(admin_confirm_payment, pattern="^admin_confirm_"))
     application.add_handler(CallbackQueryHandler(admin_decline_payment, pattern="^admin_decline_"))
-    
-    # Обработчик глубоких ссылок
-    application.add_handler(CommandHandler("start", handle_deep_link, filters=filters.Regex("^bath_")))
+
+    # Логируем если команда не зарегистрирована
+    registered_commands = ["start", "register", "history", "visits", "profile", "cash_list", "create_bath", "mark_paid", "add_subscriber", "remove_subscriber", "update_commands", "export_profiles", "mention_all", "stats", "mark_visit", "clear_db"]
+    def unknown_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+        logger.warning(f"Неизвестная команда: {update.message.text}")
+        return update.message.reply_text("Неизвестная команда. Пожалуйста, используйте меню.")
+    application.add_handler(MessageHandler(filters.COMMAND, unknown_command))
 
     logger.info("Запуск бота")
     application.run_polling()
