@@ -7,7 +7,7 @@ from telegram.ext import Application, CommandHandler, CallbackQueryHandler, Mess
 # Импорт обработчиков
 from handlers.bath import register_bath, create_bath_event, button_callback, confirm_bath_registration, handle_payment_confirmation, admin_confirm_payment, admin_decline_payment, handle_deep_link
 from handlers.profile import profile, handle_profile_update, handle_full_name, handle_birth_date, handle_occupation, handle_instagram, handle_skills, start_profile_callback, export_profiles, cancel
-from handlers.admin import mark_paid, add_subscriber, remove_subscriber, update_commands, mention_all, mark_visit, clear_db
+from handlers.admin import mark_paid, add_subscriber, remove_subscriber, update_commands, mention_all, mark_visit, clear_db, remove_registration
 
 logger = get_logger(__name__)
 db = Database()
@@ -28,7 +28,7 @@ if __name__ == "__main__":
     application.add_handler(CommandHandler("export_profiles", export_profiles))
     application.add_handler(CommandHandler("mention_all", mention_all))
     application.add_handler(CommandHandler("mark_visit", mark_visit))
-    application.add_handler(CommandHandler("clear_db", clear_db))
+    application.add_handler(CommandHandler("remove_registration", remove_registration))
 
     # Callback-и
     application.add_handler(CallbackQueryHandler(button_callback))
