@@ -2040,6 +2040,12 @@ def main():
         # Добавляем задачу для отправки сводки после бани
         job_queue = application.job_queue
         if job_queue:
+            # Автоматически создаём новую баню по понедельникам утром в 8:00
+            job_queue.run_daily(
+                 monday_notification,
+                 time=time(hour=8, minute=0),
+                 days=(0,)  # 0 = Monday
+            )
             # Отправляем сводку каждый воскресный вечер в 20:00
             job_queue.run_daily(
                 send_bath_summary,
