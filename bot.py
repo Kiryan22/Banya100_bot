@@ -73,12 +73,12 @@ if __name__ == "__main__":
     application.add_handler(profile_conv_handler)
 
     # Callback-и
-    application.add_handler(CallbackQueryHandler(button_callback))
     application.add_handler(CallbackQueryHandler(confirm_bath_registration, pattern="^confirm_bath_"))
     application.add_handler(CallbackQueryHandler(handle_payment_confirmation, pattern="^paid_bath_"))
     application.add_handler(CallbackQueryHandler(handle_payment_confirmation, pattern="^cash_bath_"))
     application.add_handler(CallbackQueryHandler(admin_confirm_payment, pattern="^admin_confirm_"))
     application.add_handler(CallbackQueryHandler(admin_decline_payment, pattern="^admin_decline_"))
+    application.add_handler(CallbackQueryHandler(button_callback))
 
     # Неизвестная команда
     def unknown_command(update, context):
