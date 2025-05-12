@@ -218,15 +218,25 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
             logger.info(f"[button_callback] join_bath_ для даты {date_str}")
             logger.info(f"Пользователь {user.id} пытается записаться на баню {date_str}")
 
-            if not db.try_add_bath_invite(user.id, user.username or user.first_name, date_str, hours=2):
+            # LOG: Проверка try_add_bath_invite
+            logger.debug(f"Пробую добавить bath_invite для user_id={user.id}, date_str={date_str}")
+            result = db.try_add_bath_invite(user.id, user.username or user.first_name, date_str, hours=2)
+            logger.debug(f"Результат try_add_bath_invite: {result}")
+            if not result:
+                logger.info(f"Пользователь {user.id} уже получил приглашение на регистрацию на {date_str}")
                 await query.answer("Вам уже отправлено приглашение на регистрацию. Проверьте личные сообщения.", show_alert=True)
                 return
 
+            # LOG: Проверка bath_registrations в user_data
+            logger.debug(f"Проверяю context.user_data['bath_registrations']: {context.user_data.get('bath_registrations')}")
             if 'bath_registrations' in context.user_data and date_str in context.user_data['bath_registrations']:
+                logger.info(f"Пользователь {user.id} уже начал процесс записи на {date_str}")
                 await query.answer("Вы уже начали процесс записи на эту дату.", show_alert=True)
                 return
 
+            # LOG: Получение участников
             participants = db.get_bath_participants(date_str)
+            logger.debug(f"Текущее количество участников на {date_str}: {len(participants)}")
             if len(participants) >= MAX_BATH_PARTICIPANTS:
                 logger.warning(f"Пользователь {user.id} не смог записаться - достигнут лимит участников")
                 await query.answer("К сожалению, баня уже занята. Вы можете записаться в следующий раз!", show_alert=True)
@@ -243,6 +253,7 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 ]
                 reply_markup = InlineKeyboardMarkup(keyboard)
 
+                logger.debug(f"Пробую отправить сообщение с подтверждением записи пользователю {user.id}")
                 await context.bot.send_message(
                     chat_id=user.id,
                     text=bath_info,
@@ -250,18 +261,21 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 )
                 logger.info(f"Отправлено сообщение с подтверждением записи пользователю {user.id}")
 
+                logger.debug(f"Пробую отправить reply_text в группу для пользователя {user.id}")
                 await query.message.reply_text(
                     f"@{user.username or user.first_name}, проверьте личные сообщения от бота.",
                     reply_to_message_id=query.message.message_id
                 )
+                logger.info(f"Отправлено сообщение в группу о личном сообщении пользователю {user.id}")
 
             except Exception as e:
                 logger.error(f"Ошибка при отправке сообщения пользователю {user.id}: {e}")
                 bot_username = context.bot.username
                 start_link = f"https://t.me/{bot_username}?start=bath_{date_str}"
+                logger.info(f"Вместо личного сообщения отправляю ссылку: {start_link}")
                 # ... (оставить обработку ссылки, если нужно) ...
     except Exception as e:
-        logger.error(f"Ошибка в функции button_callback: {e}")
+        logger.error(f"Ошибка в функции button_callback: {e}", exc_info=True)
 
 async def confirm_bath_registration(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
