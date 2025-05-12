@@ -115,84 +115,74 @@ async def create_bath_event(update: Update, context: ContextTypes.DEFAULT_TYPE):
         next_sunday = get_next_sunday()
         logger.info(f"[create_bath_event] Creating bath event for {next_sunday}")
         
-        # Очищаем старые события
-        cleared_events = db.clear_old_events()
-        logger.info(f"[create_bath_event] Cleared {cleared_events} old events")
-        
-        # Создаем новое событие
-        participants = db.get_bath_participants(next_sunday)
-        message_text = format_bath_message(next_sunday, participants)
-        reply_markup = create_bath_keyboard(next_sunday)
-        
-        # Открепляем старое сообщение
-        old_pinned_id = db.get_pinned_message_id()
-        if old_pinned_id:
-            try:
-                await context.bot.unpin_chat_message(chat_id=BATH_CHAT_ID, message_id=old_pinned_id)
-                db.delete_pinned_message_id(old_pinned_id)
-                logger.info(f"[create_bath_event] Unpinned old message {old_pinned_id}")
-            except Exception as e:
-                logger.warning(f"[create_bath_event] Failed to unpin old message: {e}")
-                
-        # Отправляем новое сообщение
         try:
-            sent_message = await context.bot.send_message(
-                chat_id=BATH_CHAT_ID,
-                text=message_text,
-                reply_markup=reply_markup
-            )
-            logger.info(f"[create_bath_event] Sent new message: {sent_message.message_id}")
+            # Очищаем старые события
+            cleared_events = db.clear_previous_bath_events()
+            logger.info(f"[create_bath_event] Cleared {cleared_events} old events")
             
-            # Проверяем текущее закрепленное сообщение
-            pinned_messages = await context.bot.get_chat(BATH_CHAT_ID)
-            if pinned_messages.pinned_message:
-                current_message = pinned_messages.pinned_message.text
-                current_markup = pinned_messages.pinned_message.reply_markup
-                
-                def markup_to_str(markup):
-                    if not markup:
-                        return ''
-                    return str([[btn.text for btn in row] for row in markup.inline_keyboard])
+            # Создаем новое событие
+            db.create_bath_event(next_sunday)
+            logger.info(f"[create_bath_event] Created new bath event for {next_sunday}")
+            
+            # Получаем список участников
+            participants = db.get_bath_participants(next_sunday)
+            message_text = format_bath_message(next_sunday, participants)
+            reply_markup = create_bath_keyboard(next_sunday)
+            
+            # Открепляем старое сообщение
+            old_pinned_id = db.get_pinned_message_id(BATH_CHAT_ID)
+            if old_pinned_id:
+                try:
+                    await context.bot.unpin_chat_message(chat_id=BATH_CHAT_ID, message_id=old_pinned_id)
+                    db.delete_pinned_message_id(old_pinned_id, BATH_CHAT_ID)
+                    logger.info(f"[create_bath_event] Unpinned old message {old_pinned_id}")
+                except Exception as e:
+                    logger.warning(f"[create_bath_event] Failed to unpin old message: {e}")
                     
-                markup_changed = markup_to_str(current_markup) != markup_to_str(reply_markup)
+            # Отправляем новое сообщение
+            try:
+                sent_message = await context.bot.send_message(
+                    chat_id=BATH_CHAT_ID,
+                    text=message_text,
+                    reply_markup=reply_markup
+                )
+                logger.info(f"[create_bath_event] Sent new message: {sent_message.message_id}")
                 
-                if current_message != message_text or markup_changed:
-                    try:
-                        await context.bot.edit_message_text(
-                            chat_id=BATH_CHAT_ID,
-                            message_id=pinned_messages.pinned_message.message_id,
-                            text=message_text,
-                            reply_markup=reply_markup
-                        )
-                        logger.info(f"[create_bath_event] Updated pinned message")
-                    except Exception as e:
-                        logger.error(f"[create_bath_event] Error updating pinned message: {e}", exc_info=True)
-                else:
-                    logger.info(f"[create_bath_event] Message and buttons unchanged")
-            else:
+                # Закрепляем новое сообщение
                 try:
                     await context.bot.pin_chat_message(
                         chat_id=BATH_CHAT_ID,
                         message_id=sent_message.message_id,
                         disable_notification=False
                     )
-                    db.set_pinned_message_id(next_sunday, sent_message.message_id)
+                    db.set_pinned_message_id(next_sunday, sent_message.message_id, BATH_CHAT_ID)
                     logger.info(f"[create_bath_event] Pinned new message: {sent_message.message_id}")
                 except Exception as e:
                     logger.error(f"[create_bath_event] Error pinning message: {e}", exc_info=True)
                     
-            if cleared_events > 0:
-                await context.bot.send_message(
-                    chat_id=BATH_CHAT_ID,
-                    text=f"Создана новая запись на баню {next_sunday}. Список участников предыдущей бани очищен."
-                )
-                logger.info(f"[create_bath_event] Sent cleanup notification")
-                
+                if cleared_events > 0:
+                    await context.bot.send_message(
+                        chat_id=BATH_CHAT_ID,
+                        text=f"Создана новая запись на баню {next_sunday}. Список участников предыдущей бани очищен."
+                    )
+                    logger.info(f"[create_bath_event] Sent cleanup notification")
+                    
+                # Отправляем подтверждение админу
+                message = update.message or (update.callback_query and update.callback_query.message)
+                if message:
+                    await message.reply_text(f"Событие бани на {next_sunday} успешно создано!")
+                    
+            except Exception as e:
+                logger.error(f"[create_bath_event] Error sending/updating message: {e}", exc_info=True)
+                message = update.message or (update.callback_query and update.callback_query.message)
+                if message:
+                    await message.reply_text("Произошла ошибка при отправке сообщения в чат бани.")
+                    
         except Exception as e:
-            logger.error(f"[create_bath_event] Error sending/updating message: {e}", exc_info=True)
+            logger.error(f"[create_bath_event] Database error: {e}", exc_info=True)
             message = update.message or (update.callback_query and update.callback_query.message)
             if message:
-                await message.reply_text("Произошла ошибка при создании события бани.")
+                await message.reply_text("Произошла ошибка при работе с базой данных.")
                 
     except Exception as e:
         logger.error(f"[create_bath_event] Unexpected error: {e}", exc_info=True)

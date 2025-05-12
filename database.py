@@ -89,9 +89,15 @@ class Database:
             # Проверяем, существует ли уже запись на эту дату
             cursor.execute('SELECT COUNT(*) FROM bath_participants WHERE date_str = %s', (date_str,))
             if cursor.fetchone()[0] == 0:
+                # Создаем новую запись
+                cursor.execute('INSERT INTO bath_participants (date_str) VALUES (%s)', (date_str,))
                 conn.commit()
+                logger.info(f"Created new bath event for {date_str}")
+            else:
+                logger.info(f"Bath event for {date_str} already exists")
         except mysql.connector.Error as e:
             logger.error(f"Ошибка при создании события бани: {e}")
+            conn.rollback()
             raise
         finally:
             conn.close()
