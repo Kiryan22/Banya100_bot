@@ -1,6 +1,6 @@
 import logging
 from datetime import datetime, timedelta
-from telegram import Update
+from telegram import Update, BotCommand
 from telegram.ext import ContextTypes
 from config import ADMIN_IDS, BATH_CHAT_ID
 from database import Database
@@ -289,5 +289,29 @@ async def mark_paid(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 await message.reply_text("Произошла непредвиденная ошибка при подтверждении оплаты.")
         except Exception as inner_e:
             logger.error(f"[mark_paid] Error sending error message: {inner_e}", exc_info=True)
+
+async def update_commands(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    admin_id = update.effective_user.id
+    if admin_id not in ADMIN_IDS:
+        await update.message.reply_text("У вас нет прав для выполнения этой команды.")
+        return
+
+    commands = [
+        BotCommand("start", "Начать работу с ботом"),
+        BotCommand("register", "Записаться на баню"),
+        BotCommand("profile", "Просмотр/обновление информации о себе"),
+        BotCommand("cash_list", "Список участников с оплатой наличными (только для админа)"),
+        BotCommand("create_bath", "Создать новую запись на ближайшее воскресенье"),
+        BotCommand("mark_paid", "Отметить оплату пользователя (/mark_paid username DD.MM.YYYY)"),
+        BotCommand("add_subscriber", "Добавить подписчика (/add_subscriber user_id days)"),
+        BotCommand("remove_subscriber", "Удалить подписчика (/remove_subscriber user_id)"),
+        BotCommand("update_commands", "Обновить меню команд (только для админа)"),
+        BotCommand("export_profiles", "Экспорт всех профилей пользователей"),
+        BotCommand("mention_all", "Упомянуть всех активных пользователей"),
+        BotCommand("mark_visit", "Отметить посещение бани"),
+        BotCommand("clear_db", "Полная очистка базы данных (только для админа)")
+    ]
+    await context.bot.set_my_commands(commands)
+    await update.message.reply_text("Меню команд обновлено.")
 
 # ... (оставить остальные функции, которые были в bot.py, связанные с админскими действиями) ...
