@@ -373,3 +373,26 @@ async def history(update: Update, context: ContextTypes.DEFAULT_TYPE):
     except Exception as e:
         logger.error(f"[history] Ошибка при получении истории: {e}", exc_info=True)
         await update.message.reply_text("Произошла ошибка при получении истории. Попробуйте позже.")
+
+async def handle_profile_update_text(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    try:
+        user = update.effective_user
+        text = update.message.text.strip().lower()
+        message = update.message
+        if text in ["да", "yes", "y", "д"]:
+            context.user_data['updating_profile'] = True
+            context.user_data['profile_step'] = 'full_name'
+            await message.reply_text("Пожалуйста, введите ваше полное имя:")
+            logger.info(f"[handle_profile_update_text] Started profile update for user {user.id}")
+            return FULL_NAME
+        elif text in ["нет", "no", "n", "н"]:
+            await message.reply_text("Спасибо! Ваши данные сохранены. Если захотите обновить профиль позже, используйте команду /profile")
+            logger.info(f"[handle_profile_update_text] User {user.id} declined profile update")
+            return ConversationHandler.END
+        else:
+            await message.reply_text("Пожалуйста, ответьте 'да' или 'нет'.")
+            return PROFILE
+    except Exception as e:
+        logger.error(f"[handle_profile_update_text] Unexpected error: {e}", exc_info=True)
+        await update.message.reply_text("Произошла ошибка. Попробуйте позже.")
+        return ConversationHandler.END

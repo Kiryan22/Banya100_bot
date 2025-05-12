@@ -2,11 +2,11 @@ import logging
 from logger import get_logger
 from config import BOT_TOKEN
 from database import Database
-from telegram.ext import Application, CommandHandler, CallbackQueryHandler, MessageHandler, filters
+from telegram.ext import Application, CommandHandler, CallbackQueryHandler, MessageHandler, filters, ConversationHandler
 
 # Импорт обработчиков
 from handlers.bath import start, register_bath, create_bath_event, button_callback, confirm_bath_registration, handle_payment_confirmation, admin_confirm_payment, admin_decline_payment, handle_deep_link
-from handlers.profile import profile, handle_profile_update, handle_full_name, handle_birth_date, handle_occupation, handle_instagram, handle_skills, start_profile_callback, export_profiles, cancel, history
+from handlers.profile import profile, handle_profile_update, handle_full_name, handle_birth_date, handle_occupation, handle_instagram, handle_skills, start_profile_callback, export_profiles, cancel, history, handle_profile_update_text
 from handlers.admin import mark_paid, add_subscriber, remove_subscriber, update_commands, mention_all, mark_visit, clear_db, remove_registration
 
 logger = get_logger(__name__)
@@ -37,6 +37,21 @@ if __name__ == "__main__":
     application.add_handler(CallbackQueryHandler(handle_payment_confirmation, pattern="^paid_bath_"))
     application.add_handler(CallbackQueryHandler(admin_confirm_payment, pattern="^admin_confirm_"))
     application.add_handler(CallbackQueryHandler(admin_decline_payment, pattern="^admin_decline_"))
+
+    # ConversationHandler для профиля
+    profile_conv_handler = ConversationHandler(
+        entry_points=[CommandHandler("profile", profile)],
+        states={
+            0: [MessageHandler(filters.TEXT & ~filters.COMMAND, handle_profile_update_text)],
+            1: [MessageHandler(filters.TEXT & ~filters.COMMAND, handle_full_name)],
+            2: [MessageHandler(filters.TEXT & ~filters.COMMAND, handle_birth_date)],
+            3: [MessageHandler(filters.TEXT & ~filters.COMMAND, handle_occupation)],
+            4: [MessageHandler(filters.TEXT & ~filters.COMMAND, handle_instagram)],
+            5: [MessageHandler(filters.TEXT & ~filters.COMMAND, handle_skills)],
+        },
+        fallbacks=[CommandHandler("cancel", cancel)],
+    )
+    application.add_handler(profile_conv_handler)
 
     # Неизвестная команда
     def unknown_command(update, context):
