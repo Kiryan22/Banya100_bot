@@ -3,7 +3,7 @@ from logger import get_logger
 from config import BOT_TOKEN
 from database import Database
 from telegram.ext import Application, CommandHandler, CallbackQueryHandler, MessageHandler, filters, ConversationHandler
-from datetime import datetime
+from datetime import datetime, time
 import pytz
 
 # Импорт обработчиков
