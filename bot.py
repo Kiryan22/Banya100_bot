@@ -89,7 +89,7 @@ if __name__ == "__main__":
     warsaw_tz = pytz.timezone('Europe/Warsaw')
     application.job_queue.run_daily(
         lambda context: cash_list(None, context, silent=True),
-        time=datetime.time(hour=10, minute=0, tzinfo=warsaw_tz),
+        time=time(hour=10, minute=0, tzinfo=warsaw_tz),
         name="cash_list_auto"
     )
 
