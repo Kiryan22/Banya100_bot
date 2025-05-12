@@ -1201,3 +1201,18 @@ async def handle_cash_payment(update: Update, context: ContextTypes.DEFAULT_TYPE
             )
         except Exception as inner_e:
             logger.error(f"[handle_cash_payment] Error sending error message: {inner_e}", exc_info=True)
+
+if __name__ == "__main__":
+    from telegram.ext import Application, CommandHandler, CallbackQueryHandler, MessageHandler, filters, ConversationHandler
+    
+    application = Application.builder().token(TOKEN).build()
+
+    # Пример добавления хендлеров (добавьте свои)
+    application.add_handler(CommandHandler("start", start))
+    application.add_handler(CommandHandler("register", register_bath))
+    application.add_handler(CommandHandler("create_bath", create_bath_event))
+    application.add_handler(CallbackQueryHandler(button_callback))
+    # ... добавьте остальные хендлеры ...
+
+    logger.info("Запуск бота")
+    application.run_polling()
