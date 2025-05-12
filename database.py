@@ -558,7 +558,7 @@ class Database:
             cursor = conn.cursor()
             cursor.execute('''
                 INSERT INTO user_profiles 
-                (user_id, username, full_name, birth_date, occupation, instagram, skills, last_updated)
+                (user_id, username, full_name, birth_date, occupation, instagram, skills, updated_at)
                 VALUES (%s, %s, %s, %s, %s, %s, %s, CURRENT_TIMESTAMP)
                 ON DUPLICATE KEY UPDATE
                     username=VALUES(username),
@@ -567,7 +567,7 @@ class Database:
                     occupation=VALUES(occupation),
                     instagram=VALUES(instagram),
                     skills=VALUES(skills),
-                    last_updated=CURRENT_TIMESTAMP
+                    updated_at=CURRENT_TIMESTAMP
             ''', (user_id, username, full_name, birth_date, occupation, instagram, skills))
             conn.commit()
             return True
@@ -596,7 +596,7 @@ class Database:
                     'total_visits': row[7],
                     'first_visit_date': row[8],
                     'last_visit_date': row[9],
-                    'last_updated': row[10]
+                    'updated_at': row[10]
                 }
             return None
         finally:
@@ -611,7 +611,7 @@ class Database:
                 SELECT p.*, up.* 
                 FROM bath_participants p
                 LEFT JOIN user_profiles up ON p.user_id = up.user_id
-                WHERE p.date_str = %s AND p.visited = 1
+                WHERE p.date_str = %s
             ''', (date_str,))
             rows = cursor.fetchall()
             return [{
@@ -660,14 +660,15 @@ class Database:
         try:
             cursor = conn.cursor()
             cursor.execute('''
-                INSERT INTO pending_payments (user_id, username, date_str, payment_type, created_at, last_notified)
-                VALUES (%s, %s, %s, %s, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+                INSERT INTO pending_payments (user_id, username, date_str, payment_type, amount, created_at, last_notified)
+                VALUES (%s, %s, %s, %s, %s, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
                 ON DUPLICATE KEY UPDATE
                     username=VALUES(username),
                     payment_type=VALUES(payment_type),
+                    amount=VALUES(amount),
                     created_at=CURRENT_TIMESTAMP,
                     last_notified=CURRENT_TIMESTAMP
-            ''', (user_id, username, date_str, payment_type))
+            ''', (user_id, username, date_str, payment_type, 1000))  # Используем значение из конфига
             conn.commit()
         finally:
             conn.close()
