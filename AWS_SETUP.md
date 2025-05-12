@@ -47,7 +47,7 @@ sudo mv global-bundle.pem /etc/ssl/certs/ca-certificates.crt
 
 ## 4. Обновление конфигурации
 
-1. Обновите файл `.env`:
+1. Обновите файл `   RDS_SSL_CA=/Users/kshamanskiy/global-bundle.pem.env`:
 ```
 # AWS RDS Configuration
 RDS_HOST=your-db-instance.xxxxx.region.rds.amazonaws.com

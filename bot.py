@@ -279,11 +279,11 @@ async def create_bath_event(update: Update, context: ContextTypes.DEFAULT_TYPE):
             reply_markup = InlineKeyboardMarkup(keyboard)
         else:
             reply_markup = None
-        old_pinned_id = db.get_last_pinned_message_id()
+        old_pinned_id = db.get_last_pinned_message_id(BATH_CHAT_ID)
         if old_pinned_id:
             try:
                 await context.bot.unpin_chat_message(chat_id=BATH_CHAT_ID, message_id=old_pinned_id)
-                db.delete_pinned_message_id(old_pinned_id)
+                db.delete_pinned_message_id(old_pinned_id, BATH_CHAT_ID)
                 logger.info(f"[create_bath_event] Откреплено старое сообщение {old_pinned_id}")
             except Exception as e:
                 logger.warning(f'[create_bath_event] Не удалось открепить старое сообщение: {e}')
@@ -321,7 +321,7 @@ async def create_bath_event(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 message_id=sent_message.message_id,
                 disable_notification=False
             )
-            db.set_pinned_message_id(next_sunday, sent_message.message_id)
+            db.set_pinned_message_id(next_sunday, sent_message.message_id, BATH_CHAT_ID)
             logger.info(f"[create_bath_event] Сообщение закреплено: {sent_message.message_id}")
         if cleared_events > 0:
             await context.bot.send_message(
@@ -952,17 +952,9 @@ async def mark_paid(update: Update, context: ContextTypes.DEFAULT_TYPE):
 # Функция, которая будет запускаться каждый понедельник
 async def monday_notification(context: ContextTypes.DEFAULT_TYPE):
     next_sunday = get_next_sunday()
-
-    # Очищаем все предыдущие события бани, сохраняя только текущее
     cleared_events = db.clear_previous_bath_events(except_date_str=next_sunday)
-
-    # Создаем событие в базе данных
     db.create_bath_event(next_sunday)
-
-    # Отправляем сообщение о бане
     message = format_bath_message(next_sunday)
-
-    # Проверяем лимит участников
     participants = db.get_bath_participants(next_sunday)
     if len(participants) < MAX_BATH_PARTICIPANTS:
         keyboard = [
@@ -971,22 +963,18 @@ async def monday_notification(context: ContextTypes.DEFAULT_TYPE):
         reply_markup = InlineKeyboardMarkup(keyboard)
     else:
         reply_markup = None
-
-    # Открепляем старое закрепленное сообщение
-    old_pinned_id = db.get_last_pinned_message_id()
+    old_pinned_id = db.get_last_pinned_message_id(BATH_CHAT_ID)
     if old_pinned_id:
         try:
             await context.bot.unpin_chat_message(chat_id=BATH_CHAT_ID, message_id=old_pinned_id)
-            db.delete_pinned_message_id(old_pinned_id)
+            db.delete_pinned_message_id(old_pinned_id, BATH_CHAT_ID)
         except Exception as e:
             logger.warning(f'Не удалось открепить старое закрепленное сообщение: {e}')
-
     sent_message = await context.bot.send_message(
         chat_id=BATH_CHAT_ID,
         text=message,
         reply_markup=reply_markup
     )
-
     # Проверяем, есть ли уже закрепленное сообщение
     pinned_messages = await context.bot.get_chat(BATH_CHAT_ID)
     if pinned_messages.pinned_message:
@@ -1016,10 +1004,8 @@ async def monday_notification(context: ContextTypes.DEFAULT_TYPE):
             message_id=sent_message.message_id,
             disable_notification=False
         )
-        db.set_pinned_message_id(next_sunday, sent_message.message_id)
+        db.set_pinned_message_id(next_sunday, sent_message.message_id, BATH_CHAT_ID)
         logger.info(f"[monday_notification] Сообщение закреплено: {sent_message.message_id}")
-
-    # Если были очищены предыдущие события, отправим уведомление
     if cleared_events > 0:
         await context.bot.send_message(
             chat_id=BATH_CHAT_ID,

@@ -278,13 +278,6 @@ class Database:
             with self.get_connection() as conn:
                 cursor = conn.cursor()
                 
-                # Проверяем существование таблицы user_profiles
-                cursor.execute("SHOW TABLES LIKE 'user_profiles'")
-                if cursor.fetchone():
-                    # Если таблица существует, удаляем её
-                    cursor.execute("DROP TABLE user_profiles")
-                    logger.info("Dropped existing user_profiles table for migration")
-                
                 # Создаем таблицу участников бани
                 cursor.execute("""
                     CREATE TABLE IF NOT EXISTS bath_participants (
@@ -295,7 +288,11 @@ class Database:
                         paid BOOLEAN DEFAULT FALSE,
                         cash BOOLEAN DEFAULT FALSE,
                         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                        UNIQUE KEY unique_participant (user_id, date_str)
+                        UNIQUE KEY unique_participant (user_id, date_str),
+                        INDEX idx_date_str (date_str),
+                        INDEX idx_user_id (user_id),
+                        INDEX idx_paid (paid),
+                        INDEX idx_cash (cash)
                     )
                 """)
                 
@@ -308,7 +305,11 @@ class Database:
                         date_str VARCHAR(10) NOT NULL,
                         paid BOOLEAN DEFAULT FALSE,
                         visited BOOLEAN DEFAULT FALSE,
-                        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                        INDEX idx_date_str (date_str),
+                        INDEX idx_user_id (user_id),
+                        INDEX idx_paid (paid),
+                        INDEX idx_visited (visited)
                     )
                 """)
                 
@@ -320,7 +321,9 @@ class Database:
                         chat_id BIGINT NOT NULL,
                         date_str VARCHAR(10) NOT NULL,
                         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                        UNIQUE KEY unique_pinned_message (message_id, chat_id, date_str)
+                        UNIQUE KEY unique_pinned_message (message_id, chat_id, date_str),
+                        INDEX idx_chat_id (chat_id),
+                        INDEX idx_date_str (date_str)
                     )
                 """)
                 
@@ -331,7 +334,8 @@ class Database:
                         user_id BIGINT NOT NULL,
                         username VARCHAR(255),
                         last_active TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                        UNIQUE KEY unique_user (user_id)
+                        UNIQUE KEY unique_user (user_id),
+                        INDEX idx_last_active (last_active)
                     )
                 """)
                 
@@ -344,7 +348,9 @@ class Database:
                         user_id BIGINT NOT NULL,
                         username VARCHAR(255),
                         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                        UNIQUE KEY unique_message (message_id, chat_id)
+                        UNIQUE KEY unique_message (message_id, chat_id),
+                        INDEX idx_user_id (user_id),
+                        INDEX idx_chat_id (chat_id)
                     )
                 """)
                 
@@ -355,7 +361,8 @@ class Database:
                         user_id BIGINT NOT NULL,
                         username VARCHAR(255),
                         subscribed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                        UNIQUE KEY unique_subscriber (user_id)
+                        UNIQUE KEY unique_subscriber (user_id),
+                        INDEX idx_subscribed_at (subscribed_at)
                     )
                 """)
                 
@@ -365,9 +372,14 @@ class Database:
                         id BIGINT AUTO_INCREMENT PRIMARY KEY,
                         inviter_id BIGINT NOT NULL,
                         invitee_id BIGINT NOT NULL,
+                        inviter_username VARCHAR(255),
+                        invitee_username VARCHAR(255),
                         date_str VARCHAR(10) NOT NULL,
                         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                        UNIQUE KEY unique_invite (inviter_id, invitee_id, date_str)
+                        UNIQUE KEY unique_invite (inviter_id, invitee_id, date_str),
+                        INDEX idx_invitee_id (invitee_id),
+                        INDEX idx_date_str (date_str),
+                        INDEX idx_created_at (created_at)
                     )
                 """)
                 
@@ -387,7 +399,10 @@ class Database:
                         last_visit_date DATE,
                         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-                        UNIQUE KEY unique_user_profile (user_id)
+                        UNIQUE KEY unique_user_profile (user_id),
+                        INDEX idx_username (username),
+                        INDEX idx_total_visits (total_visits),
+                        INDEX idx_last_visit_date (last_visit_date)
                     )
                 """)
                 
@@ -404,7 +419,11 @@ class Database:
                         last_notified TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-                        UNIQUE KEY unique_pending_payment (user_id, date_str)
+                        UNIQUE KEY unique_pending_payment (user_id, date_str),
+                        INDEX idx_username (username),
+                        INDEX idx_date_str (date_str),
+                        INDEX idx_status (status),
+                        INDEX idx_last_notified (last_notified)
                     )
                 """)
                 
@@ -497,16 +516,20 @@ class Database:
         finally:
             conn.close()
 
-    def add_bath_invite(self, user_id, date_str):
+    def add_bath_invite(self, user_id, username, date_str):
         """Добавляет временное приглашение на регистрацию (на 2 часа)"""
         conn = self.get_connection()
         try:
             cursor = conn.cursor()
             cursor.execute('''
-                INSERT INTO bath_invites (inviter_id, invitee_id, date_str, created_at)
-                VALUES (%s, %s, %s, CURRENT_TIMESTAMP)
-                ON DUPLICATE KEY UPDATE created_at=CURRENT_TIMESTAMP
-            ''', (user_id, user_id, date_str))
+                INSERT INTO bath_invites 
+                (inviter_id, invitee_id, inviter_username, invitee_username, date_str, created_at)
+                VALUES (%s, %s, %s, %s, %s, CURRENT_TIMESTAMP)
+                ON DUPLICATE KEY UPDATE 
+                    inviter_username=VALUES(inviter_username),
+                    invitee_username=VALUES(invitee_username),
+                    created_at=CURRENT_TIMESTAMP
+            ''', (user_id, user_id, username, username, date_str))
             conn.commit()
         finally:
             conn.close()
@@ -517,7 +540,8 @@ class Database:
         try:
             cursor = conn.cursor()
             cursor.execute('''
-                SELECT created_at FROM bath_invites 
+                SELECT created_at, invitee_username 
+                FROM bath_invites 
                 WHERE invitee_id = %s AND date_str = %s
             ''', (user_id, date_str))
             row = cursor.fetchone()
@@ -541,7 +565,7 @@ class Database:
         finally:
             conn.close()
 
-    def try_add_bath_invite(self, user_id, date_str, hours=2):
+    def try_add_bath_invite(self, user_id, username, date_str, hours=2):
         """Пытается добавить приглашение. Возвращает True, если приглашение новое, иначе False."""
         conn = self.get_connection()
         try:
@@ -554,9 +578,10 @@ class Database:
             ''', (user_id, date_str, hours))
             # Пытаемся вставить новое приглашение
             cursor.execute('''
-                INSERT IGNORE INTO bath_invites (inviter_id, invitee_id, date_str, created_at)
-                VALUES (%s, %s, %s, CURRENT_TIMESTAMP)
-            ''', (user_id, user_id, date_str))
+                INSERT IGNORE INTO bath_invites 
+                (inviter_id, invitee_id, inviter_username, invitee_username, date_str, created_at)
+                VALUES (%s, %s, %s, %s, %s, CURRENT_TIMESTAMP)
+            ''', (user_id, user_id, username, username, date_str))
             conn.commit()
             return cursor.rowcount > 0
         finally:
