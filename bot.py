@@ -72,7 +72,8 @@ def cleanup_old_logs(log_dir):
         logging.error(f"Ошибка при очистке старых логов: {e}")
 
 # Инициализация логирования
-logger = setup_logging()
+setup_logging()
+logger = logging.getLogger(__name__)
 
 # Инициализация базы данных
 db = Database()
