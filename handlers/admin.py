@@ -406,4 +406,35 @@ async def mark_visit(update: Update, context: ContextTypes.DEFAULT_TYPE):
         except Exception as inner_e:
             logger.error(f"[mark_visit] Error sending error message: {inner_e}", exc_info=True)
 
+async def clear_db(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    try:
+        if update.effective_chat.type != "private":
+            message = update.message or (update.callback_query and update.callback_query.message)
+            if message:
+                await message.reply_text("Эта команда доступна только в личном чате с ботом.")
+            logger.warning("[clear_db] Command used in non-private chat")
+            return
+
+        admin_id = update.effective_user.id
+        if admin_id not in ADMIN_IDS:
+            message = update.message or (update.callback_query and update.callback_query.message)
+            if message:
+                await message.reply_text("У вас нет прав для выполнения этой команды.")
+            logger.warning(f"[clear_db] Non-admin user {admin_id} attempted to clear DB")
+            return
+
+        db.clear_all_data()
+        message = update.message or (update.callback_query and update.callback_query.message)
+        if message:
+            await message.reply_text("База данных полностью очищена.")
+        logger.info(f"[clear_db] Database cleared by admin {admin_id}")
+    except Exception as e:
+        logger.error(f"[clear_db] Unexpected error: {e}", exc_info=True)
+        try:
+            message = update.message or (update.callback_query and update.callback_query.message)
+            if message:
+                await message.reply_text("Произошла ошибка при очистке базы данных.")
+        except Exception as inner_e:
+            logger.error(f"[clear_db] Error sending error message: {inner_e}", exc_info=True)
+
 # ... (оставить остальные функции, которые были в bot.py, связанные с админскими действиями) ...
