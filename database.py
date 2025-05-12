@@ -132,15 +132,15 @@ class Database:
         finally:
             conn.close()
 
-    def add_bath_participant(self, date_str, user_id, username, paid=False):
+    def add_bath_participant(self, date_str, user_id, username, paid=False, cash=False):
         """Добавляет участника в список"""
         conn = self.get_connection()
         try:
             cursor = conn.cursor()
             cursor.execute('''
-                INSERT INTO bath_participants (date_str, user_id, username, paid)
-                VALUES (%s, %s, %s, %s)
-            ''', (date_str, user_id, username, paid))
+                INSERT INTO bath_participants (date_str, user_id, username, paid, cash)
+                VALUES (%s, %s, %s, %s, %s)
+            ''', (date_str, user_id, username, paid, cash))
             conn.commit()
             return True
         except mysql.connector.Error as e:

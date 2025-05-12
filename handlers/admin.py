@@ -542,4 +542,76 @@ async def cash_list(update: Update = None, context: ContextTypes.DEFAULT_TYPE = 
         if update and not silent:
             await update.message.reply_text("Произошла ошибка при получении списка наличных.")
 
+async def admin_confirm_payment(update: Update, context: ContextTypes.DEFAULT_TYPE, user_id, date_str, payment_type):
+    try:
+        query = update.callback_query
+        user = query.from_user
+        logger.info(f"[admin_confirm_payment] CallbackQuery received: data={query.data}, chat_type={update.effective_chat.type}, user_id={user.id}")
+        await query.answer()
+        if user.id not in ADMIN_IDS:
+            logger.warning(f"[admin_confirm_payment] Non-admin user {user.id} attempted to confirm payment")
+            await query.edit_message_text("У вас нет прав для выполнения этой операции.")
+            return
+        callback_data = query.data
+        parts = callback_data.split("_")
+        if parts[0] == "admin" and parts[1] == "confirm":
+            user_id = int(parts[2])
+            date_str = parts[3]
+            payment_type = parts[4] if len(parts) > 4 else None
+            user_data = db.get_pending_payment(user_id, date_str, payment_type)
+            logger.info(f"[admin_confirm_payment] Looking for payment: user_id={user_id}, date_str={date_str}, payment_type={payment_type}")
+            logger.info(f"[admin_confirm_payment] Found payment data: {user_data}")
+            if user_data:
+                profile = db.get_user_profile(user_id)
+                if not profile:
+                    logger.warning(f"[admin_confirm_payment] No profile found for user {user_id}")
+                    await query.edit_message_text(
+                        text="Пользователь не заполнил профиль. Сначала нужно заполнить профиль, а затем подтвердить оплату."
+                    )
+                    try:
+                        await context.bot.send_message(
+                            chat_id=user_id,
+                            text="Пожалуйста, заполните профиль командой /profile, чтобы администратор мог подтвердить вашу оплату."
+                        )
+                    except Exception as e:
+                        logger.error(f"[admin_confirm_payment] Error sending profile request to user: {e}", exc_info=True)
+                    return
+                # Подтверждаем оплату
+                try:
+                    if payment_type == 'cash':
+                        username = profile['username'] or profile['full_name']
+                        db.add_bath_participant(date_str, user_id, username, paid=False, cash=True)
+                    else:
+                        db.confirm_payment(user_id, date_str, payment_type)
+                    logger.info(f"[admin_confirm_payment] Payment confirmed for user {user_id}")
+                    try:
+                        await context.bot.send_message(
+                            chat_id=user_id,
+                            text=f"Ваша оплата за баню {date_str} подтверждена администратором."
+                        )
+                        logger.info(f"[admin_confirm_payment] Sent confirmation to user {user_id}")
+                    except Exception as e:
+                        logger.error(f"[admin_confirm_payment] Error sending confirmation to user: {e}", exc_info=True)
+                    await query.edit_message_text(
+                        text=f"Оплата пользователя {user_data['username']} подтверждена."
+                    )
+                except Exception as e:
+                    logger.error(f"[admin_confirm_payment] Error confirming payment: {e}", exc_info=True)
+                    await query.edit_message_text(
+                        text="Произошла ошибка при подтверждении оплаты."
+                    )
+            else:
+                logger.warning(f"[admin_confirm_payment] No payment found for user {user_id}")
+                await query.edit_message_text(
+                    text="Заявка на оплату не найдена."
+                )
+    except Exception as e:
+        logger.error(f"[admin_confirm_payment] Unexpected error: {e}", exc_info=True)
+        try:
+            await query.edit_message_text(
+                text="Произошла непредвиденная ошибка при подтверждении оплаты."
+            )
+        except Exception as inner_e:
+            logger.error(f"[admin_confirm_payment] Error sending error message: {inner_e}", exc_info=True)
+
 # ... (оставить остальные функции, которые были в bot.py, связанные с админскими действиями) ...

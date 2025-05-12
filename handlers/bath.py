@@ -580,3 +580,33 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "Воспользуйтесь меню команд или напишите /register, чтобы записаться!"
     )
     await update.message.reply_text(text) 
+
+        if callback_data.startswith("cash_bath_"):
+            date_str = callback_data.replace("cash_bath_", "")
+            if ('bath_registrations' in context.user_data and
+                    date_str in context.user_data['bath_registrations']):
+                context.user_data['bath_registrations'][date_str]['status'] = 'cash_claimed'
+            username = user.username or f"{user.first_name} {user.last_name or ''}"
+            db.add_pending_payment(user.id, username, date_str, payment_type='cash')
+            await query.edit_message_text(
+                text=f"Спасибо! Ваша заявка на оплату наличными отправлена администратору. После подтверждения и заполнения профиля вы будете добавлены в список участников бани на {date_str}. Пожалуйста, ожидайте подтверждения."
+            )
+            for admin_id in ADMIN_IDS:
+                try:
+                    callback_data_confirm = f"admin_confirm_{user.id}_{date_str}_cash"
+                    callback_data_decline = f"admin_decline_{user.id}_{date_str}_cash"
+                    keyboard = [
+                        [
+                            InlineKeyboardButton("Подтвердить наличные", callback_data=callback_data_confirm),
+                            InlineKeyboardButton("Отклонить", callback_data=callback_data_decline)
+                        ]
+                    ]
+                    reply_markup = InlineKeyboardMarkup(keyboard)
+                    await context.bot.send_message(
+                        chat_id=admin_id,
+                        text=f"Пользователь @{username} (ID: {user.id}) хочет оплатить баню {date_str} наличными. Подтвердите или отклоните оплату.",
+                        reply_markup=reply_markup
+                    )
+                except Exception as e:
+                    logger.error(f"Ошибка при отправке уведомления администратору {admin_id}: {e}")
+            return 
