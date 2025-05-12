@@ -9,6 +9,7 @@ import os
 import re
 import csv
 import tempfile
+from logger import get_logger
 
 from config import *
 from database import Database
@@ -61,6 +62,7 @@ def setup_logging():
     # Запускаем очистку старых логов
     cleanup_old_logs(log_dir)
 
+    logger = get_logger(__name__)
     logger.info("Логирование успешно настроено")
 
 def cleanup_old_logs(log_dir):
