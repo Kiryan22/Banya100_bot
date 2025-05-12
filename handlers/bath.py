@@ -88,87 +88,114 @@ async def register_bath(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await message.reply_text("Произошла ошибка при регистрации. Пожалуйста, попробуйте позже.")
 
 async def create_bath_event(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    logger.info("[create_bath_event] Вход в команду /create_bath")
     try:
+        logger.info("[create_bath_event] Command received")
+        
         if update.effective_chat.type != "private":
             message = update.message or (update.callback_query and update.callback_query.message)
             if message:
                 await message.reply_text("Эта команда доступна только в личном чате с ботом.")
-            logger.warning("[create_bath_event] Попытка запуска не в личном чате")
+            logger.warning("[create_bath_event] Command used in non-private chat")
             return
-        user_id = update.effective_user.id
-        if user_id not in ADMIN_IDS:
+            
+        admin_id = update.effective_user.id
+        if admin_id not in ADMIN_IDS:
             message = update.message or (update.callback_query and update.callback_query.message)
             if message:
                 await message.reply_text("У вас нет прав для выполнения этой команды.")
-            logger.warning(f"[create_bath_event] Пользователь {user_id} не админ")
+            logger.warning(f"[create_bath_event] Non-admin user {admin_id} attempted to create event")
             return
+            
         next_sunday = get_next_sunday()
-        cleared_events = db.clear_previous_bath_events(except_date_str=next_sunday)
-        db.create_bath_event(next_sunday)
-        logger.info(f"[create_bath_event] Создано событие на {next_sunday}")
-        message_text = format_bath_message(next_sunday, db)
+        logger.info(f"[create_bath_event] Creating bath event for {next_sunday}")
+        
+        # Очищаем старые события
+        cleared_events = db.clear_old_events()
+        logger.info(f"[create_bath_event] Cleared {cleared_events} old events")
+        
+        # Создаем новое событие
         participants = db.get_bath_participants(next_sunday)
-        if len(participants) < MAX_BATH_PARTICIPANTS:
-            keyboard = [
-                [InlineKeyboardButton("Записаться", callback_data=f"join_bath_{next_sunday}")]
-            ]
-            reply_markup = InlineKeyboardMarkup(keyboard)
-        else:
-            reply_markup = None
-        old_pinned_id = db.get_last_pinned_message_id()
+        message_text = format_bath_message(next_sunday, participants)
+        reply_markup = create_bath_keyboard(next_sunday)
+        
+        # Открепляем старое сообщение
+        old_pinned_id = db.get_pinned_message_id()
         if old_pinned_id:
             try:
                 await context.bot.unpin_chat_message(chat_id=BATH_CHAT_ID, message_id=old_pinned_id)
                 db.delete_pinned_message_id(old_pinned_id)
-                logger.info(f"[create_bath_event] Откреплено старое сообщение {old_pinned_id}")
+                logger.info(f"[create_bath_event] Unpinned old message {old_pinned_id}")
             except Exception as e:
-                logger.warning(f'[create_bath_event] Не удалось открепить старое сообщение: {e}')
-        sent_message = await context.bot.send_message(
-            chat_id=BATH_CHAT_ID,
-            text=message_text,
-            reply_markup=reply_markup
-        )
-        pinned_messages = await context.bot.get_chat(BATH_CHAT_ID)
-        if pinned_messages.pinned_message:
-            current_message = pinned_messages.pinned_message.text
-            current_markup = pinned_messages.pinned_message.reply_markup
-            def markup_to_str(markup):
-                if not markup:
-                    return ''
-                return str([[btn.text for btn in row] for row in markup.inline_keyboard])
-            markup_changed = markup_to_str(current_markup) != markup_to_str(reply_markup)
-            if current_message != message_text or markup_changed:
-                try:
-                    await context.bot.edit_message_text(
-                        chat_id=BATH_CHAT_ID,
-                        message_id=pinned_messages.pinned_message.message_id,
-                        text=message_text,
-                        reply_markup=reply_markup
-                    )
-                    logger.info(f"[create_bath_event] Закрепленное сообщение обновлено")
-                except Exception as e:
-                    logger.error(f"[create_bath_event] Ошибка при обновлении закрепленного сообщения: {e}")
+                logger.warning(f"[create_bath_event] Failed to unpin old message: {e}")
+                
+        # Отправляем новое сообщение
+        try:
+            sent_message = await context.bot.send_message(
+                chat_id=BATH_CHAT_ID,
+                text=message_text,
+                reply_markup=reply_markup
+            )
+            logger.info(f"[create_bath_event] Sent new message: {sent_message.message_id}")
+            
+            # Проверяем текущее закрепленное сообщение
+            pinned_messages = await context.bot.get_chat(BATH_CHAT_ID)
+            if pinned_messages.pinned_message:
+                current_message = pinned_messages.pinned_message.text
+                current_markup = pinned_messages.pinned_message.reply_markup
+                
+                def markup_to_str(markup):
+                    if not markup:
+                        return ''
+                    return str([[btn.text for btn in row] for row in markup.inline_keyboard])
+                    
+                markup_changed = markup_to_str(current_markup) != markup_to_str(reply_markup)
+                
+                if current_message != message_text or markup_changed:
+                    try:
+                        await context.bot.edit_message_text(
+                            chat_id=BATH_CHAT_ID,
+                            message_id=pinned_messages.pinned_message.message_id,
+                            text=message_text,
+                            reply_markup=reply_markup
+                        )
+                        logger.info(f"[create_bath_event] Updated pinned message")
+                    except Exception as e:
+                        logger.error(f"[create_bath_event] Error updating pinned message: {e}", exc_info=True)
+                else:
+                    logger.info(f"[create_bath_event] Message and buttons unchanged")
             else:
-                logger.info(f"[create_bath_event] Сообщение и кнопки не требуют обновления")
-        else:
-            await context.bot.pin_chat_message(
-                chat_id=BATH_CHAT_ID,
-                message_id=sent_message.message_id,
-                disable_notification=False
-            )
-            db.set_pinned_message_id(next_sunday, sent_message.message_id)
-            logger.info(f"[create_bath_event] Сообщение закреплено: {sent_message.message_id}")
-        if cleared_events > 0:
-            await context.bot.send_message(
-                chat_id=BATH_CHAT_ID,
-                text=f"Создана новая запись на баню {next_sunday}. Список участников предыдущей бани очищен."
-            )
-            logger.info(f"[create_bath_event] Очищено {cleared_events} старых событий")
-        # Обновляем закреплённое сообщение через универсальную функцию
-        # await update_pinned_bath_message(context, next_sunday, participants, message_text, reply_markup)
+                try:
+                    await context.bot.pin_chat_message(
+                        chat_id=BATH_CHAT_ID,
+                        message_id=sent_message.message_id,
+                        disable_notification=False
+                    )
+                    db.set_pinned_message_id(next_sunday, sent_message.message_id)
+                    logger.info(f"[create_bath_event] Pinned new message: {sent_message.message_id}")
+                except Exception as e:
+                    logger.error(f"[create_bath_event] Error pinning message: {e}", exc_info=True)
+                    
+            if cleared_events > 0:
+                await context.bot.send_message(
+                    chat_id=BATH_CHAT_ID,
+                    text=f"Создана новая запись на баню {next_sunday}. Список участников предыдущей бани очищен."
+                )
+                logger.info(f"[create_bath_event] Sent cleanup notification")
+                
+        except Exception as e:
+            logger.error(f"[create_bath_event] Error sending/updating message: {e}", exc_info=True)
+            message = update.message or (update.callback_query and update.callback_query.message)
+            if message:
+                await message.reply_text("Произошла ошибка при создании события бани.")
+                
     except Exception as e:
-        logger.error(f"Ошибка в функции create_bath_event: {e}")
+        logger.error(f"[create_bath_event] Unexpected error: {e}", exc_info=True)
+        try:
+            message = update.message or (update.callback_query and update.callback_query.message)
+            if message:
+                await message.reply_text("Произошла непредвиденная ошибка при создании события бани.")
+        except Exception as inner_e:
+            logger.error(f"[create_bath_event] Error sending error message: {inner_e}", exc_info=True)
 
 async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
@@ -351,198 +378,142 @@ async def handle_payment_confirmation(update: Update, context: ContextTypes.DEFA
         await query.edit_message_text("Произошла ошибка. Пожалуйста, попробуйте позже.")
 
 async def admin_confirm_payment(update: Update, context: ContextTypes.DEFAULT_TYPE, user_id, date_str, payment_type):
-    query = update.callback_query
-    await query.answer()
-
-    admin_id = update.effective_user.id
-
-    if admin_id not in ADMIN_IDS:
-        await query.edit_message_text("У вас нет прав для выполнения этой операции.")
-        return
-
-    callback_data = query.data
-    parts = callback_data.split("_")
-
-    if parts[0] == "admin" and parts[1] == "confirm":
-        user_id = int(parts[2])
-        date_str = parts[3]
-        payment_type = parts[4] if len(parts) > 4 else None
-
-        user_data = db.get_pending_payment(user_id, date_str, payment_type)
-        logger.info(f"[admin_confirm_payment] Ищу заявку: user_id={user_id}, date_str={date_str}, payment_type={payment_type}")
-        logger.info(f"[admin_confirm_payment] Результат поиска: {user_data}")
-        if user_data:
-            profile = db.get_user_profile(user_id)
-            if not profile:
-                await query.edit_message_text(
-                    text="Пользователь не заполнил профиль. Сначала нужно заполнить профиль, а затем подтвердить оплату."
-                )
+    try:
+        query = update.callback_query
+        user = query.from_user
+        logger.info(f"[admin_confirm_payment] CallbackQuery received: data={query.data}, chat_type={update.effective_chat.type}, user_id={user.id}")
+        
+        await query.answer()
+        
+        if user.id not in ADMIN_IDS:
+            logger.warning(f"[admin_confirm_payment] Non-admin user {user.id} attempted to confirm payment")
+            await query.edit_message_text("У вас нет прав для выполнения этой операции.")
+            return
+            
+        callback_data = query.data
+        parts = callback_data.split("_")
+        
+        if parts[0] == "admin" and parts[1] == "confirm":
+            user_id = int(parts[2])
+            date_str = parts[3]
+            payment_type = parts[4] if len(parts) > 4 else None
+            
+            user_data = db.get_pending_payment(user_id, date_str, payment_type)
+            logger.info(f"[admin_confirm_payment] Looking for payment: user_id={user_id}, date_str={date_str}, payment_type={payment_type}")
+            logger.info(f"[admin_confirm_payment] Found payment data: {user_data}")
+            
+            if user_data:
+                profile = db.get_user_profile(user_id)
+                if not profile:
+                    logger.warning(f"[admin_confirm_payment] No profile found for user {user_id}")
+                    await query.edit_message_text(
+                        text="Пользователь не заполнил профиль. Сначала нужно заполнить профиль, а затем подтвердить оплату."
+                    )
+                    return
+                    
+                # Подтверждаем оплату
                 try:
-                    await context.bot.send_message(
-                        chat_id=user_id,
-                        text="Для записи в баню необходимо заполнить информацию о себе. Пожалуйста, заполните профиль:",
-                        reply_markup=InlineKeyboardMarkup([
-                            [InlineKeyboardButton("Заполнить профиль", callback_data="start_profile")]
-                        ])
-                    )
-                except Exception as e:
-                    logger.error(f"[admin_confirm_payment] Ошибка при отправке приглашения заполнить профиль пользователю {user_id}: {e}")
-                return
-
-            username = user_data.get('username')
-            participants = db.get_bath_participants(date_str)
-            user_in_participants = any(p['user_id'] == user_id for p in participants)
-            if not user_in_participants:
-                db.add_bath_participant(date_str, user_id, username, paid=False)
-                if payment_type == 'cash':
+                    db.confirm_payment(user_id, date_str, payment_type)
+                    logger.info(f"[admin_confirm_payment] Payment confirmed for user {user_id}")
+                    
+                    # Уведомляем пользователя
                     try:
-                        conn = db.get_connection()
-                        cursor = conn.cursor()
-                        cursor.execute('UPDATE bath_participants SET cash = 1 WHERE date_str = ? AND user_id = ?', (date_str, user_id))
-                        conn.commit()
-                    finally:
-                        conn.close()
-            db.mark_participant_paid(date_str, user_id)
-            db.delete_pending_payment(user_id, date_str)
-            try:
-                await context.bot.send_message(
-                    chat_id=user_id,
-                    text=f"Поздравляем! Ваша оплата на баню {date_str} подтверждена. Вы добавлены в список участников."
-                )
-                logger.info(f"[admin_confirm_payment] Уведомление отправлено пользователю {user_id}")
-            except Exception as e:
-                logger.error(f"[admin_confirm_payment] Ошибка при отправке подтверждения пользователю {user_id}: {e}")
-            try:
-                await query.edit_message_text(
-                    text=f"Вы подтвердили оплату пользователя @{username} на {date_str}. Пользователь добавлен в список участников."
-                )
-                logger.info(f"[admin_confirm_payment] Сообщение для админа обновлено")
-            except Exception as e:
-                logger.error(f"[admin_confirm_payment] Ошибка при обновлении сообщения для админа: {e}")
-            try:
-                logger.info(f"[admin_confirm_payment] Обновляю и отправляю список участников в группу {BATH_CHAT_ID} для даты {date_str}")
-                participants = db.get_bath_participants(date_str)
-                participants_list = f"Обновленный список участников бани на {date_str}:\n\n"
-                for i, participant in enumerate(participants, 1):
-                    paid_status = "✅" if participant.get("paid") else "❌"
-                    cash_status = "💵" if participant.get("cash") else ""
-                    participants_list += f"{i}. {participant['username']} {paid_status}{cash_status}\n"
-                if len(participants) == 0:
-                    participants_list += "Пока никто не записался\n"
-                await context.bot.send_message(
-                    chat_id=BATH_CHAT_ID,
-                    text=f"@{username} успешно записался(ась) на баню {date_str} ✅\n\n{participants_list}"
-                )
-                message = format_bath_message(date_str, db)
-                pinned_messages = await context.bot.get_chat(BATH_CHAT_ID)
-                if len(participants) < MAX_BATH_PARTICIPANTS:
-                    keyboard = [
-                        [InlineKeyboardButton("Записаться", callback_data=f"join_bath_{date_str}")]
-                    ]
-                    reply_markup = InlineKeyboardMarkup(keyboard)
-                else:
-                    reply_markup = None
-                current_message = pinned_messages.pinned_message.text if pinned_messages.pinned_message else None
-                current_markup = pinned_messages.pinned_message.reply_markup if pinned_messages.pinned_message else None
-                def markup_to_str(markup):
-                    if not markup:
-                        return ''
-                    return str([[btn.text for btn in row] for row in markup.inline_keyboard])
-                markup_changed = markup_to_str(current_markup) != markup_to_str(reply_markup)
-                expected_message = message
-                if not pinned_messages.pinned_message or current_message != expected_message:
-                    try:
-                        await context.bot.unpin_all_chat_messages(BATH_CHAT_ID)
-                    except Exception as e:
-                        logger.warning(f"[admin_confirm_payment] Не удалось открепить все сообщения: {e}")
-                    sent_message = await context.bot.send_message(
-                        chat_id=BATH_CHAT_ID,
-                        text=message,
-                        reply_markup=reply_markup
-                    )
-                    await context.bot.pin_chat_message(
-                        chat_id=BATH_CHAT_ID,
-                        message_id=sent_message.message_id,
-                        disable_notification=False
-                    )
-                    logger.info(f"[admin_confirm_payment] Новое сообщение закреплено: {sent_message.message_id}")
-                elif current_message != message or markup_changed:
-                    try:
-                        await context.bot.edit_message_text(
-                            chat_id=BATH_CHAT_ID,
-                            message_id=pinned_messages.pinned_message.message_id,
-                            text=message,
-                            reply_markup=reply_markup
+                        await context.bot.send_message(
+                            chat_id=user_id,
+                            text=f"Ваша оплата за баню {date_str} подтверждена администратором."
                         )
-                        logger.info(f"[admin_confirm_payment] Закрепленное сообщение обновлено после подтверждения оплаты")
+                        logger.info(f"[admin_confirm_payment] Sent confirmation to user {user_id}")
                     except Exception as e:
-                        logger.error(f"[admin_confirm_payment] Ошибка при обновлении закрепленного сообщения: {e}")
-                else:
-                    logger.info(f"[admin_confirm_payment] Закрепленное сообщение не требует обновления после подтверждения оплаты")
-                logger.info(f"[admin_confirm_payment] Список участников обновлен и отправлен в группу")
-            except Exception as e:
-                logger.error(f"[admin_confirm_payment] Ошибка при обновлении списка участников в группе: {e}")
-        else:
-            try:
+                        logger.error(f"[admin_confirm_payment] Error sending confirmation to user: {e}", exc_info=True)
+                        
+                    await query.edit_message_text(
+                        text=f"Оплата пользователя {user_data['username']} подтверждена."
+                    )
+                    
+                except Exception as e:
+                    logger.error(f"[admin_confirm_payment] Error confirming payment: {e}", exc_info=True)
+                    await query.edit_message_text(
+                        text="Произошла ошибка при подтверждении оплаты."
+                    )
+            else:
+                logger.warning(f"[admin_confirm_payment] No payment found for user {user_id}")
                 await query.edit_message_text(
-                    text="Информация о пользователе не найдена. Возможно, запрос устарел."
+                    text="Заявка на оплату не найдена."
                 )
-                logger.info(f"[admin_confirm_payment] Заявка не найдена для user_id={user_id}, date_str={date_str}, payment_type={payment_type}")
-            except Exception as e:
-                logger.error(f"[admin_confirm_payment] Ошибка при уведомлении админа об отсутствии заявки: {e}")
+                
+    except Exception as e:
+        logger.error(f"[admin_confirm_payment] Unexpected error: {e}", exc_info=True)
+        try:
+            await query.edit_message_text(
+                text="Произошла непредвиденная ошибка при подтверждении оплаты."
+            )
+        except Exception as inner_e:
+            logger.error(f"[admin_confirm_payment] Error sending error message: {inner_e}", exc_info=True)
 
 async def admin_decline_payment(update: Update, context: ContextTypes.DEFAULT_TYPE, user_id, date_str, payment_type):
-    query = update.callback_query
-    await query.answer()
-
-    admin_id = update.effective_user.id
-
-    if admin_id not in ADMIN_IDS:
-        await query.edit_message_text("У вас нет прав для выполнения этой операции.")
-        return
-
-    callback_data = query.data
-    parts = callback_data.split("_")
-
-    if parts[0] == "admin" and parts[1] == "decline":
-        user_id = int(parts[2])
-        date_str = parts[3]
-        payment_type = parts[4] if len(parts) > 4 else None
-
-        user_data = db.get_pending_payment(user_id, date_str, payment_type)
-        logger.info(f"[admin_decline_payment] Ищу заявку: user_id={user_id}, date_str={date_str}, payment_type={payment_type}")
-        logger.info(f"[admin_decline_payment] Результат поиска: {user_data}")
-        if user_data:
-            username = user_data.get('username')
-            db.delete_pending_payment(user_id, date_str)
-            keyboard = [
-                [InlineKeyboardButton("Отправить сообщение", callback_data=f"message_user_{user_id}_{date_str}")]
-            ]
-            reply_markup = InlineKeyboardMarkup(keyboard)
-            try:
+    try:
+        query = update.callback_query
+        user = query.from_user
+        logger.info(f"[admin_decline_payment] CallbackQuery received: data={query.data}, chat_type={update.effective_chat.type}, user_id={user.id}")
+        
+        await query.answer()
+        
+        if user.id not in ADMIN_IDS:
+            logger.warning(f"[admin_decline_payment] Non-admin user {user.id} attempted to decline payment")
+            await query.edit_message_text("У вас нет прав для выполнения этой операции.")
+            return
+            
+        callback_data = query.data
+        parts = callback_data.split("_")
+        
+        if parts[0] == "admin" and parts[1] == "decline":
+            user_id = int(parts[2])
+            date_str = parts[3]
+            payment_type = parts[4] if len(parts) > 4 else None
+            
+            user_data = db.get_pending_payment(user_id, date_str, payment_type)
+            logger.info(f"[admin_decline_payment] Looking for payment: user_id={user_id}, date_str={date_str}, payment_type={payment_type}")
+            logger.info(f"[admin_decline_payment] Found payment data: {user_data}")
+            
+            if user_data:
+                # Отклоняем оплату
+                try:
+                    db.decline_payment(user_id, date_str, payment_type)
+                    logger.info(f"[admin_decline_payment] Payment declined for user {user_id}")
+                    
+                    # Уведомляем пользователя
+                    try:
+                        await context.bot.send_message(
+                            chat_id=user_id,
+                            text=f"Ваша оплата за баню {date_str} отклонена администратором. Пожалуйста, проверьте детали оплаты и попробуйте снова."
+                        )
+                        logger.info(f"[admin_decline_payment] Sent decline notification to user {user_id}")
+                    except Exception as e:
+                        logger.error(f"[admin_decline_payment] Error sending decline notification to user: {e}", exc_info=True)
+                        
+                    await query.edit_message_text(
+                        text=f"Оплата пользователя {user_data['username']} отклонена."
+                    )
+                    
+                except Exception as e:
+                    logger.error(f"[admin_decline_payment] Error declining payment: {e}", exc_info=True)
+                    await query.edit_message_text(
+                        text="Произошла ошибка при отклонении оплаты."
+                    )
+            else:
+                logger.warning(f"[admin_decline_payment] No payment found for user {user_id}")
                 await query.edit_message_text(
-                    text=f"Вы отклонили оплату пользователя @{username} на {date_str}. Вы можете отправить пользователю сообщение с объяснением.",
-                    reply_markup=reply_markup
+                    text="Заявка на оплату не найдена."
                 )
-                logger.info(f"[admin_decline_payment] Сообщение для админа обновлено")
-            except Exception as e:
-                logger.error(f"[admin_decline_payment] Ошибка при обновлении сообщения для админа: {e}")
-            try:
-                await context.bot.send_message(
-                    chat_id=user_id,
-                    text=f"К сожалению, ваша оплата на баню {date_str} не подтверждена. Пожалуйста, свяжитесь с администратором для выяснения деталей."
-                )
-                logger.info(f"[admin_decline_payment] Уведомление отправлено пользователю {user_id}")
-            except Exception as e:
-                logger.error(f"[admin_decline_payment] Ошибка при отправке уведомления пользователю {user_id}: {e}")
-        else:
-            try:
-                await query.edit_message_text(
-                    text="Информация о пользователе не найдена. Возможно, запрос устарел."
-                )
-                logger.info(f"[admin_decline_payment] Заявка не найдена для user_id={user_id}, date_str={date_str}, payment_type={payment_type}")
-            except Exception as e:
-                logger.error(f"[admin_decline_payment] Ошибка при уведомлении админа об отсутствии заявки: {e}")
+                
+    except Exception as e:
+        logger.error(f"[admin_decline_payment] Unexpected error: {e}", exc_info=True)
+        try:
+            await query.edit_message_text(
+                text="Произошла непредвиденная ошибка при отклонении оплаты."
+            )
+        except Exception as inner_e:
+            logger.error(f"[admin_decline_payment] Error sending error message: {inner_e}", exc_info=True)
 
 async def handle_message_to_user(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if update.effective_chat.type != "private":

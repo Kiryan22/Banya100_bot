@@ -48,81 +48,179 @@ async def profile(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         return FULL_NAME
 
 async def handle_profile_update(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    query = update.callback_query
-    await query.answer()
-    message = update.message or (update.callback_query and update.callback_query.message)
-    if query.data == "update_profile_yes":
-        if message:
-            await message.reply_text(
-                "Пожалуйста, введите ваше полное имя:"
-            )
-        return FULL_NAME
-    else:
-        if message:
-            await message.reply_text("Хорошо, профиль останется без изменений.")
-        return ConversationHandler.END
+    try:
+        query = update.callback_query
+        user = query.from_user
+        logger.info(f"[handle_profile_update] CallbackQuery received: data={query.data}, chat_type={update.effective_chat.type}, user_id={user.id}")
+        
+        await query.answer()
+        
+        if update.effective_chat.type != "private":
+            message = update.message or (update.callback_query and update.callback_query.message)
+            if message:
+                await message.reply_text("Эта команда доступна только в личном чате с ботом.")
+            logger.warning(f"[handle_profile_update] Command used in non-private chat by user {user.id}")
+            return
+            
+        message = update.message or (update.callback_query and update.callback_query.message)
+        
+        if query.data == "update_profile_yes":
+            if message:
+                await message.reply_text(
+                    "Пожалуйста, введите ваше полное имя:"
+                )
+                logger.info(f"[handle_profile_update] Started profile update for user {user.id}")
+                context.user_data['updating_profile'] = True
+                context.user_data['profile_step'] = 'full_name'
+        elif query.data == "update_profile_no":
+            if message:
+                await message.reply_text(
+                    "Хорошо, если захотите обновить профиль позже, используйте команду /profile"
+                )
+                logger.info(f"[handle_profile_update] User {user.id} declined profile update")
+                
+    except Exception as e:
+        logger.error(f"[handle_profile_update] Unexpected error: {e}", exc_info=True)
+        try:
+            message = update.message or (update.callback_query and update.callback_query.message)
+            if message:
+                await message.reply_text(
+                    "Произошла непредвиденная ошибка при обновлении профиля. Пожалуйста, попробуйте позже."
+                )
+        except Exception as inner_e:
+            logger.error(f"[handle_profile_update] Error sending error message: {inner_e}", exc_info=True)
 
 async def handle_full_name(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
-        context.user_data['full_name'] = update.message.text
+        if not update.message or not update.message.text:
+            logger.warning("[handle_full_name] No message or text received")
+            return
+            
+        user = update.effective_user
+        full_name = update.message.text.strip()
+        logger.info(f"[handle_full_name] Received full name for user {user.id}: {full_name}")
+        
+        if not context.user_data.get('updating_profile'):
+            logger.warning(f"[handle_full_name] User {user.id} not in profile update mode")
+            return
+            
+        context.user_data['full_name'] = full_name
+        context.user_data['profile_step'] = 'birth_date'
+        logger.info(f"[handle_full_name] Saved full name for user {user.id}")
+        
         await update.message.reply_text(
-            "Введите дату рождения (например, 15 марта):"
+            "Пожалуйста, введите вашу дату рождения в формате ДД.ММ:"
         )
-        return BIRTH_DATE
+        
     except Exception as e:
-        logger.error(f"Ошибка в функции handle_full_name: {e}")
-        await update.message.reply_text(
-            "Произошла ошибка. Пожалуйста, попробуйте снова."
-        )
-        return ConversationHandler.END
+        logger.error(f"[handle_full_name] Unexpected error: {e}", exc_info=True)
+        try:
+            await update.message.reply_text(
+                "Произошла непредвиденная ошибка при сохранении имени. Пожалуйста, попробуйте позже."
+            )
+        except Exception as inner_e:
+            logger.error(f"[handle_full_name] Error sending error message: {inner_e}", exc_info=True)
 
 async def handle_birth_date(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
-        date_text = update.message.text.strip()
-        if not re.match(r"^\d{1,2}\.\d{1,2}$", date_text):
+        if not update.message or not update.message.text:
+            logger.warning("[handle_birth_date] No message or text received")
+            return
+            
+        user = update.effective_user
+        birth_date = update.message.text.strip()
+        logger.info(f"[handle_birth_date] Received birth date for user {user.id}: {birth_date}")
+        
+        if not context.user_data.get('updating_profile'):
+            logger.warning(f"[handle_birth_date] User {user.id} not in profile update mode")
+            return
+            
+        # Проверяем формат даты
+        if not re.match(r"^\d{1,2}\.\d{1,2}$", birth_date):
+            logger.warning(f"[handle_birth_date] Invalid date format from user {user.id}: {birth_date}")
             await update.message.reply_text(
-                "Пожалуйста, введите дату рождения в формате ДД.ММ (например, 15.03)"
+                "Пожалуйста, введите дату в формате ДД.ММ (например, 01.01):"
             )
-            return BIRTH_DATE
-        context.user_data['birth_date'] = date_text
+            return
+            
+        context.user_data['birth_date'] = birth_date
+        context.user_data['profile_step'] = 'occupation'
+        logger.info(f"[handle_birth_date] Saved birth date for user {user.id}")
+        
         await update.message.reply_text(
-            "Чем вы занимаетесь? (род деятельности):"
+            "Пожалуйста, введите вашу профессию:"
         )
-        return OCCUPATION
+        
     except Exception as e:
-        logger.error(f"Ошибка в функции handle_birth_date: {e}")
-        await update.message.reply_text(
-            "Произошла ошибка. Пожалуйста, попробуйте снова."
-        )
-        return ConversationHandler.END
+        logger.error(f"[handle_birth_date] Unexpected error: {e}", exc_info=True)
+        try:
+            await update.message.reply_text(
+                "Произошла непредвиденная ошибка при сохранении даты рождения. Пожалуйста, попробуйте позже."
+            )
+        except Exception as inner_e:
+            logger.error(f"[handle_birth_date] Error sending error message: {inner_e}", exc_info=True)
 
 async def handle_occupation(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
-        context.user_data['occupation'] = update.message.text
+        if not update.message or not update.message.text:
+            logger.warning("[handle_occupation] No message or text received")
+            return
+            
+        user = update.effective_user
+        occupation = update.message.text.strip()
+        logger.info(f"[handle_occupation] Received occupation for user {user.id}: {occupation}")
+        
+        if not context.user_data.get('updating_profile'):
+            logger.warning(f"[handle_occupation] User {user.id} not in profile update mode")
+            return
+            
+        context.user_data['occupation'] = occupation
+        context.user_data['profile_step'] = 'instagram'
+        logger.info(f"[handle_occupation] Saved occupation for user {user.id}")
+        
         await update.message.reply_text(
-            "Введите ссылку на ваш Instagram (или 'нет', если не хотите указывать):"
+            "Пожалуйста, введите ваш Instagram (без @):"
         )
-        return INSTAGRAM
+        
     except Exception as e:
-        logger.error(f"Ошибка в функции handle_occupation: {e}")
-        await update.message.reply_text(
-            "Произошла ошибка. Пожалуйста, попробуйте снова."
-        )
-        return ConversationHandler.END
+        logger.error(f"[handle_occupation] Unexpected error: {e}", exc_info=True)
+        try:
+            await update.message.reply_text(
+                "Произошла непредвиденная ошибка при сохранении профессии. Пожалуйста, попробуйте позже."
+            )
+        except Exception as inner_e:
+            logger.error(f"[handle_occupation] Error sending error message: {inner_e}", exc_info=True)
 
 async def handle_instagram(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
-        context.user_data['instagram'] = update.message.text
+        if not update.message or not update.message.text:
+            logger.warning("[handle_instagram] No message or text received")
+            return
+            
+        user = update.effective_user
+        instagram = update.message.text.strip()
+        logger.info(f"[handle_instagram] Received Instagram for user {user.id}: {instagram}")
+        
+        if not context.user_data.get('updating_profile'):
+            logger.warning(f"[handle_instagram] User {user.id} not in profile update mode")
+            return
+            
+        context.user_data['instagram'] = instagram
+        context.user_data['profile_step'] = 'skills'
+        logger.info(f"[handle_instagram] Saved Instagram for user {user.id}")
+        
         await update.message.reply_text(
-            "Сфера бизнеса, область работы, тип услуг которые предоставляете и т.д."
+            "Пожалуйста, расскажите о своих навыках и увлечениях:"
         )
-        return SKILLS
+        
     except Exception as e:
-        logger.error(f"Ошибка в функции handle_instagram: {e}")
-        await update.message.reply_text(
-            "Произошла ошибка. Пожалуйста, попробуйте снова."
-        )
-        return ConversationHandler.END
+        logger.error(f"[handle_instagram] Unexpected error: {e}", exc_info=True)
+        try:
+            await update.message.reply_text(
+                "Произошла непредвиденная ошибка при сохранении Instagram. Пожалуйста, попробуйте позже."
+            )
+        except Exception as inner_e:
+            logger.error(f"[handle_instagram] Error sending error message: {inner_e}", exc_info=True)
 
 async def handle_skills(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.effective_user
@@ -185,23 +283,28 @@ async def handle_skills(update: Update, context: ContextTypes.DEFAULT_TYPE):
     return ConversationHandler.END
 
 async def start_profile_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    query = update.callback_query
-    user = query.from_user
-    logger.info(f"[start_profile_callback] CallbackQuery received: data={query.data}, chat_type={update.effective_chat.type}, user_id={user.id}")
     try:
+        query = update.callback_query
+        user = query.from_user
+        logger.info(f"[start_profile_callback] CallbackQuery received: data={query.data}, chat_type={update.effective_chat.type}, user_id={user.id}")
+        
         await query.answer()
+        
         if update.effective_chat.type != "private":
+            logger.warning(f"[start_profile_callback] User {user.id} tried to start profile in non-private chat")
             await query.edit_message_text("Профиль можно заполнять только в личном чате с ботом.")
             return
+            
         await query.edit_message_text("Давайте заполним информацию о вас.\nКак вас зовут? (Имя и Фамилия)")
-        logger.info(f"Начат диалог заполнения профиля для пользователя {user.id}")
+        logger.info(f"[start_profile_callback] Started profile creation for user {user.id}")
         return FULL_NAME
+        
     except Exception as e:
-        logger.error(f"Ошибка в функции start_profile_callback: {e}")
+        logger.error(f"[start_profile_callback] Unexpected error: {e}", exc_info=True)
         try:
-            await query.edit_message_text("Произошла ошибка. Пожалуйста, попробуйте снова.")
-        except:
-            pass
+            await query.edit_message_text("Произошла непредвиденная ошибка. Пожалуйста, попробуйте позже.")
+        except Exception as inner_e:
+            logger.error(f"[start_profile_callback] Error sending error message: {inner_e}", exc_info=True)
         return ConversationHandler.END
 
 async def export_profiles(update: Update, context: ContextTypes.DEFAULT_TYPE):
