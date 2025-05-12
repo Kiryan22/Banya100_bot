@@ -126,7 +126,7 @@ async def create_bath_event(update: Update, context: ContextTypes.DEFAULT_TYPE):
             
             # Получаем список участников
             participants = db.get_bath_participants(next_sunday)
-            message_text = format_bath_message(next_sunday, participants)
+            message_text = format_bath_message(next_sunday, db)
             reply_markup = create_bath_keyboard(next_sunday)
             
             # Открепляем старое сообщение

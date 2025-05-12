@@ -1,4 +1,7 @@
 from config import BATH_TIME, BATH_COST, MAX_BATH_PARTICIPANTS, CARD_PAYMENT_LINK, REVOLUT_PAYMENT_LINK, BATH_LOCATION
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 def format_bath_message(date_str, db):
@@ -34,4 +37,5 @@ def format_bath_message(date_str, db):
 
         return message
     except Exception as e:
+        logger.error(f"Ошибка при форматировании сообщения о бане: {e}", exc_info=True)
         raise 
