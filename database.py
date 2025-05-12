@@ -342,6 +342,7 @@ class Database:
                         message_id BIGINT NOT NULL,
                         chat_id BIGINT NOT NULL,
                         user_id BIGINT NOT NULL,
+                        username VARCHAR(255),
                         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                         UNIQUE KEY unique_message (message_id, chat_id)
                     )
@@ -441,34 +442,42 @@ class Database:
         finally:
             conn.close()
 
-    def set_pinned_message_id(self, date_str, message_id):
+    def set_pinned_message_id(self, date_str, message_id, chat_id):
         conn = self.get_connection()
         try:
             cursor = conn.cursor()
             cursor.execute('''
-                INSERT INTO pinned_messages (date_str, message_id)
-                VALUES (%s, %s)
+                INSERT INTO pinned_messages (date_str, message_id, chat_id)
+                VALUES (%s, %s, %s)
                 ON DUPLICATE KEY UPDATE message_id=VALUES(message_id)
-            ''', (date_str, message_id))
+            ''', (date_str, message_id, chat_id))
             conn.commit()
         finally:
             conn.close()
 
-    def get_last_pinned_message_id(self):
+    def get_last_pinned_message_id(self, chat_id):
         conn = self.get_connection()
         try:
             cursor = conn.cursor()
-            cursor.execute('SELECT message_id FROM pinned_messages ORDER BY date_str DESC LIMIT 1')
+            cursor.execute('''
+                SELECT message_id 
+                FROM pinned_messages 
+                WHERE chat_id = %s 
+                ORDER BY date_str DESC LIMIT 1
+            ''', (chat_id,))
             row = cursor.fetchone()
             return row[0] if row else None
         finally:
             conn.close()
 
-    def delete_pinned_message_id(self, message_id):
+    def delete_pinned_message_id(self, message_id, chat_id):
         conn = self.get_connection()
         try:
             cursor = conn.cursor()
-            cursor.execute('DELETE FROM pinned_messages WHERE message_id = %s', (message_id,))
+            cursor.execute('''
+                DELETE FROM pinned_messages 
+                WHERE message_id = %s AND chat_id = %s
+            ''', (message_id, chat_id))
             conn.commit()
         finally:
             conn.close()
@@ -494,10 +503,10 @@ class Database:
         try:
             cursor = conn.cursor()
             cursor.execute('''
-                INSERT INTO bath_invites (user_id, date_str, created_at)
-                VALUES (%s, %s, CURRENT_TIMESTAMP)
+                INSERT INTO bath_invites (inviter_id, invitee_id, date_str, created_at)
+                VALUES (%s, %s, %s, CURRENT_TIMESTAMP)
                 ON DUPLICATE KEY UPDATE created_at=CURRENT_TIMESTAMP
-            ''', (user_id, date_str))
+            ''', (user_id, user_id, date_str))
             conn.commit()
         finally:
             conn.close()
@@ -508,7 +517,8 @@ class Database:
         try:
             cursor = conn.cursor()
             cursor.execute('''
-                SELECT created_at FROM bath_invites WHERE user_id = %s AND date_str = %s
+                SELECT created_at FROM bath_invites 
+                WHERE invitee_id = %s AND date_str = %s
             ''', (user_id, date_str))
             row = cursor.fetchone()
             if not row:
@@ -524,7 +534,8 @@ class Database:
         try:
             cursor = conn.cursor()
             cursor.execute('''
-                DELETE FROM bath_invites WHERE created_at < DATE_SUB(NOW(), INTERVAL %s HOUR)
+                DELETE FROM bath_invites 
+                WHERE created_at < DATE_SUB(NOW(), INTERVAL %s HOUR)
             ''', (hours,))
             conn.commit()
         finally:
@@ -538,13 +549,14 @@ class Database:
             # Удаляем устаревшие приглашения для этого пользователя и даты
             cursor.execute('''
                 DELETE FROM bath_invites
-                WHERE user_id = %s AND date_str = %s AND created_at < DATE_SUB(NOW(), INTERVAL %s HOUR)
+                WHERE invitee_id = %s AND date_str = %s 
+                AND created_at < DATE_SUB(NOW(), INTERVAL %s HOUR)
             ''', (user_id, date_str, hours))
             # Пытаемся вставить новое приглашение
             cursor.execute('''
-                INSERT IGNORE INTO bath_invites (user_id, date_str, created_at)
-                VALUES (%s, %s, CURRENT_TIMESTAMP)
-            ''', (user_id, date_str))
+                INSERT IGNORE INTO bath_invites (inviter_id, invitee_id, date_str, created_at)
+                VALUES (%s, %s, %s, CURRENT_TIMESTAMP)
+            ''', (user_id, user_id, date_str))
             conn.commit()
             return cursor.rowcount > 0
         finally:
