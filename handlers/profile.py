@@ -85,139 +85,107 @@ async def handle_full_name(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
         if not update.message or not update.message.text:
             logger.warning("[handle_full_name] No message or text received")
-            return
-            
+            return FULL_NAME
         user = update.effective_user
         full_name = update.message.text.strip()
         logger.info(f"[handle_full_name] Received full name for user {user.id}: {full_name}")
-        
         if not context.user_data.get('updating_profile'):
             logger.warning(f"[handle_full_name] User {user.id} not in profile update mode")
-            return
-            
+            return FULL_NAME
         context.user_data['full_name'] = full_name
         context.user_data['profile_step'] = 'birth_date'
         logger.info(f"[handle_full_name] Saved full name for user {user.id}")
-        
-        await update.message.reply_text(
-            "Пожалуйста, введите вашу дату рождения в формате ДД.ММ:"
-        )
-        
+        await update.message.reply_text("Пожалуйста, введите вашу дату рождения в формате ДД.ММ:")
+        return BIRTH_DATE
     except Exception as e:
         logger.error(f"[handle_full_name] Unexpected error: {e}", exc_info=True)
         try:
-            await update.message.reply_text(
-                "Произошла непредвиденная ошибка при сохранении имени. Пожалуйста, попробуйте позже."
-            )
+            await update.message.reply_text("Произошла непредвиденная ошибка при сохранении имени. Пожалуйста, попробуйте позже.")
         except Exception as inner_e:
             logger.error(f"[handle_full_name] Error sending error message: {inner_e}", exc_info=True)
+        return FULL_NAME
 
 async def handle_birth_date(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
         if not update.message or not update.message.text:
             logger.warning("[handle_birth_date] No message or text received")
-            return
-            
+            return BIRTH_DATE
         user = update.effective_user
         birth_date = update.message.text.strip()
         logger.info(f"[handle_birth_date] Received birth date for user {user.id}: {birth_date}")
-        
         if not context.user_data.get('updating_profile'):
             logger.warning(f"[handle_birth_date] User {user.id} not in profile update mode")
-            return
-            
+            return BIRTH_DATE
         # Проверяем формат даты
         if not re.match(r"^\d{1,2}\.\d{1,2}$", birth_date):
             logger.warning(f"[handle_birth_date] Invalid date format from user {user.id}: {birth_date}")
-            await update.message.reply_text(
-                "Пожалуйста, введите дату в формате ДД.ММ (например, 01.01):"
-            )
-            return
-            
+            await update.message.reply_text("Пожалуйста, введите дату в формате ДД.ММ (например, 01.01):")
+            return BIRTH_DATE
         context.user_data['birth_date'] = birth_date
         context.user_data['profile_step'] = 'occupation'
         logger.info(f"[handle_birth_date] Saved birth date for user {user.id}")
-        
-        await update.message.reply_text(
-            "Пожалуйста, введите вашу профессию:"
-        )
-        
+        await update.message.reply_text("Пожалуйста, введите вашу профессию:")
+        return OCCUPATION
     except Exception as e:
         logger.error(f"[handle_birth_date] Unexpected error: {e}", exc_info=True)
         try:
-            await update.message.reply_text(
-                "Произошла непредвиденная ошибка при сохранении даты рождения. Пожалуйста, попробуйте позже."
-            )
+            await update.message.reply_text("Произошла непредвиденная ошибка при сохранении даты рождения. Пожалуйста, попробуйте позже.")
         except Exception as inner_e:
             logger.error(f"[handle_birth_date] Error sending error message: {inner_e}", exc_info=True)
+        return BIRTH_DATE
 
 async def handle_occupation(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
         if not update.message or not update.message.text:
             logger.warning("[handle_occupation] No message or text received")
-            return
-            
+            return OCCUPATION
         user = update.effective_user
         occupation = update.message.text.strip()
         logger.info(f"[handle_occupation] Received occupation for user {user.id}: {occupation}")
-        
         if not context.user_data.get('updating_profile'):
             logger.warning(f"[handle_occupation] User {user.id} not in profile update mode")
-            return
-            
+            return OCCUPATION
         context.user_data['occupation'] = occupation
         context.user_data['profile_step'] = 'instagram'
         logger.info(f"[handle_occupation] Saved occupation for user {user.id}")
-        
-        await update.message.reply_text(
-            "Пожалуйста, введите ваш Instagram (без @):"
-        )
-        
+        await update.message.reply_text("Пожалуйста, введите ваш Instagram (без @):")
+        return INSTAGRAM
     except Exception as e:
         logger.error(f"[handle_occupation] Unexpected error: {e}", exc_info=True)
         try:
-            await update.message.reply_text(
-                "Произошла непредвиденная ошибка при сохранении профессии. Пожалуйста, попробуйте позже."
-            )
+            await update.message.reply_text("Произошла непредвиденная ошибка при сохранении профессии. Пожалуйста, попробуйте позже.")
         except Exception as inner_e:
             logger.error(f"[handle_occupation] Error sending error message: {inner_e}", exc_info=True)
+        return OCCUPATION
 
 async def handle_instagram(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
         if not update.message or not update.message.text:
             logger.warning("[handle_instagram] No message or text received")
-            return
-            
+            return INSTAGRAM
         user = update.effective_user
         instagram = update.message.text.strip()
         logger.info(f"[handle_instagram] Received Instagram for user {user.id}: {instagram}")
-        
         if not context.user_data.get('updating_profile'):
             logger.warning(f"[handle_instagram] User {user.id} not in profile update mode")
-            return
-            
+            return INSTAGRAM
         context.user_data['instagram'] = instagram
         context.user_data['profile_step'] = 'skills'
         logger.info(f"[handle_instagram] Saved Instagram for user {user.id}")
-        
-        await update.message.reply_text(
-            "Пожалуйста, расскажите о своих навыках и увлечениях:"
-        )
-        
+        await update.message.reply_text("Пожалуйста, расскажите о своих навыках и увлечениях:")
+        return SKILLS
     except Exception as e:
         logger.error(f"[handle_instagram] Unexpected error: {e}", exc_info=True)
         try:
-            await update.message.reply_text(
-                "Произошла непредвиденная ошибка при сохранении Instagram. Пожалуйста, попробуйте позже."
-            )
+            await update.message.reply_text("Произошла непредвиденная ошибка при сохранении Instagram. Пожалуйста, попробуйте позже.")
         except Exception as inner_e:
             logger.error(f"[handle_instagram] Error sending error message: {inner_e}", exc_info=True)
+        return INSTAGRAM
 
 async def handle_skills(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.effective_user
     context.user_data['skills'] = update.message.text
     message = update.message or (update.callback_query and update.callback_query.message)
-    
     # Сохраняем профиль
     success = db.save_user_profile(
         user_id=user.id,
@@ -228,14 +196,11 @@ async def handle_skills(update: Update, context: ContextTypes.DEFAULT_TYPE):
         instagram=context.user_data['instagram'],
         skills=context.user_data['skills']
     )
-    
     if success:
         if message:
             await message.reply_text(
-                "Спасибо! Ваш профиль успешно сохранен.\n"
-                "Вы можете обновить информацию в любой момент, используя команду /profile"
+                "Спасибо! Ваш профиль успешно сохранен.\nВы можете обновить информацию в любой момент, используя команду /profile"
             )
-            
         # Проверяем, есть ли ожидающие подтверждения оплаты для этого пользователя
         pending_payments = db.get_pending_payments(user.id)
         if pending_payments:

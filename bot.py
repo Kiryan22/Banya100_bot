@@ -36,13 +36,35 @@ if __name__ == "__main__":
         states={
             PROFILE: [
                 MessageHandler(filters.TEXT & ~filters.COMMAND, handle_profile_update_text),
-                CallbackQueryHandler(handle_profile_update, pattern="^update_profile_")
+                CallbackQueryHandler(handle_profile_update, pattern="^update_profile_"),
+                CommandHandler("profile", profile),
+                CommandHandler("start", profile),
             ],
-            FULL_NAME: [MessageHandler(filters.TEXT & ~filters.COMMAND, handle_full_name)],
-            BIRTH_DATE: [MessageHandler(filters.TEXT & ~filters.COMMAND, handle_birth_date)],
-            OCCUPATION: [MessageHandler(filters.TEXT & ~filters.COMMAND, handle_occupation)],
-            INSTAGRAM: [MessageHandler(filters.TEXT & ~filters.COMMAND, handle_instagram)],
-            SKILLS: [MessageHandler(filters.TEXT & ~filters.COMMAND, handle_skills)],
+            FULL_NAME: [
+                MessageHandler(filters.TEXT & ~filters.COMMAND, handle_full_name),
+                CommandHandler("profile", profile),
+                CommandHandler("start", profile),
+            ],
+            BIRTH_DATE: [
+                MessageHandler(filters.TEXT & ~filters.COMMAND, handle_birth_date),
+                CommandHandler("profile", profile),
+                CommandHandler("start", profile),
+            ],
+            OCCUPATION: [
+                MessageHandler(filters.TEXT & ~filters.COMMAND, handle_occupation),
+                CommandHandler("profile", profile),
+                CommandHandler("start", profile),
+            ],
+            INSTAGRAM: [
+                MessageHandler(filters.TEXT & ~filters.COMMAND, handle_instagram),
+                CommandHandler("profile", profile),
+                CommandHandler("start", profile),
+            ],
+            SKILLS: [
+                MessageHandler(filters.TEXT & ~filters.COMMAND, handle_skills),
+                CommandHandler("profile", profile),
+                CommandHandler("start", profile),
+            ],
         },
         fallbacks=[CommandHandler("cancel", cancel)],
     )
