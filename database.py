@@ -834,3 +834,16 @@ class Database:
             return False
         finally:
             conn.close()
+
+    def get_all_active_users(self):
+        """Возвращает всех пользователей, у которых есть профиль."""
+        conn = self.get_connection()
+        try:
+            cursor = conn.cursor()
+            cursor.execute('SELECT user_id, username FROM user_profiles')
+            return [{'user_id': row[0], 'username': row[1]} for row in cursor.fetchall()]
+        except Exception as e:
+            logger.error(f"Ошибка при получении всех пользователей с профилем: {e}")
+            return []
+        finally:
+            conn.close()
