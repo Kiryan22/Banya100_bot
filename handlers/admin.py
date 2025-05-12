@@ -227,4 +227,67 @@ async def handle_message_to_user(update: Update, context: ContextTypes.DEFAULT_T
             logger.error(f"[handle_message_to_user] Error sending error message: {inner_e}", exc_info=True)
         return ConversationHandler.END
 
+async def mark_paid(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    try:
+        if update.effective_chat.type != "private":
+            message = update.message or (update.callback_query and update.callback_query.message)
+            if message:
+                await message.reply_text("Эта команда доступна только в личном чате с ботом.")
+            logger.warning("[mark_paid] Command used in non-private chat")
+            return
+
+        admin_id = update.effective_user.id
+        if admin_id not in ADMIN_IDS:
+            message = update.message or (update.callback_query and update.callback_query.message)
+            if message:
+                await message.reply_text("У вас нет прав для выполнения этой команды.")
+            logger.warning(f"[mark_paid] Non-admin user {admin_id} attempted to mark payment")
+            return
+
+        if len(context.args) != 2:
+            message = update.message or (update.callback_query and update.callback_query.message)
+            if message:
+                await message.reply_text("Использование: /mark_paid <username> <DD.MM.YYYY>")
+            logger.warning("[mark_paid] Invalid number of arguments")
+            return
+
+        username = context.args[0].lstrip('@')
+        date_str = context.args[1]
+
+        # Найти user_id по username
+        user_id = db.get_user_id_by_username(username)
+        if not user_id:
+            message = update.message or (update.callback_query and update.callback_query.message)
+            if message:
+                await message.reply_text(f"Пользователь @{username} не найден.")
+            logger.warning(f"[mark_paid] User @{username} not found")
+            return
+
+        # Отметить оплату в базе
+        result = db.mark_participant_paid(date_str, user_id)
+        message = update.message or (update.callback_query and update.callback_query.message)
+        if result:
+            if message:
+                await message.reply_text(f"Оплата пользователя @{username} за {date_str} отмечена как подтверждённая.")
+            try:
+                await context.bot.send_message(
+                    chat_id=user_id,
+                    text=f"Ваша оплата за баню {date_str} подтверждена администратором!"
+                )
+            except Exception as e:
+                logger.error(f"[mark_paid] Error sending notification to user: {e}", exc_info=True)
+            logger.info(f"[mark_paid] Payment marked as paid for @{username} ({user_id}) on {date_str}")
+        else:
+            if message:
+                await message.reply_text(f"Не удалось отметить оплату пользователя @{username} за {date_str}. Проверьте данные.")
+            logger.warning(f"[mark_paid] Failed to mark payment for @{username} on {date_str}")
+    except Exception as e:
+        logger.error(f"[mark_paid] Unexpected error: {e}", exc_info=True)
+        try:
+            message = update.message or (update.callback_query and update.callback_query.message)
+            if message:
+                await message.reply_text("Произошла непредвиденная ошибка при подтверждении оплаты.")
+        except Exception as inner_e:
+            logger.error(f"[mark_paid] Error sending error message: {inner_e}", exc_info=True)
+
 # ... (оставить остальные функции, которые были в bot.py, связанные с админскими действиями) ...
