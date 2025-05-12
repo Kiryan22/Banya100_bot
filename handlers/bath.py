@@ -218,7 +218,7 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
             logger.info(f"[button_callback] join_bath_ для даты {date_str}")
             logger.info(f"Пользователь {user.id} пытается записаться на баню {date_str}")
 
-            if not db.try_add_bath_invite(user.id, date_str, hours=2):
+            if not db.try_add_bath_invite(user.id, user.username or user.first_name, date_str, hours=2):
                 await query.answer("Вам уже отправлено приглашение на регистрацию. Проверьте личные сообщения.", show_alert=True)
                 return
 
