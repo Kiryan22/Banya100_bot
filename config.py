@@ -8,7 +8,7 @@ load_dotenv()
 BOT_TOKEN = os.getenv('BOT_TOKEN')
 BATH_CHAT_ID = os.getenv('BATH_CHAT_ID')
 ADMIN_IDS = list(map(int, os.getenv('ADMIN_IDS', '').split(','))) if os.getenv('ADMIN_IDS') else []
-MAX_BATH_PARTICIPANTS = int(os.getenv('MAX_BATH_PARTICIPANTS', '6'))
+MAX_BATH_PARTICIPANTS = int(os.getenv('MAX_BATH_PARTICIPANTS', '20'))
 BATH_COST = int(os.getenv('BATH_COST', '1000'))
 WEBHOOK_URL = os.getenv('WEBHOOK_URL')
 
