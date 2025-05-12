@@ -526,8 +526,10 @@ async def cash_list(update: Update = None, context: ContextTypes.DEFAULT_TYPE = 
             for i, p in enumerate(cash_participants, 1):
                 username = p['username'] or f"ID: {p['user_id']}"
                 text += f"{i}. {username}\n"
-        # Отправляем всем администраторам
+        # Отправляем всем администраторам, кроме того, кто вызвал команду в личке
         for admin_id in ADMIN_IDS:
+            if update and not silent and admin_id == update.effective_user.id and update.effective_chat.type == "private":
+                continue
             try:
                 await context.bot.send_message(chat_id=admin_id, text=text)
             except Exception as e:
