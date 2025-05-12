@@ -226,3 +226,5 @@ async def handle_message_to_user(update: Update, context: ContextTypes.DEFAULT_T
         except Exception as inner_e:
             logger.error(f"[handle_message_to_user] Error sending error message: {inner_e}", exc_info=True)
         return ConversationHandler.END
+
+# ... (оставить остальные функции, которые были в bot.py, связанные с админскими действиями) ...
