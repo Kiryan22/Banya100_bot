@@ -5,7 +5,7 @@ from database import Database
 from telegram.ext import Application, CommandHandler, CallbackQueryHandler, MessageHandler, filters
 
 # Импорт обработчиков
-from handlers.bath import register_bath, create_bath_event, button_callback, confirm_bath_registration, handle_payment_confirmation, admin_confirm_payment, admin_decline_payment, handle_deep_link
+from handlers.bath import start, register_bath, create_bath_event, button_callback, confirm_bath_registration, handle_payment_confirmation, admin_confirm_payment, admin_decline_payment, handle_deep_link
 from handlers.profile import profile, handle_profile_update, handle_full_name, handle_birth_date, handle_occupation, handle_instagram, handle_skills, start_profile_callback, export_profiles, cancel
 from handlers.admin import mark_paid, add_subscriber, remove_subscriber, update_commands, mention_all, mark_visit, clear_db, remove_registration
 
@@ -16,7 +16,7 @@ if __name__ == "__main__":
     application = Application.builder().token(BOT_TOKEN).build()
 
     # Регистрация команд
-    application.add_handler(CommandHandler("start", handle_deep_link))
+    application.add_handler(CommandHandler("start", start))
     application.add_handler(CommandHandler("register", register_bath))
     application.add_handler(CommandHandler("create_bath", create_bath_event))
     application.add_handler(CommandHandler("profile", profile))

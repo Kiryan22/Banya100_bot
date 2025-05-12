@@ -543,3 +543,34 @@ async def handle_message_to_user(update: Update, context: ContextTypes.DEFAULT_T
         # ... (оставить обработку callback message_user_) ...
         pass
     # ... (оставить обработку отправки сообщения пользователю) ... 
+
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    user = update.effective_user
+    if context.args and context.args[0].startswith("bath_"):
+        # Deep link: записаться на баню
+        date_str = context.args[0].replace("bath_", "")
+        bath_info = f"Вы хотите записаться на баню в воскресенье {date_str}.\n\n"
+        bath_info += f"Время: {BATH_TIME} ‼️\n\n"
+        bath_info += f"Cтоимость: {BATH_COST} карта либо наличка при входе📍\n\n"
+        bath_info += f"Для продолжения записи, нажмите кнопку ниже:"
+        keyboard = [
+            [InlineKeyboardButton("Подтвердить запись", callback_data=f"confirm_bath_{date_str}")]
+        ]
+        reply_markup = InlineKeyboardMarkup(keyboard)
+        await update.message.reply_text(
+            text=bath_info,
+            reply_markup=reply_markup
+        )
+        return
+    # Обычный /start
+    text = (
+        f"Привет, {user.first_name or user.username}! 👋\n\n"
+        "Я — бот для записи в баню и управления посещениями.\n\n"
+        "Что я умею:\n"
+        "• Записывать на ближайшую баню\n"
+        "• Вести список участников и оплат\n"
+        "• Показывать ваш профиль и историю посещений\n"
+        "• Админам — управлять участниками, отмечать оплаты и посещения\n\n"
+        "Воспользуйтесь меню команд или напишите /register, чтобы записаться!"
+    )
+    await update.message.reply_text(text) 
