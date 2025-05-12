@@ -1207,12 +1207,21 @@ if __name__ == "__main__":
     
     application = Application.builder().token(BOT_TOKEN).build()
 
-    # Пример добавления хендлеров (добавьте свои)
+    # Базовые команды
     application.add_handler(CommandHandler("start", start))
     application.add_handler(CommandHandler("register", register_bath))
     application.add_handler(CommandHandler("create_bath", create_bath_event))
+    
+    # Обработчики кнопок
     application.add_handler(CallbackQueryHandler(button_callback))
-    # ... добавьте остальные хендлеры ...
+    application.add_handler(CallbackQueryHandler(confirm_bath_registration, pattern="^confirm_bath_"))
+    application.add_handler(CallbackQueryHandler(handle_payment_confirmation, pattern="^paid_bath_"))
+    application.add_handler(CallbackQueryHandler(handle_cash_payment, pattern="^cash_bath_"))
+    application.add_handler(CallbackQueryHandler(admin_confirm_payment, pattern="^admin_confirm_"))
+    application.add_handler(CallbackQueryHandler(admin_decline_payment, pattern="^admin_decline_"))
+    
+    # Обработчик глубоких ссылок
+    application.add_handler(CommandHandler("start", handle_deep_link, filters=filters.Regex("^bath_")))
 
     logger.info("Запуск бота")
     application.run_polling()
